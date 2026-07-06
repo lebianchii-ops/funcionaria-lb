@@ -157,7 +157,7 @@ for t in dados.get("tarefas", []):
 
 # ── dialog nova tarefa (definido uma vez, no nível do script) ─────────────
 @st.dialog("Nova Tarefa")
-def popup_nova_tarefa(data_inicial):
+def popup_nova_tarefa(data_inicial, prioridade_inicial="Baixa"):
     titulo    = st.text_input("Título *", placeholder="O que precisa ser feito?")
     categoria = st.selectbox("Categoria / Marketplace", CATS)
     desc      = st.text_area("Descrição (opcional)", height=80)
@@ -165,7 +165,8 @@ def popup_nova_tarefa(data_inicial):
     with c1:
         data = st.date_input("Data", value=data_inicial, format="DD/MM/YYYY")
     with c2:
-        prio = st.selectbox("Prioridade", PRIOS)
+        idx_prio = PRIOS.index(prioridade_inicial) if prioridade_inicial in PRIOS else 0
+        prio = st.selectbox("Prioridade", PRIOS, index=idx_prio)
     if st.button("✅ Adicionar tarefa", use_container_width=True, type="primary"):
         if not titulo.strip():
             st.warning("Por favor, preencha o título.")
@@ -247,12 +248,6 @@ with tab1:
 
     tarefas_ativas = [t for t in dados.get("tarefas", []) if not t.get("feita")]
     datas_tarefas  = {t.get("data") for t in tarefas_ativas}
-
-    # ── botão nova tarefa (acima do calendário) ─────────────────────────────
-    _, nt_col = st.columns([6, 1])
-    with nt_col:
-        if st.button("➕ Nova tarefa", use_container_width=True):
-            popup_nova_tarefa(hoje)
 
     # ── barra de navegação ───────────────────────────────────────────────────
     nav = st.columns([1, 1, 4, 1, 5, 1])
@@ -348,6 +343,10 @@ with tab1:
                     f"<span style='font-weight:400;font-size:0.8rem;color:#999'>({len(bloco)})</span></div>",
                     unsafe_allow_html=True,
                 )
+                if st.button(f"➕ Nova tarefa {prio.lower()}", key=f"nt_{prio}",
+                             use_container_width=True):
+                    popup_nova_tarefa(hoje, prio)
+                st.markdown("<hr class='task-sep'>", unsafe_allow_html=True)
                 if not bloco:
                     st.caption("Nenhuma tarefa.")
                 for idx, t in enumerate(bloco):
