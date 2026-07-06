@@ -93,12 +93,12 @@ def mini_calendario_html(ano, mes, hoje, datas_com_tarefas):
         linhas += "</tr>"
 
     return f"""
-    <div style="background:white;border-radius:14px;padding:12px 10px;box-shadow:0 1px 4px rgba(0,0,0,0.08);font-family:sans-serif;width:100%;box-sizing:border-box;overflow:hidden">
-        <div style="text-align:center;font-weight:700;font-size:0.78rem;margin-bottom:8px">
+    <div style="background:white;border-radius:14px;padding:14px 12px;box-shadow:0 1px 4px rgba(0,0,0,0.08);font-family:sans-serif;width:100%;box-sizing:border-box">
+        <div style="text-align:center;font-weight:700;font-size:0.82rem;margin-bottom:10px">
             {nomes_mes[mes-1].upper()} {ano}
         </div>
-        <table style="width:100%;border-collapse:collapse;table-layout:fixed">
-            <tr>{''.join(f'<th style="text-align:center;font-size:0.6rem;color:#aaa;font-weight:600;padding-bottom:4px">{d}</th>' for d in ["D","S","T","Q","Q","S","S"])}</tr>
+        <table style="width:100%;border-collapse:collapse">
+            <tr>{''.join(f'<th style="text-align:center;font-size:0.68rem;color:#aaa;font-weight:600;padding-bottom:5px;white-space:nowrap">{d}</th>' for d in ["DOM","SEG","TER","QUA","QUI","SEX","SÁB"])}</tr>
             {linhas}
         </table>
     </div>"""
@@ -108,6 +108,8 @@ if "dados" not in st.session_state:
     st.session_state["dados"] = carregar_dados()
 if "semana_offset" not in st.session_state:
     st.session_state["semana_offset"] = 0
+if "mes_offset" not in st.session_state:
+    st.session_state["mes_offset"] = 0
 if "editando" not in st.session_state:
     st.session_state["editando"] = None
 if "data_nova" not in st.session_state:
@@ -139,12 +141,34 @@ with tab1:
     datas_com_tarefas = {t.get("data") for t in tarefas_ativas}
 
     # ── Calendário: mini mensal + semana ────────────────────────────────────
-    col_mini, col_semana = st.columns([1.5, 10])
+    col_mini, col_semana = st.columns([2.5, 9])
 
     with col_mini:
-        st.markdown(mini_calendario_html(hoje.year, hoje.month, hoje, datas_com_tarefas), unsafe_allow_html=True)
+        # Navegação de mês
+        mes_offset = st.session_state["mes_offset"]
+        mes_ref = date(hoje.year, hoje.month, 1)
+        # avança/recua meses
+        ano_cal = hoje.year
+        mes_cal = hoje.month + mes_offset
+        while mes_cal > 12:
+            mes_cal -= 12
+            ano_cal += 1
+        while mes_cal < 1:
+            mes_cal += 12
+            ano_cal -= 1
+
+        cm1, cm2, cm3 = st.columns([1, 4, 1])
+        with cm1:
+            if st.button("‹", key="mes_prev"):
+                st.session_state["mes_offset"] -= 1
+                st.rerun()
+        with cm3:
+            if st.button("›", key="mes_next"):
+                st.session_state["mes_offset"] += 1
+                st.rerun()
+
+        st.markdown(mini_calendario_html(ano_cal, mes_cal, hoje, datas_com_tarefas), unsafe_allow_html=True)
         st.markdown("<br>", unsafe_allow_html=True)
-        # Botão para adicionar tarefa pelo mini calendário
         if st.button("➕ Nova tarefa", use_container_width=True):
             st.session_state["data_nova"] = hoje
             st.session_state["abrir_form"] = True
