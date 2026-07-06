@@ -93,12 +93,12 @@ def mini_calendario_html(ano, mes, hoje, datas_com_tarefas):
         linhas += "</tr>"
 
     return f"""
-    <div style="background:white;border-radius:14px;padding:18px 14px;box-shadow:0 1px 4px rgba(0,0,0,0.08);font-family:sans-serif">
-        <div style="text-align:center;font-weight:700;font-size:0.88rem;margin-bottom:12px">
+    <div style="background:white;border-radius:14px;padding:12px 10px;box-shadow:0 1px 4px rgba(0,0,0,0.08);font-family:sans-serif;width:100%;box-sizing:border-box;overflow:hidden">
+        <div style="text-align:center;font-weight:700;font-size:0.78rem;margin-bottom:8px">
             {nomes_mes[mes-1].upper()} {ano}
         </div>
-        <table style="width:100%;border-collapse:collapse">
-            <tr>{''.join(f'<th style="text-align:center;font-size:0.68rem;color:#aaa;font-weight:600;padding-bottom:6px">{d}</th>' for d in ["DOM","SEG","TER","QUA","QUI","SEX","SÁB"])}</tr>
+        <table style="width:100%;border-collapse:collapse;table-layout:fixed">
+            <tr>{''.join(f'<th style="text-align:center;font-size:0.6rem;color:#aaa;font-weight:600;padding-bottom:4px">{d}</th>' for d in ["D","S","T","Q","Q","S","S"])}</tr>
             {linhas}
         </table>
     </div>"""
@@ -139,7 +139,7 @@ with tab1:
     datas_com_tarefas = {t.get("data") for t in tarefas_ativas}
 
     # ── Calendário: mini mensal + semana ────────────────────────────────────
-    col_mini, col_semana = st.columns([2, 9])
+    col_mini, col_semana = st.columns([1.5, 10])
 
     with col_mini:
         st.markdown(mini_calendario_html(hoje.year, hoje.month, hoje, datas_com_tarefas), unsafe_allow_html=True)
