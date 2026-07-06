@@ -226,7 +226,7 @@ with tab1:
                                                   "AMZ - LB Collection","ML - LB Collection"], key="nt_t")
         nt_desc   = st.text_area("Descrição", key="nt_d")
         fc1, fc2  = st.columns(2)
-        with fc1: nt_data = st.date_input("Data", value=data_pre, key="nt_dt")
+        with fc1: nt_data = st.date_input("Data", value=data_pre, key="nt_dt", format="DD/MM/YYYY")
         with fc2: nt_prio = st.selectbox("Prioridade", ["Alta","Média","Baixa"], key="nt_p")
         if st.button("Adicionar"):
             if nt_titulo:
@@ -262,7 +262,7 @@ with tab1:
                     if ed:
                         nv_t  = st.text_input("Título", value=t["titulo"], key=f"et{t['id']}")
                         nv_d  = st.text_area("Descrição", value=t.get("descricao",""), key=f"ed{t['id']}")
-                        nv_dt = st.date_input("Data", value=date.fromisoformat(t["data"]) if t.get("data") else hoje, key=f"edt{t['id']}")
+                        nv_dt = st.date_input("Data", value=date.fromisoformat(t["data"]) if t.get("data") else hoje, key=f"edt{t['id']}", format="DD/MM/YYYY")
                         nv_p  = st.selectbox("Prioridade", ["Alta","Média","Baixa"],
                                              index=["Alta","Média","Baixa"].index(t.get("prioridade","Baixa")),
                                              key=f"ep{t['id']}")
