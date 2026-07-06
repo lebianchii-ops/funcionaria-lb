@@ -174,8 +174,25 @@ with tab1:
     tarefas_ativas = [t for t in dados.get("tarefas",[]) if not t.get("feita")]
     datas_tarefas  = {t.get("data") for t in tarefas_ativas}
 
+    # ── popup de nova tarefa ─────────────────────────────────────────────────
+    @st.dialog("Nova Tarefa")
+    def popup_nova_tarefa(data_inicial):
+        titulo = st.selectbox("Marketplace", ["TK TK - LB Collection","SH - LB Collection",
+                                               "AMZ - LB Collection","ML - LB Collection"])
+        desc  = st.text_area("Descrição")
+        c1, c2 = st.columns(2)
+        with c1: data = st.date_input("Data", value=data_inicial, format="DD/MM/YYYY")
+        with c2: prio = st.selectbox("Prioridade", ["Alta","Média","Baixa"])
+        if st.button("Adicionar", use_container_width=True, type="primary"):
+            dados["tarefas"].append({
+                "id": str(uuid.uuid4()), "titulo": titulo, "descricao": desc,
+                "data": str(data), "prioridade": prio,
+                "feita": False, "feita_em": None, "criado_em": datetime.now().isoformat()
+            })
+            if salvar_dados(dados):
+                st.rerun()
+
     # ── linha de controles ───────────────────────────────────────────────────
-    # [‹mes] [›mes] [espaço mini-cal] [‹sem] [label semana] [›sem] [➕nova]
     c = st.columns([1, 1, 4, 1, 5, 1, 2])
     with c[0]:
         if st.button("‹", key="mp", help="Mês anterior"):
@@ -195,9 +212,7 @@ with tab1:
             st.session_state["semana_offset"] += 1; st.rerun()
     with c[6]:
         if st.button("➕ Nova tarefa", use_container_width=True):
-            st.session_state["data_nova"] = hoje
-            st.session_state["abrir_form"] = True
-            st.session_state.pop("nt_dt", None)
+            popup_nova_tarefa(hoje)
 
     # ── corpo do calendário ──────────────────────────────────────────────────
     col_mini, col_sem = st.columns([2, 9])
@@ -212,33 +227,7 @@ with tab1:
             with cols_d[i]:
                 st.markdown(html_dia(dia, nome, eventos_dia, dia == hoje), unsafe_allow_html=True)
                 if st.button("＋", key=f"ad{i}", use_container_width=True):
-                    st.session_state["data_nova"] = dia
-                    st.session_state["abrir_form"] = True
-                    st.session_state.pop("nt_dt", None)  # força reinicialização do date_input
-                    st.rerun()
-
-    st.divider()
-
-    # ── formulário nova tarefa ───────────────────────────────────────────────
-    data_pre = st.session_state.get("data_nova") or hoje
-    with st.expander("➕ Nova tarefa", expanded=st.session_state.get("abrir_form", False)):
-        nt_titulo = st.selectbox("Marketplace", ["TK TK - LB Collection","SH - LB Collection",
-                                                  "AMZ - LB Collection","ML - LB Collection"], key="nt_t")
-        nt_desc   = st.text_area("Descrição", key="nt_d")
-        fc1, fc2  = st.columns(2)
-        with fc1: nt_data = st.date_input("Data", value=data_pre, key="nt_dt", format="DD/MM/YYYY")
-        with fc2: nt_prio = st.selectbox("Prioridade", ["Alta","Média","Baixa"], key="nt_p")
-        if st.button("Adicionar"):
-            if nt_titulo:
-                dados["tarefas"].append({
-                    "id": str(uuid.uuid4()), "titulo": nt_titulo, "descricao": nt_desc,
-                    "data": str(nt_data), "prioridade": nt_prio,
-                    "feita": False, "feita_em": None, "criado_em": datetime.now().isoformat()
-                })
-                st.session_state.update({"data_nova": None, "abrir_form": False})
-                if salvar_dados(dados):
-                    st.success("Tarefa adicionada!")
-                    st.rerun()
+                    popup_nova_tarefa(dia)
 
     st.divider()
 
