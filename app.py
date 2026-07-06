@@ -267,14 +267,14 @@ with tab1:
         )
         cor = COR[prio]
         with col:
-            st.markdown(
-                f"<div style='border-top:4px solid {cor};border-radius:8px 8px 0 0;"
-                f"background:white;padding:10px 4px 6px;font-weight:700;font-size:0.95rem;"
-                f"margin-bottom:-1px'>{EMOJI[prio]} {prio} "
-                f"<span style='font-weight:400;font-size:0.8rem;color:#999'>({len(bloco)})</span></div>",
-                unsafe_allow_html=True,
-            )
             with st.container(border=True):
+                st.markdown(
+                    f"<div style='border-top:4px solid {cor};border-radius:7px 7px 0 0;"
+                    f"margin:-15px -15px 10px -15px;padding:10px 15px;font-weight:700;font-size:0.95rem'>"
+                    f"{EMOJI[prio]} {prio} "
+                    f"<span style='font-weight:400;font-size:0.8rem;color:#999'>({len(bloco)})</span></div>",
+                    unsafe_allow_html=True,
+                )
                 if not bloco:
                     st.caption("Nenhuma tarefa.")
                 for idx, t in enumerate(bloco):
