@@ -144,10 +144,7 @@ with tab1:
     col_mini, col_semana = st.columns([2.5, 9])
 
     with col_mini:
-        # Navegação de mês
         mes_offset = st.session_state["mes_offset"]
-        mes_ref = date(hoje.year, hoje.month, 1)
-        # avança/recua meses
         ano_cal = hoje.year
         mes_cal = hoje.month + mes_offset
         while mes_cal > 12:
@@ -157,17 +154,18 @@ with tab1:
             mes_cal += 12
             ano_cal -= 1
 
-        cm1, cm2, cm3 = st.columns([1, 4, 1])
+        st.markdown(mini_calendario_html(ano_cal, mes_cal, hoje, datas_com_tarefas), unsafe_allow_html=True)
+
+        cm1, cm2 = st.columns(2)
         with cm1:
-            if st.button("‹", key="mes_prev"):
+            if st.button("‹ mês", key="mes_prev", use_container_width=True):
                 st.session_state["mes_offset"] -= 1
                 st.rerun()
-        with cm3:
-            if st.button("›", key="mes_next"):
+        with cm2:
+            if st.button("mês ›", key="mes_next", use_container_width=True):
                 st.session_state["mes_offset"] += 1
                 st.rerun()
 
-        st.markdown(mini_calendario_html(ano_cal, mes_cal, hoje, datas_com_tarefas), unsafe_allow_html=True)
         st.markdown("<br>", unsafe_allow_html=True)
         if st.button("➕ Nova tarefa", use_container_width=True):
             st.session_state["data_nova"] = hoje
