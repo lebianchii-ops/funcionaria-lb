@@ -181,8 +181,8 @@ def popup_nova_tarefa(data_inicial):
             "feita_em":   None,
             "criado_em":  datetime.now().isoformat(),
         })
-        if salvar_dados(dados):
-            st.rerun()
+        salvar_dados(dados)
+        st.rerun()
 
 # ── cabeçalho ────────────────────────────────────────────────────────────────
 st.title("👜 LB Collection — Painel")
@@ -386,9 +386,9 @@ with tab2:
                     "texto": av_txt.strip(),
                     "data":  datetime.now().strftime("%d/%m/%Y %H:%M"),
                 })
-                if salvar_dados(dados):
-                    st.success("✅ Aviso publicado!")
-                    st.rerun()
+                salvar_dados(dados)
+                st.success("✅ Aviso publicado!")
+                st.rerun()
             else:
                 st.warning("Digite uma mensagem antes de publicar.")
 
