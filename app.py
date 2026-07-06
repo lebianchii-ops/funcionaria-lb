@@ -140,77 +140,73 @@ with tab1:
     tarefas_ativas = [t for t in dados.get("tarefas", []) if not t.get("feita")]
     datas_com_tarefas = {t.get("data") for t in tarefas_ativas}
 
-    # ── Calendário: mini mensal + semana ────────────────────────────────────
+    # ── Navegação única no topo ─────────────────────────────────────────────
+    mes_offset = st.session_state["mes_offset"]
+    ano_cal = hoje.year
+    mes_cal = hoje.month + mes_offset
+    while mes_cal > 12:
+        mes_cal -= 12; ano_cal += 1
+    while mes_cal < 1:
+        mes_cal += 12; ano_cal -= 1
+
+    label_semana = (f"{dias_semana[0].day} de {mes_abrev[dias_semana[0].month-1].lower()}. "
+                    f"– {dias_semana[6].day} de {mes_abrev[dias_semana[6].month-1].lower()}.")
+
+    nav_col = st.columns([1, 1, 2.5, 1, 6, 1])
+    with nav_col[0]:
+        if st.button("‹", key="mes_prev", use_container_width=True, help="Mês anterior"):
+            st.session_state["mes_offset"] -= 1; st.rerun()
+    with nav_col[1]:
+        if st.button("›", key="mes_next", use_container_width=True, help="Próximo mês"):
+            st.session_state["mes_offset"] += 1; st.rerun()
+    with nav_col[2]:
+        st.markdown("")  # espaçador
+    with nav_col[3]:
+        if st.button("‹", key="sem_prev", use_container_width=True, help="Semana anterior"):
+            st.session_state["semana_offset"] -= 1; st.rerun()
+    with nav_col[4]:
+        st.markdown(f"<div style='text-align:center;font-weight:600;padding-top:6px;color:#555'>{label_semana}</div>", unsafe_allow_html=True)
+    with nav_col[5]:
+        if st.button("›", key="sem_next", use_container_width=True, help="Próxima semana"):
+            st.session_state["semana_offset"] += 1; st.rerun()
+
+    # ── Corpo do calendário ─────────────────────────────────────────────────
     col_mini, col_semana = st.columns([2.5, 9])
 
     with col_mini:
-        mes_offset = st.session_state["mes_offset"]
-        ano_cal = hoje.year
-        mes_cal = hoje.month + mes_offset
-        while mes_cal > 12:
-            mes_cal -= 12
-            ano_cal += 1
-        while mes_cal < 1:
-            mes_cal += 12
-            ano_cal -= 1
-
         st.markdown(mini_calendario_html(ano_cal, mes_cal, hoje, datas_com_tarefas), unsafe_allow_html=True)
-
-        cm1, cm2 = st.columns(2)
-        with cm1:
-            if st.button("‹ mês", key="mes_prev", use_container_width=True):
-                st.session_state["mes_offset"] -= 1
-                st.rerun()
-        with cm2:
-            if st.button("mês ›", key="mes_next", use_container_width=True):
-                st.session_state["mes_offset"] += 1
-                st.rerun()
-
-        st.markdown("<br>", unsafe_allow_html=True)
-        if st.button("➕ Nova tarefa", use_container_width=True):
+        st.markdown("<div style='height:10px'></div>", unsafe_allow_html=True)
+        if st.button("➕ Nova tarefa", use_container_width=True, key="btn_nova_tarefa"):
             st.session_state["data_nova"] = hoje
             st.session_state["abrir_form"] = True
 
     with col_semana:
-        cn1, cn2, cn3 = st.columns([1, 8, 1])
-        with cn1:
-            if st.button("‹", use_container_width=True):
-                st.session_state["semana_offset"] -= 1
-                st.rerun()
-        with cn2:
-            label_semana = f"{dias_semana[0].day} de {mes_abrev[dias_semana[0].month-1].lower()}. – {dias_semana[6].day} de {mes_abrev[dias_semana[6].month-1].lower()}."
-            st.markdown(f"<div style='text-align:center;font-weight:600;padding-top:6px'>{label_semana}</div>", unsafe_allow_html=True)
-        with cn3:
-            if st.button("›", use_container_width=True):
-                st.session_state["semana_offset"] += 1
-                st.rerun()
-
         cols_dias = st.columns(7)
         for i, (dia, nome) in enumerate(zip(dias_semana, nomes_dia)):
             with cols_dias[i]:
                 e_hoje = dia == hoje
                 borda = "border:2px solid #c0392b;" if e_hoje else "border:1px solid #e8e8e8;"
-                num_style = ("background:#c0392b;color:white;border-radius:50%;width:26px;height:26px;"
-                             "display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:0.85rem;")
+                num_style = ("background:#c0392b;color:white;border-radius:50%;width:28px;height:28px;"
+                             "display:inline-flex;align-items:center;justify-content:center;"
+                             "font-weight:700;font-size:0.85rem;margin-bottom:6px;") if e_hoje else \
+                            "font-size:1.4rem;font-weight:700;margin-bottom:4px;"
                 eventos_dia = [t for t in tarefas_ativas if t.get("data") == str(dia)]
                 eventos_html = ""
                 for t in eventos_dia:
                     dot = {"Alta":"🔴","Média":"🟡","Baixa":"🟢"}.get(t.get("prioridade"),"⚪")
-                    titulo = t["titulo"][:14]+"…" if len(t["titulo"])>14 else t["titulo"]
+                    titulo = t["titulo"][:15]+"…" if len(t["titulo"])>15 else t["titulo"]
                     cls = {"Alta":"evento-alta","Média":"evento-media","Baixa":"evento-baixa"}.get(t.get("prioridade"),"evento-baixa")
                     eventos_html += f'<div class="evento {cls}">{dot} {titulo}</div>'
                 if not eventos_html:
                     eventos_html = '<div style="color:#ccc;font-size:0.72rem;font-style:italic;margin-top:4px">livre</div>'
 
-                num_html = f'<div style="{num_style}">{dia.day}</div>' if e_hoje else f'<div style="font-size:1.3rem;font-weight:700;margin-bottom:4px">{dia.day}</div>'
                 st.markdown(f"""
-                <div style="{borda}border-radius:10px;padding:8px;min-height:130px;background:white;margin-bottom:4px">
-                    <div style="font-size:0.62rem;font-weight:700;color:#999;letter-spacing:1px">{nome} {mes_abrev[dia.month-1]}</div>
-                    {num_html}
+                <div style="{borda}border-radius:10px;padding:10px 8px;min-height:140px;background:white;margin-bottom:6px">
+                    <div style="font-size:0.62rem;font-weight:700;color:#aaa;letter-spacing:1px;margin-bottom:2px">{nome} {mes_abrev[dia.month-1]}</div>
+                    <div style="{num_style}">{dia.day}</div>
                     {eventos_html}
                 </div>""", unsafe_allow_html=True)
 
-                # Botão "+" para adicionar tarefa naquele dia
                 if st.button("＋", key=f"add_dia_{i}", use_container_width=True):
                     st.session_state["data_nova"] = dia
                     st.session_state["abrir_form"] = True
