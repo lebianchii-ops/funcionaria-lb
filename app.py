@@ -77,7 +77,8 @@ with tab1:
                     "descricao": descricao,
                     "data": str(data_tarefa),
                     "prioridade": prioridade,
-                    "status": "Pendente",
+                    "feita": False,
+                    "feita_em": None,
                     "criado_em": datetime.now().isoformat()
                 }
                 dados["tarefas"].append(nova)
@@ -87,43 +88,52 @@ with tab1:
             else:
                 st.warning("Digite um título para a tarefa.")
 
-    filtro = st.selectbox("Filtrar por status", ["Todas", "Pendente", "Em andamento", "Feita"])
-
-    tarefas = dados.get("tarefas", [])
-    if filtro != "Todas":
-        tarefas = [t for t in tarefas if t["status"] == filtro]
-    tarefas = sorted(tarefas, key=lambda x: x.get("data", ""))
-
-    if not tarefas:
-        st.info("Nenhuma tarefa encontrada.")
-
-    for t in tarefas:
-        cor = {"Alta": "🔴", "Média": "🟡", "Baixa": "🟢"}.get(t["prioridade"], "⚪")
-        status_icone = {"Pendente": "⏳", "Em andamento": "🔄", "Feita": "✅"}.get(t["status"], "")
-
-        with st.container():
-            col1, col2, col3 = st.columns([4, 2, 1])
+    def render_bloco(label, cor_emoji, tarefas_bloco):
+        st.markdown(f"### {cor_emoji} {label}")
+        if not tarefas_bloco:
+            st.caption("Nenhuma tarefa.")
+        for t in tarefas_bloco:
+            col1, col2 = st.columns([8, 1])
             with col1:
-                st.markdown(f"{cor} **{t['titulo']}** {status_icone}")
-                if t.get("descricao"):
-                    st.caption(t["descricao"])
-                st.caption(f"📅 {t['data']} · {t['prioridade']}")
-            with col2:
-                opcoes = ["Pendente", "Em andamento", "Feita"]
-                idx = opcoes.index(t["status"]) if t["status"] in opcoes else 0
-                novo_status = st.selectbox("Status", opcoes, index=idx, key=f"status_{t['id']}", label_visibility="collapsed")
-                if novo_status != t["status"]:
+                feita = st.checkbox(
+                    f"**{t['titulo']}**" + (f"\n{t['descricao']}" if t.get("descricao") else ""),
+                    value=False,
+                    key=f"check_{t['id']}"
+                )
+                st.caption(f"📅 {t['data']}")
+                if feita:
                     for tarefa in dados["tarefas"]:
                         if tarefa["id"] == t["id"]:
-                            tarefa["status"] = novo_status
+                            tarefa["feita"] = True
+                            tarefa["feita_em"] = datetime.now().strftime("%d/%m/%Y %H:%M")
                     salvar_dados(dados)
                     st.rerun()
-            with col3:
+            with col2:
                 if st.button("🗑️", key=f"del_{t['id']}"):
                     dados["tarefas"] = [x for x in dados["tarefas"] if x["id"] != t["id"]]
                     salvar_dados(dados)
                     st.rerun()
-            st.divider()
+        st.markdown("---")
+
+    pendentes = [t for t in dados.get("tarefas", []) if not t.get("feita")]
+    for nivel, emoji in [("Alta", "🔴"), ("Média", "🟡"), ("Baixa", "🟢")]:
+        bloco = sorted([t for t in pendentes if t.get("prioridade") == nivel], key=lambda x: x.get("data", ""))
+        render_bloco(nivel, emoji, bloco)
+
+    feitas = [t for t in dados.get("tarefas", []) if t.get("feita")]
+    if feitas:
+        with st.expander(f"✅ Feitas ({len(feitas)})"):
+            feitas_ord = sorted(feitas, key=lambda x: x.get("feita_em", ""), reverse=True)
+            for t in feitas_ord:
+                col1, col2 = st.columns([8, 1])
+                with col1:
+                    st.markdown(f"~~{t['titulo']}~~")
+                    st.caption(f"Concluída em {t.get('feita_em', '')} · {t.get('prioridade', '')}")
+                with col2:
+                    if st.button("🗑️", key=f"del_feita_{t['id']}"):
+                        dados["tarefas"] = [x for x in dados["tarefas"] if x["id"] != t["id"]]
+                        salvar_dados(dados)
+                        st.rerun()
 
 with tab2:
     st.subheader("Calendário")
