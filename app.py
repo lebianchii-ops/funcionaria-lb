@@ -116,9 +116,13 @@ with tab1:
         st.markdown("---")
 
     pendentes = [t for t in dados.get("tarefas", []) if not t.get("feita")]
-    for nivel, emoji in [("Alta", "🔴"), ("Média", "🟡"), ("Baixa", "🟢")]:
-        bloco = sorted([t for t in pendentes if t.get("prioridade") == nivel], key=lambda x: x.get("data", ""))
-        render_bloco(nivel, emoji, bloco)
+    col_alta, col_media, col_baixa = st.columns(3)
+    with col_alta:
+        render_bloco("Alta", "🔴", sorted([t for t in pendentes if t.get("prioridade") == "Alta"], key=lambda x: x.get("data", "")))
+    with col_media:
+        render_bloco("Média", "🟡", sorted([t for t in pendentes if t.get("prioridade") == "Média"], key=lambda x: x.get("data", "")))
+    with col_baixa:
+        render_bloco("Baixa", "🟢", sorted([t for t in pendentes if t.get("prioridade") == "Baixa"], key=lambda x: x.get("data", "")))
 
     feitas = [t for t in dados.get("tarefas", []) if t.get("feita")]
     if feitas:
