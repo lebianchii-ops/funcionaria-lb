@@ -201,7 +201,7 @@ with tab1:
     abrir = st.session_state.get("abrir_form", False)
 
     with st.expander("➕ Nova tarefa", expanded=abrir):
-        nt_titulo    = st.text_input("Título", key="nt_titulo")
+        nt_titulo    = st.selectbox("Título", ["TK TK - LB Collection", "SH - LB Collection", "AMZ - LB Collection", "ML - LB Collection"], key="nt_titulo")
         nt_descricao = st.text_area("Descrição", key="nt_descricao")
         c1, c2 = st.columns(2)
         with c1:
