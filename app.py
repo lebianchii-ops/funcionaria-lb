@@ -39,7 +39,7 @@ CATS      = ["—", "ML - LB Collection", "SH - LB Collection",
 
 def fmt_data(d_str):
     try:
-        return date.fromisoformat(d_str).strftime("%d/%m/%Y")
+        return date.fromisoformat(d_str).strftime("%d/%m/%y")
     except Exception:
         return d_str
 
@@ -218,7 +218,7 @@ def popup_editar_tarefa(tarefa_id):
             for x in dados["tarefas"]:
                 if x["id"] == tarefa_id:
                     x["feita"]    = True
-                    x["feita_em"] = datetime.now().strftime("%d/%m/%Y %H:%M")
+                    x["feita_em"] = datetime.now().strftime("%d/%m/%y %H:%M")
             salvar_dados(dados)
             st.rerun()
     with c_del:
@@ -229,7 +229,7 @@ def popup_editar_tarefa(tarefa_id):
 
 # ── cabeçalho ────────────────────────────────────────────────────────────────
 st.title("👜 LB Collection — Painel")
-tab1, tab2 = st.tabs(["✅ Tarefas", "📢 Avisos"])
+tab1, tab2, tab3 = st.tabs(["✅ Tarefas", "📢 Avisos", "✔️ Concluídos"])
 
 # ════════════════════════════════════════════════════════════════════════════
 with tab1:
@@ -388,7 +388,7 @@ with tab1:
                                 st.session_state["editando"] = None
                                 st.rerun()
                     else:
-                        row = st.columns([7, 1, 1])
+                        row = st.columns([7, 1, 1], vertical_alignment="center")
                         with row[0]:
                             feita = st.checkbox(
                                 f"**{t['titulo']}**",
@@ -414,7 +414,7 @@ with tab1:
                             for x in dados["tarefas"]:
                                 if x["id"] == t["id"]:
                                     x["feita"]    = True
-                                    x["feita_em"] = datetime.now().strftime("%d/%m/%Y %H:%M")
+                                    x["feita_em"] = datetime.now().strftime("%d/%m/%y %H:%M")
                             salvar_dados(dados)
                             st.rerun()
                     if idx < len(bloco) - 1:
@@ -425,25 +425,36 @@ with tab1:
     render_col(cm, "Média")
     render_col(cb, "Baixa")
 
-    # ── feitas ───────────────────────────────────────────────────────────────
+
+# ════════════════════════════════════════════════════════════════════════════
+with tab3:
     feitas = sorted(
         [t for t in dados.get("tarefas", []) if t.get("feita")],
         key=lambda x: x.get("feita_em", ""), reverse=True
     )
-    if feitas:
+    if not feitas:
+        st.info("Nenhuma tarefa concluída ainda.")
+    else:
+        st.markdown(f"**{len(feitas)} tarefa(s) concluída(s)**")
         st.divider()
-        with st.expander(f"✅ Feitas ({len(feitas)})"):
-            for t in feitas:
-                c1, c2 = st.columns([9, 1])
-                with c1:
-                    st.markdown(f"~~{t['titulo']}~~")
-                    st.caption(f"Concluída em {t.get('feita_em','')} · {t.get('prioridade','')}")
-                with c2:
-                    if st.button("🗑️", key=f"df{t['id']}", help="Excluir"):
-                        dados["tarefas"] = [x for x in dados["tarefas"] if x["id"] != t["id"]]
-                        salvar_dados(dados)
-                        st.rerun()
-                st.markdown("<hr class='task-sep'>", unsafe_allow_html=True)
+        for t in feitas:
+            c1, c2 = st.columns([10, 1], vertical_alignment="center")
+            with c1:
+                prio_txt = t.get("prioridade", "")
+                dot = EMOJI.get(prio_txt, "")
+                st.markdown(f"~~{t['titulo']}~~  {dot}")
+                feita_em = t.get("feita_em", "")
+                cat = t.get("categoria", "—")
+                info = f"✅ {feita_em}"
+                if cat and cat != "—":
+                    info += f"  ·  {cat}"
+                st.caption(info)
+            with c2:
+                if st.button("🗑️", key=f"df{t['id']}", help="Excluir"):
+                    dados["tarefas"] = [x for x in dados["tarefas"] if x["id"] != t["id"]]
+                    salvar_dados(dados)
+                    st.rerun()
+            st.markdown("<hr class='task-sep'>", unsafe_allow_html=True)
 
 # ════════════════════════════════════════════════════════════════════════════
 with tab2:
