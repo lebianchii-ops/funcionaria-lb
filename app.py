@@ -257,10 +257,19 @@ with tab1:
     # ── Colunas de prioridade ───────────────────────────────────────────────
     pendentes = [t for t in dados.get("tarefas", []) if not t.get("feita")]
 
+    cores_borda = {"bloco-alta": "#e74c3c", "bloco-media": "#f39c12", "bloco-baixa": "#27ae60"}
+
     def render_coluna(col, label, classe, emoji, prioridade):
         with col:
-            st.markdown(f'<div class="bloco {classe}" style="margin-bottom:8px"><span style="font-size:1rem;font-weight:700">{emoji} {label}</span></div>', unsafe_allow_html=True)
+            cor = cores_borda.get(classe, "#ccc")
+            st.markdown(f"""
+            <div style="border-top:4px solid {cor};border-radius:10px 10px 0 0;background:white;
+                        padding:12px 14px 6px 14px;font-size:1rem;font-weight:700;">
+                {emoji} {label}
+            </div>
+            """, unsafe_allow_html=True)
             bloco = sorted([t for t in pendentes if t.get("prioridade") == prioridade], key=lambda x: x.get("data",""))
+            st.markdown('<div style="background:white;padding:0 14px 14px 14px;border-radius:0 0 10px 10px;min-height:200px">', unsafe_allow_html=True)
             if not bloco:
                 st.caption("Nenhuma tarefa.")
             for t in bloco:
@@ -307,6 +316,7 @@ with tab1:
                                 salvar_dados(dados)
                                 st.rerun()
                     st.markdown("<hr style='margin:6px 0;border-color:#f0f0f0'>", unsafe_allow_html=True)
+            st.markdown('</div>', unsafe_allow_html=True)
 
     col_a, col_m, col_b = st.columns(3)
     render_coluna(col_a, "Alta",  "bloco-alta",  "🔴", "Alta")
