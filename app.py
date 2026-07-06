@@ -40,6 +40,12 @@ MES_NOME = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho",
             "Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"]
 MES_ABREV = ["JAN","FEV","MAR","ABR","MAI","JUN","JUL","AGO","SET","OUT","NOV","DEZ"]
 
+def fmt_data(d_str):
+    try:
+        return date.fromisoformat(d_str).strftime("%d/%m/%Y")
+    except Exception:
+        return d_str
+
 def get_token():
     t = st.secrets["github_token"]
     return ''.join(c for c in t if ord(c) < 128).strip()
@@ -191,6 +197,7 @@ with tab1:
         if st.button("➕ Nova tarefa", use_container_width=True):
             st.session_state["data_nova"] = hoje
             st.session_state["abrir_form"] = True
+            st.session_state.pop("nt_dt", None)
 
     # ── corpo do calendário ──────────────────────────────────────────────────
     col_mini, col_sem = st.columns([2, 9])
@@ -207,6 +214,7 @@ with tab1:
                 if st.button("＋", key=f"ad{i}", use_container_width=True):
                     st.session_state["data_nova"] = dia
                     st.session_state["abrir_form"] = True
+                    st.session_state.pop("nt_dt", None)  # força reinicialização do date_input
                     st.rerun()
 
     st.divider()
@@ -241,14 +249,16 @@ with tab1:
 
     def render_col(col, prio):
         bloco = sorted([t for t in pendentes if t.get("prioridade")==prio], key=lambda x: x.get("data",""))
+        cor = COR[prio]
         with col:
-            st.markdown(f'<div class="bloco-header bloco-header-{prio.lower()}">{EMOJI[prio]} {prio}</div>', unsafe_allow_html=True)
-            st.markdown('<div class="bloco-body">', unsafe_allow_html=True)
-            if not bloco:
-                st.caption("Nenhuma tarefa.")
-            for t in bloco:
-                ed = st.session_state["editando"] == t["id"]
-                with st.container():
+            st.markdown(f"<div style='border-top:4px solid {cor};border-radius:8px 8px 0 0;"
+                        f"background:white;padding:10px 4px 6px;font-weight:700;font-size:0.95rem;margin-bottom:-1px'>"
+                        f"{EMOJI[prio]} {prio}</div>", unsafe_allow_html=True)
+            with st.container(border=True):
+                if not bloco:
+                    st.caption("Nenhuma tarefa.")
+                for t in bloco:
+                    ed = st.session_state["editando"] == t["id"]
                     if ed:
                         nv_t  = st.text_input("Título", value=t["titulo"], key=f"et{t['id']}")
                         nv_d  = st.text_area("Descrição", value=t.get("descricao",""), key=f"ed{t['id']}")
@@ -270,7 +280,7 @@ with tab1:
                     else:
                         feita = st.checkbox(f"**{t['titulo']}**", value=False, key=f"ck{t['id']}")
                         if t.get("descricao"): st.caption(t["descricao"])
-                        st.caption(f"📅 {t['data']}")
+                        st.caption(f"📅 {fmt_data(t['data'])}")
                         if feita:
                             for x in dados["tarefas"]:
                                 if x["id"] == t["id"]:
@@ -284,8 +294,7 @@ with tab1:
                             if st.button("🗑️", key=f"dl{t['id']}", use_container_width=True):
                                 dados["tarefas"] = [x for x in dados["tarefas"] if x["id"] != t["id"]]
                                 salvar_dados(dados); st.rerun()
-                    st.markdown("<hr style='margin:5px 0;border-color:#f5f5f5'>", unsafe_allow_html=True)
-            st.markdown('</div>', unsafe_allow_html=True)
+                    st.divider()
 
     ca, cm, cb = st.columns(3)
     render_col(ca, "Alta"); render_col(cm, "Média"); render_col(cb, "Baixa")
