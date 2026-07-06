@@ -26,6 +26,10 @@ st.markdown("""
 .evento-alta  { background: #fde8e8; border-left: 3px solid #e74c3c; }
 .evento-media { background: #fef9e7; border-left: 3px solid #f39c12; }
 .evento-baixa { background: #eafaf1; border-left: 3px solid #27ae60; }
+div[data-testid="stButton"] button[kind="secondary"] {
+    padding: 2px 6px;
+    font-size: 0.7rem;
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -64,38 +68,37 @@ def salvar_dados(data):
 def mini_calendario_html(ano, mes, hoje, datas_com_tarefas):
     nomes_mes = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho",
                  "Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"]
-    calendar.setfirstweekday(6)  # domingo primeiro
+    calendar.setfirstweekday(6)
     semanas = calendar.monthcalendar(ano, mes)
-
     linhas = ""
     for semana in semanas:
-        # monthcalendar com firstweekday=6 retorna [Dom, Seg, Ter, Qua, Qui, Sex, Sab]
         linhas += "<tr>"
         for dia in semana:
             if dia == 0:
                 linhas += "<td></td>"
+                continue
+            d = date(ano, mes, dia)
+            e_hoje = d == hoje
+            tem_tarefa = str(d) in datas_com_tarefas
+            if e_hoje:
+                cel = f'<td style="text-align:center;padding:3px"><div style="background:#c0392b;color:white;border-radius:50%;width:26px;height:26px;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:0.82rem">{dia}</div></td>'
+            elif tem_tarefa:
+                cel = (f'<td style="text-align:center;padding:3px">'
+                       f'<span style="font-size:0.82rem;font-weight:600;color:#222">{dia}</span>'
+                       f'<div style="width:5px;height:5px;background:#e74c3c;border-radius:50%;margin:-1px auto 0"></div>'
+                       f'</td>')
             else:
-                d = date(ano, mes, dia)
-                e_hoje = d == hoje
-                tem_tarefa = str(d) in datas_com_tarefas
-                if e_hoje:
-                    cel = f'<td style="text-align:center;padding:2px"><div style="background:#c0392b;color:white;border-radius:50%;width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:0.8rem">{dia}</div></td>'
-                elif tem_tarefa:
-                    cel = f'<td style="text-align:center;padding:2px"><span style="font-size:0.8rem">{dia}</span><br><div style="width:4px;height:4px;background:#c0392b;border-radius:50%;margin:-2px auto 0"></div></td>'
-                else:
-                    cel = f'<td style="text-align:center;padding:2px;font-size:0.8rem">{dia}</td>'
-                linhas += cel
+                cel = f'<td style="text-align:center;padding:3px;font-size:0.82rem;color:#444">{dia}</td>'
+            linhas += cel
         linhas += "</tr>"
 
     return f"""
-    <div style="background:white;border-radius:14px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,0.08);font-family:sans-serif;min-width:180px">
-        <div style="text-align:center;font-weight:700;font-size:0.85rem;margin-bottom:10px">
+    <div style="background:white;border-radius:14px;padding:18px 14px;box-shadow:0 1px 4px rgba(0,0,0,0.08);font-family:sans-serif">
+        <div style="text-align:center;font-weight:700;font-size:0.88rem;margin-bottom:12px">
             {nomes_mes[mes-1].upper()} {ano}
         </div>
         <table style="width:100%;border-collapse:collapse">
-            <tr>
-                {''.join(f'<th style="text-align:center;font-size:0.68rem;color:#999;font-weight:600;padding:2px">{d}</th>' for d in ["DOM","SEG","TER","QUA","QUI","SEX","SÁB"])}
-            </tr>
+            <tr>{''.join(f'<th style="text-align:center;font-size:0.68rem;color:#aaa;font-weight:600;padding-bottom:6px">{d}</th>' for d in ["DOM","SEG","TER","QUA","QUI","SEX","SÁB"])}</tr>
             {linhas}
         </table>
     </div>"""
@@ -107,6 +110,8 @@ if "semana_offset" not in st.session_state:
     st.session_state["semana_offset"] = 0
 if "editando" not in st.session_state:
     st.session_state["editando"] = None
+if "data_nova" not in st.session_state:
+    st.session_state["data_nova"] = None
 
 dados = st.session_state["dados"]
 
@@ -118,75 +123,89 @@ for t in dados.get("tarefas", []):
     t.setdefault("data", str(date.today()))
 
 st.title("👜 LB Collection — Painel")
-tab1, tab2, tab3 = st.tabs(["✅ Tarefas", "📅 Calendário", "📢 Avisos"])
+tab1, tab2 = st.tabs(["✅ Tarefas", "📢 Avisos"])
 
 # ── TAB 1: TAREFAS ──────────────────────────────────────────────────────────
 with tab1:
 
     hoje = date.today()
     offset = st.session_state["semana_offset"]
-    inicio_semana = hoje - timedelta(days=(hoje.weekday() + 1) % 7)  # domingo
-    inicio_semana += timedelta(weeks=offset)
+    inicio_semana = hoje - timedelta(days=(hoje.weekday() + 1) % 7) + timedelta(weeks=offset)
     dias_semana = [inicio_semana + timedelta(days=i) for i in range(7)]
     nomes_dia = ["DOM","SEG","TER","QUA","QUI","SEX","SÁB"]
-    nomes_mes_abrev = ["JAN","FEV","MAR","ABR","MAI","JUN","JUL","AGO","SET","OUT","NOV","DEZ"]
+    mes_abrev = ["JAN","FEV","MAR","ABR","MAI","JUN","JUL","AGO","SET","OUT","NOV","DEZ"]
 
     tarefas_ativas = [t for t in dados.get("tarefas", []) if not t.get("feita")]
     datas_com_tarefas = {t.get("data") for t in tarefas_ativas}
 
-    # Layout: mini calendário | semana
+    # ── Calendário: mini mensal + semana ────────────────────────────────────
     col_mini, col_semana = st.columns([2, 9])
 
     with col_mini:
         st.markdown(mini_calendario_html(hoje.year, hoje.month, hoje, datas_com_tarefas), unsafe_allow_html=True)
+        st.markdown("<br>", unsafe_allow_html=True)
+        # Botão para adicionar tarefa pelo mini calendário
+        if st.button("➕ Nova tarefa", use_container_width=True):
+            st.session_state["data_nova"] = hoje
+            st.session_state["abrir_form"] = True
 
     with col_semana:
-        # Navegação
         cn1, cn2, cn3 = st.columns([1, 8, 1])
         with cn1:
             if st.button("‹", use_container_width=True):
                 st.session_state["semana_offset"] -= 1
                 st.rerun()
         with cn2:
-            label = f"{dias_semana[0].day} de {nomes_mes_abrev[dias_semana[0].month-1].lower()}. – {dias_semana[6].day} de {nomes_mes_abrev[dias_semana[6].month-1].lower()}."
-            st.markdown(f"<div style='text-align:center;font-weight:600;padding-top:6px'>{label}</div>", unsafe_allow_html=True)
+            label_semana = f"{dias_semana[0].day} de {mes_abrev[dias_semana[0].month-1].lower()}. – {dias_semana[6].day} de {mes_abrev[dias_semana[6].month-1].lower()}."
+            st.markdown(f"<div style='text-align:center;font-weight:600;padding-top:6px'>{label_semana}</div>", unsafe_allow_html=True)
         with cn3:
             if st.button("›", use_container_width=True):
                 st.session_state["semana_offset"] += 1
                 st.rerun()
 
-        # Colunas dos 7 dias
         cols_dias = st.columns(7)
         for i, (dia, nome) in enumerate(zip(dias_semana, nomes_dia)):
             with cols_dias[i]:
                 e_hoje = dia == hoje
                 borda = "border:2px solid #c0392b;" if e_hoje else "border:1px solid #e8e8e8;"
-                num_style = "background:#c0392b;color:white;border-radius:50%;width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:0.9rem;" if e_hoje else "font-size:1.4rem;font-weight:700;"
+                num_style = ("background:#c0392b;color:white;border-radius:50%;width:26px;height:26px;"
+                             "display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:0.85rem;")
                 eventos_dia = [t for t in tarefas_ativas if t.get("data") == str(dia)]
                 eventos_html = ""
                 for t in eventos_dia:
-                    cls = {"Alta":"evento-alta","Média":"evento-media","Baixa":"evento-baixa"}.get(t.get("prioridade"),"evento-baixa")
                     dot = {"Alta":"🔴","Média":"🟡","Baixa":"🟢"}.get(t.get("prioridade"),"⚪")
-                    titulo = t["titulo"][:16]+"…" if len(t["titulo"])>16 else t["titulo"]
+                    titulo = t["titulo"][:14]+"…" if len(t["titulo"])>14 else t["titulo"]
+                    cls = {"Alta":"evento-alta","Média":"evento-media","Baixa":"evento-baixa"}.get(t.get("prioridade"),"evento-baixa")
                     eventos_html += f'<div class="evento {cls}">{dot} {titulo}</div>'
                 if not eventos_html:
-                    eventos_html = '<div style="color:#bbb;font-size:0.75rem;font-style:italic">livre</div>'
+                    eventos_html = '<div style="color:#ccc;font-size:0.72rem;font-style:italic;margin-top:4px">livre</div>'
+
+                num_html = f'<div style="{num_style}">{dia.day}</div>' if e_hoje else f'<div style="font-size:1.3rem;font-weight:700;margin-bottom:4px">{dia.day}</div>'
                 st.markdown(f"""
-                <div style="{borda}border-radius:10px;padding:10px;min-height:130px;background:white">
-                    <div style="font-size:0.65rem;font-weight:700;color:#999;letter-spacing:1px;margin-bottom:2px">{nome} {nomes_mes_abrev[dia.month-1]}</div>
-                    <div style="{num_style}margin-bottom:6px">{dia.day}</div>
+                <div style="{borda}border-radius:10px;padding:8px;min-height:130px;background:white;margin-bottom:4px">
+                    <div style="font-size:0.62rem;font-weight:700;color:#999;letter-spacing:1px">{nome} {mes_abrev[dia.month-1]}</div>
+                    {num_html}
                     {eventos_html}
                 </div>""", unsafe_allow_html=True)
 
+                # Botão "+" para adicionar tarefa naquele dia
+                if st.button("＋", key=f"add_dia_{i}", use_container_width=True):
+                    st.session_state["data_nova"] = dia
+                    st.session_state["abrir_form"] = True
+                    st.rerun()
+
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # ── Nova tarefa ─────────────────────────────────────────────────────────
-    with st.expander("➕ Nova tarefa"):
+    # ── Formulário de nova tarefa ────────────────────────────────────────────
+    data_pre = st.session_state.get("data_nova") or hoje
+    abrir = st.session_state.get("abrir_form", False)
+
+    with st.expander("➕ Nova tarefa", expanded=abrir):
         nt_titulo    = st.text_input("Título", key="nt_titulo")
         nt_descricao = st.text_area("Descrição", key="nt_descricao")
         c1, c2 = st.columns(2)
         with c1:
-            nt_data = st.date_input("Data", value=date.today(), key="nt_data")
+            nt_data = st.date_input("Data", value=data_pre, key="nt_data")
         with c2:
             nt_prio = st.selectbox("Prioridade", ["Alta", "Média", "Baixa"], key="nt_prio")
         if st.button("Adicionar tarefa"):
@@ -201,11 +220,15 @@ with tab1:
                     "feita_em": None,
                     "criado_em": datetime.now().isoformat()
                 })
+                st.session_state["data_nova"] = None
+                st.session_state["abrir_form"] = False
                 if salvar_dados(dados):
                     st.success("Tarefa adicionada!")
                     st.rerun()
             else:
                 st.warning("Digite um título.")
+
+    st.divider()
 
     # ── Colunas de prioridade ───────────────────────────────────────────────
     pendentes = [t for t in dados.get("tarefas", []) if not t.get("feita")]
@@ -220,10 +243,10 @@ with tab1:
                 editando = st.session_state["editando"] == t["id"]
                 with st.container():
                     if editando:
-                        nt = st.text_input("Título", value=t["titulo"], key=f"e_t_{t['id']}")
-                        nd = st.text_area("Descrição", value=t.get("descricao",""), key=f"e_d_{t['id']}")
-                        nd2 = st.date_input("Data", value=date.fromisoformat(t["data"]) if t.get("data") else date.today(), key=f"e_dt_{t['id']}")
-                        np = st.selectbox("Prioridade", ["Alta","Média","Baixa"], index=["Alta","Média","Baixa"].index(t.get("prioridade","Baixa")), key=f"e_p_{t['id']}")
+                        nt = st.text_input("Título", value=t["titulo"], key=f"et_{t['id']}")
+                        nd = st.text_area("Descrição", value=t.get("descricao",""), key=f"ed_{t['id']}")
+                        nd2 = st.date_input("Data", value=date.fromisoformat(t["data"]) if t.get("data") else date.today(), key=f"edt_{t['id']}")
+                        np = st.selectbox("Prioridade", ["Alta","Média","Baixa"], index=["Alta","Média","Baixa"].index(t.get("prioridade","Baixa")), key=f"ep_{t['id']}")
                         cs, cc = st.columns(2)
                         with cs:
                             if st.button("💾 Salvar", key=f"sv_{t['id']}"):
@@ -251,7 +274,7 @@ with tab1:
                             st.rerun()
                         ce, cd = st.columns(2)
                         with ce:
-                            if st.button("✏️", key=f"ed_{t['id']}", use_container_width=True):
+                            if st.button("✏️", key=f"ed2_{t['id']}", use_container_width=True):
                                 st.session_state["editando"] = t["id"]
                                 st.rerun()
                         with cd:
@@ -281,25 +304,8 @@ with tab1:
                         salvar_dados(dados)
                         st.rerun()
 
-# ── TAB 2: CALENDÁRIO ────────────────────────────────────────────────────────
+# ── TAB 2: AVISOS ────────────────────────────────────────────────────────────
 with tab2:
-    st.subheader("Calendário")
-    data_sel = st.date_input("Selecionar data", value=date.today(), key="cal_date")
-    tarefas_dia = [t for t in dados.get("tarefas", []) if t.get("data") == str(data_sel)]
-    if tarefas_dia:
-        for t in tarefas_dia:
-            cor = {"Alta":"🔴","Média":"🟡","Baixa":"🟢"}.get(t.get("prioridade"),"⚪")
-            st.markdown(f"{cor} **{t['titulo']}**{'  ✅' if t.get('feita') else ''}")
-            if t.get("descricao"):
-                st.caption(t["descricao"])
-            if t.get("feita_em"):
-                st.caption(f"Concluída em {t['feita_em']}")
-            st.divider()
-    else:
-        st.info("Nenhuma tarefa para esta data.")
-
-# ── TAB 3: AVISOS ────────────────────────────────────────────────────────────
-with tab3:
     st.subheader("Avisos")
     with st.expander("➕ Novo aviso"):
         texto_aviso = st.text_area("Mensagem", key="av_texto")
