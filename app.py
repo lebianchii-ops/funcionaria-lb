@@ -4,6 +4,7 @@ import requests
 import base64
 from datetime import datetime, date, timedelta
 import uuid
+import calendar
 
 st.set_page_config(page_title="LB Collection — Painel", page_icon="👜", layout="wide")
 
@@ -21,51 +22,10 @@ st.markdown("""
 .bloco-alta  { border-top-color: #e74c3c; }
 .bloco-media { border-top-color: #f39c12; }
 .bloco-baixa { border-top-color: #27ae60; }
-.bloco-titulo { font-size: 1rem; font-weight: 700; margin-bottom: 12px; }
-.cal-header {
-    text-align: center;
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 1px;
-    color: #888;
-    margin-bottom: 2px;
-}
-.cal-num { text-align: center; font-size: 1.6rem; font-weight: 700; margin-bottom: 6px; }
-.cal-num-hoje {
-    background: #c0392b;
-    color: white;
-    border-radius: 50%;
-    width: 36px;
-    height: 36px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 6px auto;
-    font-size: 1.1rem;
-}
-.cal-card {
-    background: #fff;
-    border: 1px solid #e8e8e8;
-    border-radius: 10px;
-    padding: 8px 10px;
-    min-height: 130px;
-}
-.cal-card-hoje { border: 2px solid #c0392b; }
-.evento {
-    border-radius: 5px;
-    padding: 3px 7px;
-    margin-bottom: 4px;
-    font-size: 0.75rem;
-    font-weight: 500;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
+.evento { border-radius: 5px; padding: 3px 7px; margin-bottom: 4px; font-size: 0.75rem; font-weight: 500; }
 .evento-alta  { background: #fde8e8; border-left: 3px solid #e74c3c; }
 .evento-media { background: #fef9e7; border-left: 3px solid #f39c12; }
 .evento-baixa { background: #eafaf1; border-left: 3px solid #27ae60; }
-.livre { color: #bbb; font-size: 0.75rem; font-style: italic; }
-hr.col-sep { border: none; border-left: 1px solid #eee; height: 100%; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -101,6 +61,45 @@ def salvar_dados(data):
         return True
     return False
 
+def mini_calendario_html(ano, mes, hoje, datas_com_tarefas):
+    nomes_mes = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho",
+                 "Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"]
+    calendar.setfirstweekday(6)  # domingo primeiro
+    semanas = calendar.monthcalendar(ano, mes)
+
+    linhas = ""
+    for semana in semanas:
+        # monthcalendar com firstweekday=6 retorna [Dom, Seg, Ter, Qua, Qui, Sex, Sab]
+        linhas += "<tr>"
+        for dia in semana:
+            if dia == 0:
+                linhas += "<td></td>"
+            else:
+                d = date(ano, mes, dia)
+                e_hoje = d == hoje
+                tem_tarefa = str(d) in datas_com_tarefas
+                if e_hoje:
+                    cel = f'<td style="text-align:center;padding:2px"><div style="background:#c0392b;color:white;border-radius:50%;width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:0.8rem">{dia}</div></td>'
+                elif tem_tarefa:
+                    cel = f'<td style="text-align:center;padding:2px"><span style="font-size:0.8rem">{dia}</span><br><div style="width:4px;height:4px;background:#c0392b;border-radius:50%;margin:-2px auto 0"></div></td>'
+                else:
+                    cel = f'<td style="text-align:center;padding:2px;font-size:0.8rem">{dia}</td>'
+                linhas += cel
+        linhas += "</tr>"
+
+    return f"""
+    <div style="background:white;border-radius:14px;padding:16px;box-shadow:0 1px 4px rgba(0,0,0,0.08);font-family:sans-serif;min-width:180px">
+        <div style="text-align:center;font-weight:700;font-size:0.85rem;margin-bottom:10px">
+            {nomes_mes[mes-1].upper()} {ano}
+        </div>
+        <table style="width:100%;border-collapse:collapse">
+            <tr>
+                {''.join(f'<th style="text-align:center;font-size:0.68rem;color:#999;font-weight:600;padding:2px">{d}</th>' for d in ["DOM","SEG","TER","QUA","QUI","SEX","SÁB"])}
+            </tr>
+            {linhas}
+        </table>
+    </div>"""
+
 # ── init ────────────────────────────────────────────────────────────────────
 if "dados" not in st.session_state:
     st.session_state["dados"] = carregar_dados()
@@ -111,7 +110,6 @@ if "editando" not in st.session_state:
 
 dados = st.session_state["dados"]
 
-# garante campos obrigatórios em tarefas antigas
 for t in dados.get("tarefas", []):
     t.setdefault("feita", False)
     t.setdefault("feita_em", None)
@@ -125,50 +123,60 @@ tab1, tab2, tab3 = st.tabs(["✅ Tarefas", "📅 Calendário", "📢 Avisos"])
 # ── TAB 1: TAREFAS ──────────────────────────────────────────────────────────
 with tab1:
 
-    # ── Calendário semanal ──────────────────────────────────────────────────
     hoje = date.today()
     offset = st.session_state["semana_offset"]
-    inicio = hoje - timedelta(days=hoje.weekday()) + timedelta(weeks=offset)
-    dias = [inicio + timedelta(days=i) for i in range(7)]
-    nomes = ["SEG", "TER", "QUA", "QUI", "SEX", "SÁB", "DOM"]
-    mes_nome = ["JAN","FEV","MAR","ABR","MAI","JUN","JUL","AGO","SET","OUT","NOV","DEZ"]
-
-    col_prev, col_titulo, col_next = st.columns([1, 6, 1])
-    with col_prev:
-        if st.button("‹", use_container_width=True):
-            st.session_state["semana_offset"] -= 1
-            st.rerun()
-    with col_titulo:
-        label_inicio = f"{dias[0].day} de {mes_nome[dias[0].month-1].lower()}."
-        label_fim    = f"{dias[6].day} de {mes_nome[dias[6].month-1].lower()}."
-        st.markdown(f"<div style='text-align:center;font-weight:600;padding-top:6px'>{label_inicio} – {label_fim}</div>", unsafe_allow_html=True)
-    with col_next:
-        if st.button("›", use_container_width=True):
-            st.session_state["semana_offset"] += 1
-            st.rerun()
+    inicio_semana = hoje - timedelta(days=(hoje.weekday() + 1) % 7)  # domingo
+    inicio_semana += timedelta(weeks=offset)
+    dias_semana = [inicio_semana + timedelta(days=i) for i in range(7)]
+    nomes_dia = ["DOM","SEG","TER","QUA","QUI","SEX","SÁB"]
+    nomes_mes_abrev = ["JAN","FEV","MAR","ABR","MAI","JUN","JUL","AGO","SET","OUT","NOV","DEZ"]
 
     tarefas_ativas = [t for t in dados.get("tarefas", []) if not t.get("feita")]
-    cols_cal = st.columns(7)
-    for i, (dia, nome) in enumerate(zip(dias, nomes)):
-        with cols_cal[i]:
-            e_hoje = dia == hoje
-            cls_card = "cal-card cal-card-hoje" if e_hoje else "cal-card"
-            num_html = f'<div class="cal-num-hoje">{dia.day}</div>' if e_hoje else f'<div class="cal-num">{dia.day}</div>'
-            eventos_dia = [t for t in tarefas_ativas if t.get("data") == str(dia)]
-            eventos_html = ""
-            for t in eventos_dia:
-                cls_ev = {"Alta": "evento-alta", "Média": "evento-media", "Baixa": "evento-baixa"}.get(t.get("prioridade"), "evento-baixa")
-                titulo_ev = t["titulo"][:22] + "…" if len(t["titulo"]) > 22 else t["titulo"]
-                eventos_html += f'<div class="evento {cls_ev}">{titulo_ev}</div>'
-            if not eventos_html:
-                eventos_html = '<div class="livre">livre</div>'
-            st.markdown(f"""
-            <div class="{cls_card}">
-                <div class="cal-header">{nome} {mes_nome[dia.month-1]}</div>
-                {num_html}
-                {eventos_html}
-            </div>
-            """, unsafe_allow_html=True)
+    datas_com_tarefas = {t.get("data") for t in tarefas_ativas}
+
+    # Layout: mini calendário | semana
+    col_mini, col_semana = st.columns([2, 9])
+
+    with col_mini:
+        st.markdown(mini_calendario_html(hoje.year, hoje.month, hoje, datas_com_tarefas), unsafe_allow_html=True)
+
+    with col_semana:
+        # Navegação
+        cn1, cn2, cn3 = st.columns([1, 8, 1])
+        with cn1:
+            if st.button("‹", use_container_width=True):
+                st.session_state["semana_offset"] -= 1
+                st.rerun()
+        with cn2:
+            label = f"{dias_semana[0].day} de {nomes_mes_abrev[dias_semana[0].month-1].lower()}. – {dias_semana[6].day} de {nomes_mes_abrev[dias_semana[6].month-1].lower()}."
+            st.markdown(f"<div style='text-align:center;font-weight:600;padding-top:6px'>{label}</div>", unsafe_allow_html=True)
+        with cn3:
+            if st.button("›", use_container_width=True):
+                st.session_state["semana_offset"] += 1
+                st.rerun()
+
+        # Colunas dos 7 dias
+        cols_dias = st.columns(7)
+        for i, (dia, nome) in enumerate(zip(dias_semana, nomes_dia)):
+            with cols_dias[i]:
+                e_hoje = dia == hoje
+                borda = "border:2px solid #c0392b;" if e_hoje else "border:1px solid #e8e8e8;"
+                num_style = "background:#c0392b;color:white;border-radius:50%;width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:0.9rem;" if e_hoje else "font-size:1.4rem;font-weight:700;"
+                eventos_dia = [t for t in tarefas_ativas if t.get("data") == str(dia)]
+                eventos_html = ""
+                for t in eventos_dia:
+                    cls = {"Alta":"evento-alta","Média":"evento-media","Baixa":"evento-baixa"}.get(t.get("prioridade"),"evento-baixa")
+                    dot = {"Alta":"🔴","Média":"🟡","Baixa":"🟢"}.get(t.get("prioridade"),"⚪")
+                    titulo = t["titulo"][:16]+"…" if len(t["titulo"])>16 else t["titulo"]
+                    eventos_html += f'<div class="evento {cls}">{dot} {titulo}</div>'
+                if not eventos_html:
+                    eventos_html = '<div style="color:#bbb;font-size:0.75rem;font-style:italic">livre</div>'
+                st.markdown(f"""
+                <div style="{borda}border-radius:10px;padding:10px;min-height:130px;background:white">
+                    <div style="font-size:0.65rem;font-weight:700;color:#999;letter-spacing:1px;margin-bottom:2px">{nome} {nomes_mes_abrev[dia.month-1]}</div>
+                    <div style="{num_style}margin-bottom:6px">{dia.day}</div>
+                    {eventos_html}
+                </div>""", unsafe_allow_html=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
 
@@ -204,72 +212,60 @@ with tab1:
 
     def render_coluna(col, label, classe, emoji, prioridade):
         with col:
-            st.markdown(f'<div class="bloco {classe}"><div class="bloco-titulo">{emoji} {label}</div></div>', unsafe_allow_html=True)
+            st.markdown(f'<div class="bloco {classe}" style="margin-bottom:8px"><span style="font-size:1rem;font-weight:700">{emoji} {label}</span></div>', unsafe_allow_html=True)
             bloco = sorted([t for t in pendentes if t.get("prioridade") == prioridade], key=lambda x: x.get("data",""))
-
             if not bloco:
                 st.caption("Nenhuma tarefa.")
-
             for t in bloco:
-                editando_este = st.session_state["editando"] == t["id"]
-
+                editando = st.session_state["editando"] == t["id"]
                 with st.container():
-                    if editando_este:
-                        novo_titulo = st.text_input("Título", value=t["titulo"], key=f"e_titulo_{t['id']}")
-                        novo_desc   = st.text_area("Descrição", value=t.get("descricao",""), key=f"e_desc_{t['id']}")
-                        novo_data   = st.date_input("Data", value=date.fromisoformat(t["data"]) if t.get("data") else date.today(), key=f"e_data_{t['id']}")
-                        novo_prio   = st.selectbox("Prioridade", ["Alta","Média","Baixa"], index=["Alta","Média","Baixa"].index(t.get("prioridade","Baixa")), key=f"e_prio_{t['id']}")
-                        c1, c2 = st.columns(2)
-                        with c1:
-                            if st.button("💾 Salvar", key=f"salvar_{t['id']}"):
+                    if editando:
+                        nt = st.text_input("Título", value=t["titulo"], key=f"e_t_{t['id']}")
+                        nd = st.text_area("Descrição", value=t.get("descricao",""), key=f"e_d_{t['id']}")
+                        nd2 = st.date_input("Data", value=date.fromisoformat(t["data"]) if t.get("data") else date.today(), key=f"e_dt_{t['id']}")
+                        np = st.selectbox("Prioridade", ["Alta","Média","Baixa"], index=["Alta","Média","Baixa"].index(t.get("prioridade","Baixa")), key=f"e_p_{t['id']}")
+                        cs, cc = st.columns(2)
+                        with cs:
+                            if st.button("💾 Salvar", key=f"sv_{t['id']}"):
                                 for tarefa in dados["tarefas"]:
                                     if tarefa["id"] == t["id"]:
-                                        tarefa["titulo"]    = novo_titulo
-                                        tarefa["descricao"] = novo_desc
-                                        tarefa["data"]      = str(novo_data)
-                                        tarefa["prioridade"]= novo_prio
+                                        tarefa.update({"titulo": nt, "descricao": nd, "data": str(nd2), "prioridade": np})
                                 st.session_state["editando"] = None
                                 salvar_dados(dados)
                                 st.rerun()
-                        with c2:
-                            if st.button("✕ Cancelar", key=f"cancel_{t['id']}"):
+                        with cc:
+                            if st.button("✕", key=f"cc_{t['id']}"):
                                 st.session_state["editando"] = None
                                 st.rerun()
                     else:
-                        feita = st.checkbox(f"**{t['titulo']}**", value=False, key=f"check_{t['id']}")
+                        feita = st.checkbox(f"**{t['titulo']}**", value=False, key=f"ck_{t['id']}")
                         if t.get("descricao"):
                             st.caption(t["descricao"])
                         st.caption(f"📅 {t['data']}")
                         if feita:
                             for tarefa in dados["tarefas"]:
                                 if tarefa["id"] == t["id"]:
-                                    tarefa["feita"]    = True
+                                    tarefa["feita"] = True
                                     tarefa["feita_em"] = datetime.now().strftime("%d/%m/%Y %H:%M")
                             salvar_dados(dados)
                             st.rerun()
-                        ce, cd = st.columns([1, 1])
+                        ce, cd = st.columns(2)
                         with ce:
-                            if st.button("✏️ Editar", key=f"edit_{t['id']}", use_container_width=True):
+                            if st.button("✏️", key=f"ed_{t['id']}", use_container_width=True):
                                 st.session_state["editando"] = t["id"]
                                 st.rerun()
                         with cd:
-                            if st.button("🗑️ Apagar", key=f"del_{t['id']}", use_container_width=True):
+                            if st.button("🗑️", key=f"dl_{t['id']}", use_container_width=True):
                                 dados["tarefas"] = [x for x in dados["tarefas"] if x["id"] != t["id"]]
                                 salvar_dados(dados)
                                 st.rerun()
                     st.markdown("<hr style='margin:6px 0;border-color:#f0f0f0'>", unsafe_allow_html=True)
 
-    col_a, sep1, col_m, sep2, col_b = st.columns([10, 0.3, 10, 0.3, 10])
-    with sep1:
-        st.markdown("<div style='border-left:1px solid #e0e0e0;height:100%;min-height:300px'></div>", unsafe_allow_html=True)
-    with sep2:
-        st.markdown("<div style='border-left:1px solid #e0e0e0;height:100%;min-height:300px'></div>", unsafe_allow_html=True)
-
+    col_a, col_m, col_b = st.columns(3)
     render_coluna(col_a, "Alta",  "bloco-alta",  "🔴", "Alta")
     render_coluna(col_m, "Média", "bloco-media", "🟡", "Média")
     render_coluna(col_b, "Baixa", "bloco-baixa", "🟢", "Baixa")
 
-    # ── Feitas ──────────────────────────────────────────────────────────────
     feitas = sorted([t for t in dados.get("tarefas", []) if t.get("feita")], key=lambda x: x.get("feita_em",""), reverse=True)
     if feitas:
         st.divider()
@@ -280,7 +276,7 @@ with tab1:
                     st.markdown(f"~~{t['titulo']}~~")
                     st.caption(f"Concluída em {t.get('feita_em','')} · {t.get('prioridade','')}")
                 with c2:
-                    if st.button("🗑️", key=f"del_f_{t['id']}"):
+                    if st.button("🗑️", key=f"df_{t['id']}"):
                         dados["tarefas"] = [x for x in dados["tarefas"] if x["id"] != t["id"]]
                         salvar_dados(dados)
                         st.rerun()
@@ -290,12 +286,10 @@ with tab2:
     st.subheader("Calendário")
     data_sel = st.date_input("Selecionar data", value=date.today(), key="cal_date")
     tarefas_dia = [t for t in dados.get("tarefas", []) if t.get("data") == str(data_sel)]
-
     if tarefas_dia:
         for t in tarefas_dia:
-            cor = {"Alta": "🔴", "Média": "🟡", "Baixa": "🟢"}.get(t.get("prioridade"), "⚪")
-            feita_label = " ✅" if t.get("feita") else ""
-            st.markdown(f"{cor} **{t['titulo']}**{feita_label}")
+            cor = {"Alta":"🔴","Média":"🟡","Baixa":"🟢"}.get(t.get("prioridade"),"⚪")
+            st.markdown(f"{cor} **{t['titulo']}**{'  ✅' if t.get('feita') else ''}")
             if t.get("descricao"):
                 st.caption(t["descricao"])
             if t.get("feita_em"):
@@ -307,7 +301,6 @@ with tab2:
 # ── TAB 3: AVISOS ────────────────────────────────────────────────────────────
 with tab3:
     st.subheader("Avisos")
-
     with st.expander("➕ Novo aviso"):
         texto_aviso = st.text_area("Mensagem", key="av_texto")
         if st.button("Publicar"):
@@ -322,14 +315,13 @@ with tab3:
                     st.rerun()
             else:
                 st.warning("Digite uma mensagem.")
-
     for a in dados.get("avisos", []):
         c1, c2 = st.columns([5, 1])
         with c1:
             st.markdown(f"📢 {a['texto']}")
             st.caption(a["data"])
         with c2:
-            if st.button("🗑️", key=f"del_av_{a['id']}"):
+            if st.button("🗑️", key=f"dav_{a['id']}"):
                 dados["avisos"] = [x for x in dados["avisos"] if x["id"] != a["id"]]
                 salvar_dados(dados)
                 st.rerun()
