@@ -82,23 +82,25 @@ def html_mini_cal(ano, mes, hoje, datas_tarefas):
             d = date(ano, mes, dia)
             e_hoje = d == hoje
             tem = str(d) in datas_tarefas
+            td = 'style="padding:3px 2px;white-space:nowrap;text-align:center"'
             if e_hoje:
-                linhas += f'<td><div style="background:#c0392b;color:#fff;border-radius:50%;width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:0.78rem;margin:auto">{dia}</div></td>'
+                linhas += f'<td {td}><div style="background:#c0392b;color:#fff;border-radius:50%;width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:0.78rem;margin:auto">{dia}</div></td>'
             elif tem:
-                linhas += (f'<td style="position:relative">'
+                linhas += (f'<td {td} style="padding:3px 2px;white-space:nowrap;text-align:center;position:relative">'
                            f'<span style="font-size:0.78rem;font-weight:600">{dia}</span>'
                            f'<span style="position:absolute;bottom:1px;left:50%;transform:translateX(-50%);width:4px;height:4px;background:#e74c3c;border-radius:50%;display:block"></span>'
                            f'</td>')
             else:
-                linhas += f'<td style="font-size:0.78rem;color:#555">{dia}</td>'
+                linhas += f'<td {td}><span style="font-size:0.78rem;color:#555">{dia}</span></td>'
         linhas += "</tr>"
-    cabecalhos = "".join(f'<th style="font-size:0.62rem;color:#aaa;font-weight:600;padding-bottom:6px">{d}</th>'
-                         for d in ["D","S","T","Q","Q","S","S"])
+    cabecalhos = "".join(
+        f'<th style="font-size:0.65rem;color:#aaa;font-weight:600;padding:0 4px 6px;white-space:nowrap">{d}</th>'
+        for d in ["D","S","T","Q","Q","S","S"])
     return f"""
-    <div style="background:white;border-radius:12px;padding:14px 12px;
-                box-shadow:0 1px 4px rgba(0,0,0,0.08);font-family:sans-serif;text-align:center">
+    <div style="background:white;border-radius:12px;padding:14px 10px;
+                box-shadow:0 1px 4px rgba(0,0,0,0.08);font-family:sans-serif;text-align:center;overflow:hidden">
       <div style="font-weight:700;font-size:0.82rem;margin-bottom:10px">{MES_NOME[mes-1].upper()} {ano}</div>
-      <table style="width:100%;border-collapse:collapse;table-layout:fixed">
+      <table style="width:100%;border-collapse:collapse">
         <tr>{cabecalhos}</tr>{linhas}
       </table>
     </div>"""
