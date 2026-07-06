@@ -388,7 +388,7 @@ with tab1:
                                 st.session_state["editando"] = None
                                 st.rerun()
                     else:
-                        row = st.columns([7, 1, 1], vertical_alignment="center")
+                        row = st.columns([7, 1, 1])
                         with row[0]:
                             feita = st.checkbox(
                                 f"**{t['titulo']}**",
@@ -402,10 +402,12 @@ with tab1:
                                 st.caption(t["descricao"])
                             st.caption(f"📅 {info}")
                         with row[1]:
+                            st.write("")
                             if st.button("✏️", key=f"e2{t['id']}", use_container_width=True, help="Editar"):
                                 st.session_state["editando"] = t["id"]
                                 st.rerun()
                         with row[2]:
+                            st.write("")
                             if st.button("🗑️", key=f"dl{t['id']}", use_container_width=True, help="Excluir"):
                                 dados["tarefas"] = [x for x in dados["tarefas"] if x["id"] != t["id"]]
                                 salvar_dados(dados)
