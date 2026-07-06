@@ -15,7 +15,8 @@ REPO = "lebianchii-ops/funcionaria-lb"
 DATA_FILE = "dados.json"
 
 def get_token():
-    return st.secrets["github_token"].strip()
+    token = st.secrets["github_token"]
+    return ''.join(c for c in token if ord(c) < 128).strip()
 
 def carregar_dados():
     token = get_token()
