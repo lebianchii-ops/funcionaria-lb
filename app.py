@@ -61,20 +61,28 @@ def carregar_dados():
 def salvar_dados(data):
     headers = {"Authorization": f"token {get_token()}"}
     url = f"https://api.github.com/repos/{REPO}/contents/{DATA_FILE}"
+
+    # busca SHA atual antes de salvar — evita conflito entre usuários simultâneos
+    r_get = requests.get(url, headers=headers)
+    if r_get.status_code == 200:
+        sha_atual = r_get.json()["sha"]
+        st.session_state["sha"] = sha_atual
+    else:
+        sha_atual = st.session_state.get("sha")
+
     content = base64.b64encode(
         json.dumps(data, ensure_ascii=False, indent=2).encode()
     ).decode()
     payload = {
         "message": f"update {datetime.now().strftime('%d/%m %H:%M')}",
         "content": content,
+        "sha": sha_atual,
     }
-    sha = st.session_state.get("sha")
-    if sha:
-        payload["sha"] = sha
     r = requests.put(url, headers=headers, json=payload)
     if r.status_code in [200, 201]:
         st.session_state["sha"] = r.json()["content"]["sha"]
         return True
+    st.error(f"❌ Erro ao salvar (código {r.status_code}). Clique em 🔄 Atualizar dados e tente novamente.")
     return False
 
 def html_mini_cal(ano, mes, hoje, datas_tarefas):
