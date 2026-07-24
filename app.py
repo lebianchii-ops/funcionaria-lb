@@ -8,12 +8,14 @@ import calendar
 
 st.set_page_config(page_title="LB Collection — Painel", page_icon="👜", layout="wide")
 
-# ─── debug temporario: testar github_token direto ──────────────────────────
+# ─── debug temporario ───────────────────────────────────────────────────────
 try:
-    _tok_clean = ''.join(c for c in st.secrets.get("github_token", "") if ord(c) < 128).strip()
+    _t = ''.join(c for c in st.secrets.get("github_token", "") if ord(c) < 128).strip()
+    if not (_t.startswith("ghp_") or _t.startswith("github_pat_")):
+        _t = base64.b64decode(_t).decode("ascii").strip()
     _resp = requests.get("https://api.github.com/user",
-                          headers={"Authorization": f"token {_tok_clean}"}, timeout=10)
-    st.caption(f"DEBUG build=v6 len_clean={len(_tok_clean)} github_status={_resp.status_code}")
+                          headers={"Authorization": f"token {_t}"}, timeout=10)
+    st.caption(f"DEBUG build=v7-b64 github_status={_resp.status_code}")
 except Exception as e:
     st.caption(f"DEBUG erro: {e!r}")
 
@@ -68,7 +70,13 @@ def fmt_data(d_str):
 
 def get_token():
     t = st.secrets["github_token"]
-    return ''.join(c for c in t if ord(c) < 128).strip()
+    t = ''.join(c for c in t if ord(c) < 128).strip()
+    if t.startswith("ghp_") or t.startswith("github_pat_"):
+        return t
+    try:
+        return base64.b64decode(t).decode("ascii").strip()
+    except Exception:
+        return t
 
 def carregar_dados():
     headers = {"Authorization": f"token {get_token()}"}
