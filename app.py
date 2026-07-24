@@ -8,6 +8,15 @@ import calendar
 
 st.set_page_config(page_title="LB Collection — Painel", page_icon="👜", layout="wide")
 
+# ─── debug temporario: testar github_token direto ──────────────────────────
+try:
+    _tok_clean = ''.join(c for c in st.secrets.get("github_token", "") if ord(c) < 128).strip()
+    _resp = requests.get("https://api.github.com/user",
+                          headers={"Authorization": f"token {_tok_clean}"}, timeout=10)
+    st.caption(f"DEBUG github_status={_resp.status_code}")
+except Exception as e:
+    st.caption(f"DEBUG erro: {e!r}")
+
 # ─── senha de acesso ────────────────────────────────────────────────────────
 if not st.session_state.get("autenticado"):
     st.markdown("<h2 style='text-align:center;margin-top:15%'>👜 LB Collection — Painel</h2>", unsafe_allow_html=True)
