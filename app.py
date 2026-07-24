@@ -8,6 +8,20 @@ import calendar
 
 st.set_page_config(page_title="LB Collection — Painel", page_icon="👜", layout="wide")
 
+# ─── senha de acesso ────────────────────────────────────────────────────────
+if not st.session_state.get("autenticado"):
+    st.markdown("<h2 style='text-align:center;margin-top:15%'>👜 LB Collection — Painel</h2>", unsafe_allow_html=True)
+    c1, c2, c3 = st.columns([1, 1, 1])
+    with c2:
+        senha = st.text_input("Senha de acesso", type="password", key="senha_input")
+        if st.button("Entrar", use_container_width=True, type="primary"):
+            if senha == st.secrets.get("painel_senha", ""):
+                st.session_state["autenticado"] = True
+                st.rerun()
+            else:
+                st.error("Senha incorreta.")
+    st.stop()
+
 st.markdown("""
 <style>
 [data-testid="stAppViewContainer"] { background: #f5f4f0; }
