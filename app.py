@@ -15,12 +15,11 @@ if not st.session_state.get("autenticado"):
     with c2:
         senha = st.text_input("Senha de acesso", type="password", key="senha_input")
         if st.button("Entrar", use_container_width=True, type="primary"):
-            senha_certa = str(st.secrets.get("painel_senha", ""))
-            if senha == senha_certa:
+            if senha == str(st.secrets.get("painel_senha", "")):
                 st.session_state["autenticado"] = True
                 st.rerun()
             else:
-                st.error(f"Senha incorreta. (debug: digitado tem {len(senha)} chars, secret tem {len(senha_certa)} chars, secret comeca com {senha_certa[:1]!r} termina com {senha_certa[-1:]!r})")
+                st.error("Senha incorreta.")
     st.stop()
 
 st.markdown("""
