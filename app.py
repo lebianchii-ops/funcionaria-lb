@@ -15,7 +15,7 @@ if not st.session_state.get("autenticado"):
     with c2:
         senha = st.text_input("Senha de acesso", type="password", key="senha_input")
         if st.button("Entrar", use_container_width=True, type="primary"):
-            if senha == st.secrets.get("painel_senha", ""):
+            if senha == str(st.secrets.get("painel_senha", "")):
                 st.session_state["autenticado"] = True
                 st.rerun()
             else:
