@@ -1,1 +1,16 @@
-{"tarefas": [], "avisos": []}
+{
+  "tarefas": [
+    {
+      "id": "17e91ab9-cd47-4294-acb9-15621333b988",
+      "titulo": "TESTE FINAL apagar",
+      "categoria": "—",
+      "descricao": "",
+      "data": "2026-07-24",
+      "prioridade": "Baixa",
+      "feita": false,
+      "feita_em": null,
+      "criado_em": "2026-07-24T23:55:26.332497"
+    }
+  ],
+  "avisos": []
+}
