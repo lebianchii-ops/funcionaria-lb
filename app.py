@@ -13,7 +13,7 @@ try:
     _tok_clean = ''.join(c for c in st.secrets.get("github_token", "") if ord(c) < 128).strip()
     _resp = requests.get("https://api.github.com/user",
                           headers={"Authorization": f"token {_tok_clean}"}, timeout=10)
-    st.caption(f"DEBUG github_status={_resp.status_code}")
+    st.caption(f"DEBUG build=v6 len_clean={len(_tok_clean)} github_status={_resp.status_code}")
 except Exception as e:
     st.caption(f"DEBUG erro: {e!r}")
 
