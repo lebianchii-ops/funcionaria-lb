@@ -204,8 +204,8 @@ def popup_nova_tarefa(data_inicial, prioridade_inicial="Baixa"):
             "feita_em":   None,
             "criado_em":  datetime.now().isoformat(),
         })
-        salvar_dados(dados)
-        st.rerun()
+        if salvar_dados(dados):
+            st.rerun()
 
 @st.dialog("Editar Tarefa")
 def popup_editar_tarefa(tarefa_id):
@@ -233,21 +233,21 @@ def popup_editar_tarefa(tarefa_id):
                 if x["id"] == tarefa_id:
                     x.update({"titulo": nv_t.strip(), "categoria": nv_cat,
                                "descricao": nv_d.strip(), "data": str(nv_dt), "prioridade": nv_p})
-            salvar_dados(dados)
-            st.rerun()
+            if salvar_dados(dados):
+                st.rerun()
     with c_ok:
         if st.button("✅ Marcar feita", use_container_width=True):
             for x in dados["tarefas"]:
                 if x["id"] == tarefa_id:
                     x["feita"]    = True
                     x["feita_em"] = datetime.now().strftime("%d/%m/%y %H:%M")
-            salvar_dados(dados)
-            st.rerun()
+            if salvar_dados(dados):
+                st.rerun()
     with c_del:
         if st.button("🗑️ Excluir", use_container_width=True):
             dados["tarefas"] = [x for x in dados["tarefas"] if x["id"] != tarefa_id]
-            salvar_dados(dados)
-            st.rerun()
+            if salvar_dados(dados):
+                st.rerun()
 
 # ── cabeçalho ────────────────────────────────────────────────────────────────
 st.title("👜 LB Collection — Painel")
@@ -403,8 +403,8 @@ with tab1:
                                             "prioridade": nv_p,
                                         })
                                 st.session_state["editando"] = None
-                                salvar_dados(dados)
-                                st.rerun()
+                                if salvar_dados(dados):
+                                    st.rerun()
                         with bc:
                             if st.button("✕ Cancelar", key=f"cc{t['id']}", use_container_width=True):
                                 st.session_state["editando"] = None
@@ -432,15 +432,15 @@ with tab1:
                             st.write("")
                             if st.button("🗑️", key=f"dl{t['id']}", use_container_width=True, help="Excluir"):
                                 dados["tarefas"] = [x for x in dados["tarefas"] if x["id"] != t["id"]]
-                                salvar_dados(dados)
-                                st.rerun()
+                                if salvar_dados(dados):
+                                    st.rerun()
                         if feita:
                             for x in dados["tarefas"]:
                                 if x["id"] == t["id"]:
                                     x["feita"]    = True
                                     x["feita_em"] = datetime.now().strftime("%d/%m/%y %H:%M")
-                            salvar_dados(dados)
-                            st.rerun()
+                            if salvar_dados(dados):
+                                st.rerun()
                     if idx < len(bloco) - 1:
                         st.markdown("<hr class='task-sep'>", unsafe_allow_html=True)
 
@@ -476,8 +476,8 @@ with tab3:
             with c2:
                 if st.button("🗑️", key=f"df{t['id']}", help="Excluir"):
                     dados["tarefas"] = [x for x in dados["tarefas"] if x["id"] != t["id"]]
-                    salvar_dados(dados)
-                    st.rerun()
+                    if salvar_dados(dados):
+                        st.rerun()
             st.markdown("<hr class='task-sep'>", unsafe_allow_html=True)
 
 # ════════════════════════════════════════════════════════════════════════════
@@ -493,9 +493,9 @@ with tab2:
                     "texto": av_txt.strip(),
                     "data":  datetime.now().strftime("%d/%m/%Y %H:%M"),
                 })
-                salvar_dados(dados)
-                st.success("✅ Aviso publicado!")
-                st.rerun()
+                if salvar_dados(dados):
+                    st.success("✅ Aviso publicado!")
+                    st.rerun()
             else:
                 st.warning("Digite uma mensagem antes de publicar.")
 
@@ -512,6 +512,6 @@ with tab2:
         with c2:
             if st.button("🗑️", key=f"dav{a['id']}", help="Excluir aviso"):
                 dados["avisos"] = [x for x in dados["avisos"] if x["id"] != a["id"]]
-                salvar_dados(dados)
-                st.rerun()
+                if salvar_dados(dados):
+                    st.rerun()
         st.markdown("<hr class='task-sep'>", unsafe_allow_html=True)
