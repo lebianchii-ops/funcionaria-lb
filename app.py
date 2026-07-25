@@ -182,18 +182,23 @@ for t in dados.get("tarefas", []):
     t.setdefault("prioridade", "Baixa")
     t.setdefault("data", str(date.today()))
     t.setdefault("categoria", "—")
+    t.setdefault("tipo", "evento")
 
 # ── dialog nova tarefa (definido uma vez, no nível do script) ─────────────
 @st.dialog("Nova Tarefa")
-def popup_nova_tarefa(data_inicial, prioridade_inicial="Baixa"):
+def popup_nova_tarefa(data_inicial, prioridade_inicial="Baixa", tipo="evento"):
     titulo    = st.text_input("Título *", placeholder="O que precisa ser feito?")
     categoria = st.selectbox("Categoria / Marketplace", CATS)
     desc      = st.text_area("Descrição (opcional)", height=80)
-    c1, c2    = st.columns(2)
-    with c1:
-        data = st.date_input("Data", value=data_inicial, format="DD/MM/YYYY")
-    with c2:
-        idx_prio = PRIOS.index(prioridade_inicial) if prioridade_inicial in PRIOS else 0
+    idx_prio  = PRIOS.index(prioridade_inicial) if prioridade_inicial in PRIOS else 0
+    if tipo == "evento":
+        c1, c2 = st.columns(2)
+        with c1:
+            data = st.date_input("Data", value=data_inicial, format="DD/MM/YYYY")
+        with c2:
+            prio = st.selectbox("Prioridade", PRIOS, index=idx_prio)
+    else:
+        data = None
         prio = st.selectbox("Prioridade", PRIOS, index=idx_prio)
     if st.button("✅ Adicionar tarefa", use_container_width=True, type="primary"):
         if not titulo.strip():
@@ -204,7 +209,8 @@ def popup_nova_tarefa(data_inicial, prioridade_inicial="Baixa"):
             "titulo":     titulo.strip(),
             "categoria":  categoria,
             "descricao":  desc.strip(),
-            "data":       str(data),
+            "data":       str(data) if data else None,
+            "tipo":       tipo,
             "prioridade": prio,
             "feita":      False,
             "feita_em":   None,
@@ -348,8 +354,8 @@ with tab1:
                             unsafe_allow_html=True,
                         )
                 if st.button("＋", key=f"ad{i}", use_container_width=True,
-                             help=f"Adicionar tarefa em {fmt_data(str(dia))}"):
-                    popup_nova_tarefa(dia)
+                             help=f"Adicionar evento em {fmt_data(str(dia))}"):
+                    popup_nova_tarefa(dia, tipo="evento")
 
     st.divider()
 
@@ -359,7 +365,7 @@ with tab1:
     def render_col(col, prio):
         bloco = sorted(
             [t for t in pendentes if t.get("prioridade") == prio],
-            key=lambda x: x.get("data", "")
+            key=lambda x: x.get("data") or x.get("criado_em", "")
         )
         cor = COR[prio]
         with col:
@@ -373,26 +379,32 @@ with tab1:
                 )
                 if st.button(f"➕ Nova tarefa {prio.lower()}", key=f"nt_{prio}",
                              use_container_width=True):
-                    popup_nova_tarefa(hoje, prio)
+                    popup_nova_tarefa(hoje, prio, tipo="tarefa")
                 st.markdown("<hr class='task-sep'>", unsafe_allow_html=True)
                 if not bloco:
                     st.caption("Nenhuma tarefa.")
                 for idx, t in enumerate(bloco):
                     ed = st.session_state["editando"] == t["id"]
                     if ed:
+                        is_evento = t.get("tipo", "evento") == "evento"
                         nv_t  = st.text_input("Título", value=t["titulo"],  key=f"et{t['id']}")
                         nv_d  = st.text_area("Descrição", value=t.get("descricao", ""), key=f"ed{t['id']}", height=80)
                         nv_cat = st.selectbox("Categoria", CATS,
                                               index=CATS.index(t.get("categoria","—")) if t.get("categoria","—") in CATS else 0,
                                               key=f"ecat{t['id']}")
-                        c1e, c2e = st.columns(2)
-                        with c1e:
-                            nv_dt = st.date_input(
-                                "Data",
-                                value=date.fromisoformat(t["data"]) if t.get("data") else hoje,
-                                key=f"edt{t['id']}", format="DD/MM/YYYY"
-                            )
-                        with c2e:
+                        if is_evento:
+                            c1e, c2e = st.columns(2)
+                            with c1e:
+                                nv_dt = st.date_input(
+                                    "Data",
+                                    value=date.fromisoformat(t["data"]) if t.get("data") else hoje,
+                                    key=f"edt{t['id']}", format="DD/MM/YYYY"
+                                )
+                            with c2e:
+                                nv_p = st.selectbox("Prioridade", PRIOS,
+                                                    index=PRIOS.index(t.get("prioridade", "Baixa")),
+                                                    key=f"ep{t['id']}")
+                        else:
                             nv_p = st.selectbox("Prioridade", PRIOS,
                                                 index=PRIOS.index(t.get("prioridade", "Baixa")),
                                                 key=f"ep{t['id']}")
@@ -401,13 +413,15 @@ with tab1:
                             if st.button("💾 Salvar", key=f"sv{t['id']}", use_container_width=True):
                                 for x in dados["tarefas"]:
                                     if x["id"] == t["id"]:
-                                        x.update({
+                                        upd = {
                                             "titulo": nv_t.strip(),
                                             "descricao": nv_d.strip(),
                                             "categoria": nv_cat,
-                                            "data": str(nv_dt),
                                             "prioridade": nv_p,
-                                        })
+                                        }
+                                        if is_evento:
+                                            upd["data"] = str(nv_dt)
+                                        x.update(upd)
                                 st.session_state["editando"] = None
                                 if salvar_dados(dados):
                                     st.rerun()
@@ -423,12 +437,15 @@ with tab1:
                                 value=False, key=f"ck{t['id']}"
                             )
                             cat = t.get("categoria", "—")
-                            info = fmt_data(t["data"])
-                            if cat and cat != "—":
-                                info += f"  ·  {cat}"
                             if t.get("descricao"):
                                 st.caption(t["descricao"])
-                            st.caption(f"📅 {info}")
+                            if t.get("tipo", "evento") == "evento" and t.get("data"):
+                                info = fmt_data(t["data"])
+                                if cat and cat != "—":
+                                    info += f"  ·  {cat}"
+                                st.caption(f"📅 {info}")
+                            elif cat and cat != "—":
+                                st.caption(cat)
                         with row[1]:
                             st.write("")
                             if st.button("✏️", key=f"e2{t['id']}", use_container_width=True, help="Editar"):
