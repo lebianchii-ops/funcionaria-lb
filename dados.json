@@ -1,4 +1,12 @@
 {
   "tarefas": [],
-  "avisos": []
+  "avisos": [
+    {
+      "id": "e967bb8d-aee7-438e-b55a-0f77b066d5e0",
+      "texto": "Limpar x",
+      "autor": "Bruna",
+      "data": "25/07/2026 14:22",
+      "respostas": []
+    }
+  ]
 }
