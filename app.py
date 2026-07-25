@@ -263,7 +263,7 @@ def popup_editar_tarefa(tarefa_id):
 
 # ── cabeçalho ────────────────────────────────────────────────────────────────
 st.title("👜 LB Collection — Painel")
-tab1, tab2, tab3 = st.tabs(["✅ Tarefas", "📢 Avisos", "✔️ Concluídos"])
+tab1, tab2, tab3, tab4 = st.tabs(["✅ Tarefas", "📢 Avisos", "✔️ Concluídos", "❓ Ajuda"])
 
 # ════════════════════════════════════════════════════════════════════════════
 with tab1:
@@ -537,4 +537,52 @@ with tab2:
                 dados["avisos"] = [x for x in dados["avisos"] if x["id"] != a["id"]]
                 if salvar_dados(dados):
                     st.rerun()
+
+# ════════════════════════════════════════════════════════════════════════════
+with tab4:
+    st.subheader("❓ Como usar o painel")
+    st.caption("Guia rápido — leia isso antes de começar a usar.")
+
+    with st.expander("📌 As 3 abas principais", expanded=True):
+        st.markdown("""
+- **✅ Tarefas** — onde você organiza o trabalho do dia. Tem duas partes: o **calendário** (em cima) e as **3 colunas de prioridade** (embaixo: 🔴 Alta, 🟡 Média, 🟢 Baixa).
+- **📢 Avisos** — mensagens da Bruna para você. Leia sempre que entrar.
+- **✔️ Concluídos** — histórico de tudo que já foi marcado como feito.
+        """)
+
+    with st.expander("🟢 Tarefa pontual × 📅 Evento — qual a diferença", expanded=True):
+        st.markdown("""
+Existem **dois jeitos** de adicionar algo no painel, e cada um serve pra uma coisa diferente:
+
+**1. Tarefa pontual** — coisas do dia a dia, sem hora marcada
+- Criada clicando em **"➕ Nova tarefa alta/média/baixa"** dentro de uma das 3 colunas
+- Só pede: título, categoria, descrição e prioridade — **não pede data**
+- Fica só na coluna de prioridade, **não aparece no calendário**
+- Use para: tarefas que precisam ser feitas, mas não têm um dia certo (ex: "responder mensagens da Shopee")
+
+**2. Evento** — compromissos com data certa
+- Criado clicando no **"➕"** dentro de um dia do calendário
+- Pede título, categoria, descrição, **data** e prioridade
+- Aparece **no dia certo do calendário** E também na coluna de prioridade (ordenado pela data)
+- Use para: coisas com prazo ou data marcada (ex: "enviar produto dia 28/07")
+
+**Resumo:** se tem data certa → cria pelo **calendário**. Se não tem → cria pela **coluna de prioridade**.
+        """)
+
+    with st.expander("✏️ Editar, marcar como feita e excluir"):
+        st.markdown("""
+- **Editar:** clique no lápis ✏️ do lado da tarefa (nas colunas) ou clique em cima do evento (no calendário) — abre um formulário pra alterar.
+- **Marcar como feita:** marque a caixinha ☐ do lado do título — a tarefa some da lista e vai para a aba **✔️ Concluídos**.
+- **Excluir:** clique na lixeira 🗑️ — apaga de vez, não tem como desfazer.
+        """)
+
+    with st.expander("🔄 Botão 'Atualizar dados'"):
+        st.markdown("""
+Fica do lado esquerdo, embaixo do mini-calendário. Use se você (ou outra pessoa) acabou de mudar algo em outro celular/computador e a tela não atualizou sozinha — ele busca a versão mais recente salva no servidor.
+        """)
+
+    with st.expander("📢 Avisos"):
+        st.markdown("""
+Mensagens que a Bruna deixa pra você. Só ela publica avisos novos. Você pode apagar um aviso depois de ler (🗑️), mas não precisa — eles não têm prazo de validade.
+        """)
         st.markdown("<hr class='task-sep'>", unsafe_allow_html=True)
