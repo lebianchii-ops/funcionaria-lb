@@ -25,18 +25,6 @@
       "tipo": "evento"
     },
     {
-      "id": "58569e1e-3dd5-4ee0-8336-10323c500b98",
-      "titulo": "njniojoi",
-      "categoria": "—",
-      "descricao": "",
-      "data": "2026-07-18",
-      "prioridade": "Alta",
-      "feita": false,
-      "feita_em": null,
-      "criado_em": "2026-07-25T11:34:24.581418",
-      "tipo": "evento"
-    },
-    {
       "id": "ea3a48b3-fc09-407b-b814-2f98477f45e3",
       "titulo": "teste",
       "categoria": "ML - LB Collection",
