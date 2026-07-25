@@ -1,4 +1,12 @@
 {
   "tarefas": [],
-  "avisos": []
+  "avisos": [
+    {
+      "id": "001c22fa-35e3-4591-bc5b-a17337fffd2b",
+      "texto": "AVISO TESTE apagar",
+      "autor": "Bruna",
+      "data": "25/07/2026 14:14",
+      "respostas": []
+    }
+  ]
 }
