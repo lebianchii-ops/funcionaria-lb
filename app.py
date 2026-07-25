@@ -506,15 +506,20 @@ with tab3:
 # ════════════════════════════════════════════════════════════════════════════
 with tab2:
     st.subheader("📢 Avisos")
+    st.caption("Mural de mão dupla — Bruna e a funcionária podem postar e responder.")
+
+    quem = st.selectbox("Você é:", ["Bruna", "Funcionária"], key="quem_sou")
 
     with st.form("form_aviso", clear_on_submit=True):
-        av_txt = st.text_area("Nova mensagem", placeholder="Digite o aviso para a funcionária...")
+        av_txt = st.text_area("Nova mensagem", placeholder="Digite o aviso...")
         if st.form_submit_button("📢 Publicar aviso", use_container_width=True, type="primary"):
             if av_txt.strip():
                 dados["avisos"].insert(0, {
-                    "id":    str(uuid.uuid4()),
-                    "texto": av_txt.strip(),
-                    "data":  datetime.now().strftime("%d/%m/%Y %H:%M"),
+                    "id":         str(uuid.uuid4()),
+                    "texto":      av_txt.strip(),
+                    "autor":      quem,
+                    "data":       datetime.now().strftime("%d/%m/%Y %H:%M"),
+                    "respostas":  [],
                 })
                 if salvar_dados(dados):
                     st.success("✅ Aviso publicado!")
@@ -528,15 +533,36 @@ with tab2:
         st.info("Nenhum aviso no momento.")
 
     for a in dados.get("avisos", []):
-        c1, c2 = st.columns([10, 1])
-        with c1:
-            st.markdown(f"**{a['texto']}**")
-            st.caption(f"🕐 {a['data']}")
-        with c2:
-            if st.button("🗑️", key=f"dav{a['id']}", help="Excluir aviso"):
-                dados["avisos"] = [x for x in dados["avisos"] if x["id"] != a["id"]]
-                if salvar_dados(dados):
-                    st.rerun()
+        a.setdefault("respostas", [])
+        a.setdefault("autor", "Bruna")
+        with st.container(border=True):
+            c1, c2 = st.columns([10, 1])
+            with c1:
+                st.markdown(f"**{a['texto']}**")
+                st.caption(f"🕐 {a['autor']} · {a['data']}")
+            with c2:
+                if st.button("🗑️", key=f"dav{a['id']}", help="Excluir aviso"):
+                    dados["avisos"] = [x for x in dados["avisos"] if x["id"] != a["id"]]
+                    if salvar_dados(dados):
+                        st.rerun()
+
+            for r in a["respostas"]:
+                st.markdown(f"↳ **{r['texto']}**")
+                st.caption(f"🕐 {r['autor']} · {r['data']}")
+
+            with st.form(f"form_resp_{a['id']}", clear_on_submit=True):
+                resp_txt = st.text_input("Responder", placeholder="Escreva uma resposta...",
+                                          label_visibility="collapsed")
+                if st.form_submit_button("↳ Responder", use_container_width=True):
+                    if resp_txt.strip():
+                        a["respostas"].append({
+                            "id":    str(uuid.uuid4()),
+                            "texto": resp_txt.strip(),
+                            "autor": quem,
+                            "data":  datetime.now().strftime("%d/%m/%Y %H:%M"),
+                        })
+                        if salvar_dados(dados):
+                            st.rerun()
 
 # ════════════════════════════════════════════════════════════════════════════
 with tab4:
@@ -546,7 +572,7 @@ with tab4:
     with st.expander("📌 As 3 abas principais", expanded=True):
         st.markdown("""
 - **✅ Tarefas** — onde você organiza o trabalho do dia. Tem duas partes: o **calendário** (em cima) e as **3 colunas de prioridade** (embaixo: 🔴 Alta, 🟡 Média, 🟢 Baixa).
-- **📢 Avisos** — mensagens da Bruna para você. Leia sempre que entrar.
+- **📢 Avisos** — mural de mão dupla entre Bruna e funcionária. Leia sempre que entrar.
 - **✔️ Concluídos** — histórico de tudo que já foi marcado como feito.
         """)
 
@@ -583,6 +609,10 @@ Fica do lado esquerdo, embaixo do mini-calendário. Use se você (ou outra pesso
 
     with st.expander("📢 Avisos"):
         st.markdown("""
-Mensagens que a Bruna deixa pra você. Só ela publica avisos novos. Você pode apagar um aviso depois de ler (🗑️), mas não precisa — eles não têm prazo de validade.
+Qualquer uma das duas (Bruna ou funcionária) pode publicar um aviso e responder a um aviso já existente — é uma conversa registrada, não só um recado de um lado só.
+
+- Antes de postar ou responder, escolha em **"Você é:"** quem está escrevendo — assim fica registrado quem falou o quê.
+- Respostas aparecem com **↳** embaixo do aviso original.
+- **Excluir (🗑️)** apaga o aviso inteiro (e as respostas dele) — use só quando não precisar mais guardar aquilo.
         """)
         st.markdown("<hr class='task-sep'>", unsafe_allow_html=True)
