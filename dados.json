@@ -1,17 +1,4 @@
 {
-  "tarefas": [
-    {
-      "id": "edb72905-87a0-4dd9-94d4-b59b3b18d2c6",
-      "titulo": "ghghf",
-      "categoria": "—",
-      "descricao": "",
-      "data": "2026-07-19",
-      "prioridade": "Baixa",
-      "feita": false,
-      "feita_em": null,
-      "criado_em": "2026-07-25T11:33:40.858316",
-      "tipo": "evento"
-    }
-  ],
+  "tarefas": [],
   "avisos": []
 }
