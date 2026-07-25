@@ -9,7 +9,8 @@
       "prioridade": "Baixa",
       "feita": false,
       "feita_em": null,
-      "criado_em": "2026-07-25T11:33:40.858316"
+      "criado_em": "2026-07-25T11:33:40.858316",
+      "tipo": "evento"
     },
     {
       "id": "58e6858c-4cce-48ac-9334-339740ee51ab",
@@ -20,7 +21,8 @@
       "prioridade": "Alta",
       "feita": false,
       "feita_em": null,
-      "criado_em": "2026-07-25T11:33:52.494250"
+      "criado_em": "2026-07-25T11:33:52.494250",
+      "tipo": "evento"
     },
     {
       "id": "58569e1e-3dd5-4ee0-8336-10323c500b98",
@@ -31,7 +33,20 @@
       "prioridade": "Alta",
       "feita": false,
       "feita_em": null,
-      "criado_em": "2026-07-25T11:34:24.581418"
+      "criado_em": "2026-07-25T11:34:24.581418",
+      "tipo": "evento"
+    },
+    {
+      "id": "aef74bb8-3e35-4be5-b18b-f02f258907f3",
+      "titulo": "TAREFA PONTUAL TESTE",
+      "categoria": "—",
+      "descricao": "",
+      "data": null,
+      "tipo": "tarefa",
+      "prioridade": "Média",
+      "feita": false,
+      "feita_em": null,
+      "criado_em": "2026-07-25T11:46:12.515192"
     }
   ],
   "avisos": []
