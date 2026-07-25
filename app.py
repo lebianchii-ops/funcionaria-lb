@@ -475,32 +475,55 @@ with tab1:
 
 # ════════════════════════════════════════════════════════════════════════════
 with tab3:
-    feitas = sorted(
-        [t for t in dados.get("tarefas", []) if t.get("feita")],
-        key=lambda x: x.get("feita_em", ""), reverse=True
-    )
-    if not feitas:
-        st.info("Nenhuma tarefa concluída ainda.")
+    feitas = [t for t in dados.get("tarefas", []) if t.get("feita")]
+    avisos_concluidos = [a for a in dados.get("avisos", []) if a.get("concluido")]
+
+    itens = [("tarefa", t) for t in feitas] + [("aviso", a) for a in avisos_concluidos]
+    itens.sort(key=lambda x: x[1].get("feita_em") or x[1].get("concluido_em") or "", reverse=True)
+
+    if not itens:
+        st.info("Nada concluído ainda.")
     else:
-        st.markdown(f"**{len(feitas)} tarefa(s) concluída(s)**")
+        st.markdown(f"**{len(itens)} concluído(s)**")
         st.divider()
-        for t in feitas:
-            c1, c2 = st.columns([10, 1], vertical_alignment="center")
-            with c1:
-                prio_txt = t.get("prioridade", "")
-                dot = EMOJI.get(prio_txt, "")
-                st.markdown(f"~~{t['titulo']}~~  {dot}")
-                feita_em = t.get("feita_em", "")
-                cat = t.get("categoria", "—")
-                info = f"✅ {feita_em}"
-                if cat and cat != "—":
-                    info += f"  ·  {cat}"
-                st.caption(info)
-            with c2:
-                if st.button("🗑️", key=f"df{t['id']}", help="Excluir"):
-                    dados["tarefas"] = [x for x in dados["tarefas"] if x["id"] != t["id"]]
-                    if salvar_dados(dados):
-                        st.rerun()
+        for tipo, item in itens:
+            if tipo == "tarefa":
+                t = item
+                c1, c2 = st.columns([10, 1], vertical_alignment="center")
+                with c1:
+                    prio_txt = t.get("prioridade", "")
+                    dot = EMOJI.get(prio_txt, "")
+                    st.markdown(f"🗹 Tarefa · ~~{t['titulo']}~~  {dot}")
+                    feita_em = t.get("feita_em", "")
+                    cat = t.get("categoria", "—")
+                    info = f"✅ {feita_em}"
+                    if cat and cat != "—":
+                        info += f"  ·  {cat}"
+                    st.caption(info)
+                with c2:
+                    if st.button("🗑️", key=f"df{t['id']}", help="Excluir"):
+                        dados["tarefas"] = [x for x in dados["tarefas"] if x["id"] != t["id"]]
+                        if salvar_dados(dados):
+                            st.rerun()
+            else:
+                a = item
+                c1, c2 = st.columns([10, 1], vertical_alignment="center")
+                with c1:
+                    st.markdown(f"📢 Aviso · ~~{a['texto']}~~")
+                    st.caption(f"✅ {a.get('concluido_em','')}  ·  {a.get('autor','')}")
+                    for r in a.get("respostas", []):
+                        st.markdown(f"↳ ~~{r['texto']}~~")
+                        st.caption(f"🕐 {r['autor']} · {r['data']}")
+                with c2:
+                    if st.button("↩️", key=f"reab_av_{a['id']}", help="Reabrir aviso"):
+                        a["concluido"] = False
+                        a["concluido_em"] = None
+                        if salvar_dados(dados):
+                            st.rerun()
+                    if st.button("🗑️", key=f"dav_c_{a['id']}", help="Excluir aviso"):
+                        dados["avisos"] = [x for x in dados["avisos"] if x["id"] != a["id"]]
+                        if salvar_dados(dados):
+                            st.rerun()
             st.markdown("<hr class='task-sep'>", unsafe_allow_html=True)
 
 # ════════════════════════════════════════════════════════════════════════════
@@ -535,31 +558,29 @@ with tab2:
         a.setdefault("concluido", False)
         a.setdefault("concluido_em", None)
 
-    abertos     = [a for a in dados.get("avisos", []) if not a.get("concluido")]
-    concluidos_av = [a for a in dados.get("avisos", []) if a.get("concluido")]
+    abertos = [a for a in dados.get("avisos", []) if not a.get("concluido")]
 
     if not abertos:
         st.info("Nenhum aviso em aberto.")
 
     for a in abertos:
         with st.container(border=True):
-            c0, c1, c2 = st.columns([1, 9, 1])
-            with c0:
-                concluir = st.checkbox("", key=f"cc_av_{a['id']}", help="Marcar como concluído")
+            c1, c2, c3 = st.columns([8, 2, 1])
             with c1:
                 st.markdown(f"**{a['texto']}**")
                 st.caption(f"🕐 {a['autor']} · {a['data']}")
             with c2:
+                if st.button("✅ Concluído", key=f"cc_av_{a['id']}", use_container_width=True,
+                             help="Marcar como concluído"):
+                    a["concluido"]    = True
+                    a["concluido_em"] = datetime.now().strftime("%d/%m/%Y %H:%M")
+                    if salvar_dados(dados):
+                        st.rerun()
+            with c3:
                 if st.button("🗑️", key=f"dav{a['id']}", help="Excluir aviso"):
                     dados["avisos"] = [x for x in dados["avisos"] if x["id"] != a["id"]]
                     if salvar_dados(dados):
                         st.rerun()
-
-            if concluir:
-                a["concluido"]    = True
-                a["concluido_em"] = datetime.now().strftime("%d/%m/%Y %H:%M")
-                if salvar_dados(dados):
-                    st.rerun()
 
             for r in a["respostas"]:
                 st.markdown(f"↳ **{r['texto']}**")
@@ -579,28 +600,6 @@ with tab2:
                         if salvar_dados(dados):
                             st.rerun()
 
-    if concluidos_av:
-        with st.expander(f"✅ Avisos concluídos ({len(concluidos_av)})"):
-            for a in concluidos_av:
-                c1, c2 = st.columns([9, 1])
-                with c1:
-                    st.markdown(f"~~{a['texto']}~~")
-                    st.caption(f"🕐 {a['autor']} · {a['data']}  ·  ✅ concluído em {a.get('concluido_em','')}")
-                    for r in a.get("respostas", []):
-                        st.markdown(f"↳ ~~{r['texto']}~~")
-                        st.caption(f"🕐 {r['autor']} · {r['data']}")
-                with c2:
-                    if st.button("↩️", key=f"reab_av_{a['id']}", help="Reabrir aviso"):
-                        a["concluido"] = False
-                        a["concluido_em"] = None
-                        if salvar_dados(dados):
-                            st.rerun()
-                    if st.button("🗑️", key=f"dav_c_{a['id']}", help="Excluir aviso"):
-                        dados["avisos"] = [x for x in dados["avisos"] if x["id"] != a["id"]]
-                        if salvar_dados(dados):
-                            st.rerun()
-                st.markdown("<hr class='task-sep'>", unsafe_allow_html=True)
-
 # ════════════════════════════════════════════════════════════════════════════
 with tab4:
     st.subheader("❓ Como usar o painel")
@@ -610,7 +609,7 @@ with tab4:
         st.markdown("""
 - **✅ Tarefas** — onde você organiza o trabalho do dia. Tem duas partes: o **calendário** (em cima) e as **3 colunas de prioridade** (embaixo: 🔴 Alta, 🟡 Média, 🟢 Baixa).
 - **📢 Avisos** — mural de mão dupla entre Bruna e funcionária. Leia sempre que entrar.
-- **✔️ Concluídos** — histórico de tudo que já foi marcado como feito.
+- **✔️ Concluídos** — histórico de tudo que já foi marcado como feito, tarefas e avisos juntos (cada um com uma etiqueta indicando o tipo: 🗹 Tarefa ou 📢 Aviso).
         """)
 
     with st.expander("🟢 Tarefa pontual × 📅 Evento — qual a diferença", expanded=True):
@@ -650,7 +649,7 @@ Qualquer uma das duas (Bruna ou funcionária) pode publicar um aviso e responder
 
 - Antes de postar ou responder, escolha em **"Você é:"** quem está escrevendo — assim fica registrado quem falou o quê.
 - Respostas aparecem com **↳** embaixo do aviso original.
-- Marque a **caixinha** do lado do aviso quando ele já foi resolvido/conversado — ele vai para **"✅ Avisos concluídos"** (dá pra reabrir com ↩️ se precisar).
+- Clique em **"✅ Concluído"** quando o aviso já foi resolvido/conversado — ele vai para a aba **✔️ Concluídos** (junto com as tarefas, marcado como "📢 Aviso"; dá pra reabrir com ↩️ se precisar).
 - **Excluir (🗑️)** apaga o aviso inteiro (e as respostas dele) de vez — use só quando não precisar mais guardar aquilo.
         """)
         st.markdown("<hr class='task-sep'>", unsafe_allow_html=True)
