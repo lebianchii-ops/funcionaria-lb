@@ -1,4 +1,17 @@
 {
-  "tarefas": [],
+  "tarefas": [
+    {
+      "id": "c3c98d7b-1965-43f1-8eb1-c09b6d589e18",
+      "titulo": "TESTE FINAL apagar repo privado",
+      "categoria": "—",
+      "descricao": "",
+      "data": null,
+      "tipo": "tarefa",
+      "prioridade": "Alta",
+      "feita": false,
+      "feita_em": null,
+      "criado_em": "2026-07-25T15:57:58.198201"
+    }
+  ],
   "avisos": []
 }
