@@ -47,6 +47,18 @@
       "feita": false,
       "feita_em": null,
       "criado_em": "2026-07-25T11:46:12.515192"
+    },
+    {
+      "id": "52abe7e6-86f4-4b20-8ec4-355bb189cb28",
+      "titulo": "EVENTO TESTE apagar",
+      "categoria": "—",
+      "descricao": "",
+      "data": "2026-07-19",
+      "tipo": "evento",
+      "prioridade": "Baixa",
+      "feita": false,
+      "feita_em": null,
+      "criado_em": "2026-07-25T11:47:43.605759"
     }
   ],
   "avisos": []
