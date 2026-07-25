@@ -37,18 +37,6 @@
       "tipo": "evento"
     },
     {
-      "id": "aef74bb8-3e35-4be5-b18b-f02f258907f3",
-      "titulo": "TAREFA PONTUAL TESTE",
-      "categoria": "—",
-      "descricao": "",
-      "data": null,
-      "tipo": "tarefa",
-      "prioridade": "Média",
-      "feita": false,
-      "feita_em": null,
-      "criado_em": "2026-07-25T11:46:12.515192"
-    },
-    {
       "id": "52abe7e6-86f4-4b20-8ec4-355bb189cb28",
       "titulo": "EVENTO TESTE apagar",
       "categoria": "—",
