@@ -13,18 +13,6 @@
       "tipo": "evento"
     },
     {
-      "id": "58e6858c-4cce-48ac-9334-339740ee51ab",
-      "titulo": "ijoij´pk",
-      "categoria": "—",
-      "descricao": "",
-      "data": "2026-07-25",
-      "prioridade": "Alta",
-      "feita": false,
-      "feita_em": null,
-      "criado_em": "2026-07-25T11:33:52.494250",
-      "tipo": "evento"
-    },
-    {
       "id": "ea3a48b3-fc09-407b-b814-2f98477f45e3",
       "titulo": "teste",
       "categoria": "ML - LB Collection",
