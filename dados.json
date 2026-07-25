@@ -6,7 +6,9 @@
       "texto": "AVISO CONCLUIR TESTE apagar",
       "autor": "Bruna",
       "data": "25/07/2026 14:27",
-      "respostas": []
+      "respostas": [],
+      "concluido": true,
+      "concluido_em": "25/07/2026 14:28"
     },
     {
       "id": "e967bb8d-aee7-438e-b55a-0f77b066d5e0",
