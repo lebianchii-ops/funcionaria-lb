@@ -529,14 +529,23 @@ with tab2:
 
     st.divider()
 
-    if not dados.get("avisos"):
-        st.info("Nenhum aviso no momento.")
-
     for a in dados.get("avisos", []):
         a.setdefault("respostas", [])
         a.setdefault("autor", "Bruna")
+        a.setdefault("concluido", False)
+        a.setdefault("concluido_em", None)
+
+    abertos     = [a for a in dados.get("avisos", []) if not a.get("concluido")]
+    concluidos_av = [a for a in dados.get("avisos", []) if a.get("concluido")]
+
+    if not abertos:
+        st.info("Nenhum aviso em aberto.")
+
+    for a in abertos:
         with st.container(border=True):
-            c1, c2 = st.columns([10, 1])
+            c0, c1, c2 = st.columns([1, 9, 1])
+            with c0:
+                concluir = st.checkbox("", key=f"cc_av_{a['id']}", help="Marcar como concluído")
             with c1:
                 st.markdown(f"**{a['texto']}**")
                 st.caption(f"🕐 {a['autor']} · {a['data']}")
@@ -545,6 +554,12 @@ with tab2:
                     dados["avisos"] = [x for x in dados["avisos"] if x["id"] != a["id"]]
                     if salvar_dados(dados):
                         st.rerun()
+
+            if concluir:
+                a["concluido"]    = True
+                a["concluido_em"] = datetime.now().strftime("%d/%m/%Y %H:%M")
+                if salvar_dados(dados):
+                    st.rerun()
 
             for r in a["respostas"]:
                 st.markdown(f"↳ **{r['texto']}**")
@@ -563,6 +578,28 @@ with tab2:
                         })
                         if salvar_dados(dados):
                             st.rerun()
+
+    if concluidos_av:
+        with st.expander(f"✅ Avisos concluídos ({len(concluidos_av)})"):
+            for a in concluidos_av:
+                c1, c2 = st.columns([9, 1])
+                with c1:
+                    st.markdown(f"~~{a['texto']}~~")
+                    st.caption(f"🕐 {a['autor']} · {a['data']}  ·  ✅ concluído em {a.get('concluido_em','')}")
+                    for r in a.get("respostas", []):
+                        st.markdown(f"↳ ~~{r['texto']}~~")
+                        st.caption(f"🕐 {r['autor']} · {r['data']}")
+                with c2:
+                    if st.button("↩️", key=f"reab_av_{a['id']}", help="Reabrir aviso"):
+                        a["concluido"] = False
+                        a["concluido_em"] = None
+                        if salvar_dados(dados):
+                            st.rerun()
+                    if st.button("🗑️", key=f"dav_c_{a['id']}", help="Excluir aviso"):
+                        dados["avisos"] = [x for x in dados["avisos"] if x["id"] != a["id"]]
+                        if salvar_dados(dados):
+                            st.rerun()
+                st.markdown("<hr class='task-sep'>", unsafe_allow_html=True)
 
 # ════════════════════════════════════════════════════════════════════════════
 with tab4:
@@ -613,6 +650,7 @@ Qualquer uma das duas (Bruna ou funcionária) pode publicar um aviso e responder
 
 - Antes de postar ou responder, escolha em **"Você é:"** quem está escrevendo — assim fica registrado quem falou o quê.
 - Respostas aparecem com **↳** embaixo do aviso original.
-- **Excluir (🗑️)** apaga o aviso inteiro (e as respostas dele) — use só quando não precisar mais guardar aquilo.
+- Marque a **caixinha** do lado do aviso quando ele já foi resolvido/conversado — ele vai para **"✅ Avisos concluídos"** (dá pra reabrir com ↩️ se precisar).
+- **Excluir (🗑️)** apaga o aviso inteiro (e as respostas dele) de vez — use só quando não precisar mais guardar aquilo.
         """)
         st.markdown("<hr class='task-sep'>", unsafe_allow_html=True)
