@@ -76,6 +76,15 @@
   "avisos": [],
   "freelas": [
     {
+      "id": "674c19cb-50f6-49a6-a403-109a01d0026a",
+      "titulo": "Fazer faixa NOIVA DO ANO",
+      "descricao": "TOTAL PRONTO P/ FAZER:\n115 \n\n(descontar conforme forem feitas)",
+      "prioridade": "Fazer depois",
+      "feita": false,
+      "feita_em": null,
+      "criado_em": "2026-07-27T16:33:02.047866"
+    },
+    {
       "id": "12f94dcd-4b80-43c7-8e34-1245e9921dab",
       "titulo": "Kits Harry Potter",
       "descricao": "",
