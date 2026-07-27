@@ -74,5 +74,15 @@
     }
   ],
   "avisos": [],
-  "freelas": []
+  "freelas": [
+    {
+      "id": "cd72c253-8dbb-46e2-b897-bd898a28fcd3",
+      "titulo": "Limpar 20 Guarda Chuvas Ferrari",
+      "descricao": "",
+      "prioridade": "Fazer depois",
+      "feita": false,
+      "feita_em": null,
+      "criado_em": "2026-07-27T16:21:31.917353"
+    }
+  ]
 }
