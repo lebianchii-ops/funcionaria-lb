@@ -46,7 +46,7 @@ Não é senha, não é o token base64, não é o código — o app nem baixa os 
 
 - **Tarefa** (`tipo: "tarefa"`) — criada nas 3 colunas de prioridade (Alta/Média/Baixa), sem data, não aparece no calendário.
 - **Evento** (`tipo: "evento"`) — criado pelo "+" do calendário, tem `data`, aparece no dia certo do calendário e também na coluna de prioridade.
-- **Freela** (lista `freelas`, aba 🧵 Freela) — trabalhos de freela, separados das tarefas da loja. Campos: `titulo` (obrigatório), `cliente`, `descricao`, `data` (prazo opcional — só grava se marcar "Tem prazo?"), `valor`, `feita`/`feita_em`. Não aparece no calendário nem nas colunas de prioridade. Ticar a caixinha manda para ✔️ Concluídos com etiqueta 🧵 Freela; lá o ↩️ reabre. O cabeçalho da aba soma os valores em aberto e o prazo vencido vira ⚠️.
+- **Freela** (lista `freelas`, aba 🧵 Freela) — lista de tarefas do freela, separada das tarefas da loja. Campos: `titulo` (obrigatório), `descricao`, `prioridade` (2 níveis, `FR_PRIOS` = "Fazer primeiro" 🔴 / "Fazer depois" 🟢 — só para indicar a ordem), `feita`/`feita_em`. Sem data, sem categoria: não aparece no calendário nem nas colunas de prioridade da aba Tarefas. Ticar a caixinha manda para ✔️ Concluídos com etiqueta 🧵 Freela (indica que saiu do freela); lá o ↩️ reabre.
 - **Aviso** — mural de mão dupla (Bruna/Funcionária escolhem "Você é" antes de postar). Tem `autor`, `respostas` (lista aninhada com autor+data), `concluido`/`concluido_em`.
 - Tarefas e avisos concluídos aparecem juntos na aba **✔️ Concluídos**, com etiqueta (🗹 Tarefa / 📢 Aviso).
 - Aba **❓ Ajuda** dentro do próprio app explica tudo isso pra quem entrar — não precisa a Bruna explicar de novo.
