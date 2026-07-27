@@ -76,15 +76,6 @@
   "avisos": [],
   "freelas": [
     {
-      "id": "9119a5ae-355a-4235-8bd5-dd2f64bbc41e",
-      "titulo": "TESTE 3 - apagar",
-      "descricao": "",
-      "prioridade": "Fazer depois",
-      "feita": true,
-      "feita_em": "27/07/26 13:15",
-      "criado_em": "2026-07-27T13:15:15.251535"
-    },
-    {
       "id": "005bff8d-93f9-4913-b4a2-1e2568f9dd8d",
       "titulo": "TESTE 2 - apagar",
       "descricao": "",
