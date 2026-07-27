@@ -74,5 +74,15 @@
     }
   ],
   "avisos": [],
-  "freelas": []
+  "freelas": [
+    {
+      "id": "cda0dba0-f2a9-460b-9eaa-f8f1dec71329",
+      "titulo": "xasfsefcd",
+      "descricao": "",
+      "prioridade": "Fazer primeiro",
+      "feita": false,
+      "feita_em": null,
+      "criado_em": "2026-07-27T16:20:52.093830"
+    }
+  ]
 }
