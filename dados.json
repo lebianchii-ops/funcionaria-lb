@@ -59,6 +59,18 @@
       "feita": false,
       "feita_em": null,
       "criado_em": "2026-07-27T14:19:45.589972"
+    },
+    {
+      "id": "c8880ab7-e792-4a33-866b-b65dafd14e0f",
+      "titulo": "Peruca Moana",
+      "categoria": "ML - LB Collection",
+      "descricao": "Ver se no anúncio tem que a informação da flor e mudar a capa para a peruca com flor",
+      "data": null,
+      "tipo": "tarefa",
+      "prioridade": "Alta",
+      "feita": false,
+      "feita_em": null,
+      "criado_em": "2026-07-27T15:18:09.383549"
     }
   ],
   "avisos": []
