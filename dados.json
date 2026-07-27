@@ -76,6 +76,15 @@
   "avisos": [],
   "freelas": [
     {
+      "id": "12f94dcd-4b80-43c7-8e34-1245e9921dab",
+      "titulo": "Kits Harry Potter",
+      "descricao": "",
+      "prioridade": "Fazer depois",
+      "feita": false,
+      "feita_em": null,
+      "criado_em": "2026-07-27T16:22:03.109144"
+    },
+    {
       "id": "060a6dc8-9591-41df-a340-f6bad288088a",
       "titulo": "Fazer caixa de bonecas KPOP",
       "descricao": "",
