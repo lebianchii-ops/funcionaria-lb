@@ -74,17 +74,5 @@
     }
   ],
   "avisos": [],
-  "freelas": [
-    {
-      "id": "53aaa4f7-d191-4e9f-b13c-618c7a217292",
-      "titulo": "TESTE - apagar",
-      "cliente": "",
-      "descricao": "",
-      "data": null,
-      "valor": 150.0,
-      "feita": false,
-      "feita_em": null,
-      "criado_em": "2026-07-27T13:02:19.016673"
-    }
-  ]
+  "freelas": []
 }
