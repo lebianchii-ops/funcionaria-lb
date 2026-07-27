@@ -74,5 +74,15 @@
     }
   ],
   "avisos": [],
-  "freelas": []
+  "freelas": [
+    {
+      "id": "68890286-7934-4416-80f5-a2cd2cbfc91d",
+      "titulo": "TESTE 1 - apagar",
+      "descricao": "",
+      "prioridade": "Fazer primeiro",
+      "feita": false,
+      "feita_em": null,
+      "criado_em": "2026-07-27T13:14:22.610675"
+    }
+  ]
 }
