@@ -76,15 +76,6 @@
   "avisos": [],
   "freelas": [
     {
-      "id": "005bff8d-93f9-4913-b4a2-1e2568f9dd8d",
-      "titulo": "TESTE 2 - apagar",
-      "descricao": "",
-      "prioridade": "Fazer primeiro",
-      "feita": false,
-      "feita_em": null,
-      "criado_em": "2026-07-27T13:14:37.838668"
-    },
-    {
       "id": "68890286-7934-4416-80f5-a2cd2cbfc91d",
       "titulo": "TESTE 1 - apagar",
       "descricao": "",
