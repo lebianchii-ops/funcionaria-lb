@@ -47,6 +47,18 @@
       "feita": false,
       "feita_em": null,
       "criado_em": "2026-07-27T14:17:13.582194"
+    },
+    {
+      "id": "038c658d-e4b8-49cd-acdf-20d0c58b1cb0",
+      "titulo": "Arrumar no anúncio",
+      "categoria": "ML - LB Collection",
+      "descricao": "Essa saia chegou um novo que muda a quantidade de renda, só temos que arrumar que na compra pode ir 2 opções, é que uma cliente reclamou",
+      "data": null,
+      "tipo": "tarefa",
+      "prioridade": "Baixa",
+      "feita": false,
+      "feita_em": null,
+      "criado_em": "2026-07-27T14:19:45.589972"
     }
   ],
   "avisos": []
