@@ -175,6 +175,16 @@ if st.session_state["dados"] is None:
     st.session_state["dados"] = carregar_dados()
 
 dados = st.session_state["dados"]
+dados.setdefault("tarefas", [])
+dados.setdefault("avisos", [])
+dados.setdefault("freelas", [])
+for f in dados["freelas"]:
+    f.setdefault("feita", False)
+    f.setdefault("feita_em", None)
+    f.setdefault("descricao", "")
+    f.setdefault("cliente", "")
+    f.setdefault("valor", 0.0)
+    f.setdefault("data", None)
 for t in dados.get("tarefas", []):
     t.setdefault("feita", False)
     t.setdefault("feita_em", None)
@@ -261,9 +271,52 @@ def popup_editar_tarefa(tarefa_id):
             if salvar_dados(dados):
                 st.rerun()
 
+@st.dialog("Editar Freela")
+def popup_editar_freela(freela_id):
+    f = next((x for x in dados["freelas"] if x["id"] == freela_id), None)
+    if not f:
+        st.error("Freela não encontrado.")
+        return
+    nv_t   = st.text_input("Título", value=f["titulo"])
+    nv_cli = st.text_input("Cliente / de quem é", value=f.get("cliente", ""))
+    nv_d   = st.text_area("Descrição", value=f.get("descricao", ""), height=80)
+    c1, c2 = st.columns(2)
+    with c1:
+        usar_data = st.checkbox("Tem prazo?", value=bool(f.get("data")), key=f"fud{freela_id}")
+        nv_dt = st.date_input("Prazo",
+                              value=date.fromisoformat(f["data"]) if f.get("data") else date.today(),
+                              format="DD/MM/YYYY", key=f"fdt{freela_id}",
+                              disabled=not usar_data)
+    with c2:
+        nv_v = st.number_input("Valor (R$)", value=float(f.get("valor", 0.0)),
+                               min_value=0.0, step=10.0, format="%.2f")
+    st.write("")
+    c_sv, c_ok, c_del = st.columns(3)
+    with c_sv:
+        if st.button("💾 Salvar", use_container_width=True, type="primary", key=f"fsv{freela_id}"):
+            f.update({"titulo": nv_t.strip(), "cliente": nv_cli.strip(),
+                      "descricao": nv_d.strip(),
+                      "data": str(nv_dt) if usar_data else None,
+                      "valor": float(nv_v)})
+            if salvar_dados(dados):
+                st.rerun()
+    with c_ok:
+        if st.button("✅ Marcar feito", use_container_width=True, key=f"fok{freela_id}"):
+            f["feita"]    = True
+            f["feita_em"] = datetime.now().strftime("%d/%m/%y %H:%M")
+            if salvar_dados(dados):
+                st.rerun()
+    with c_del:
+        if st.button("🗑️ Excluir", use_container_width=True, key=f"fdl{freela_id}"):
+            dados["freelas"] = [x for x in dados["freelas"] if x["id"] != freela_id]
+            if salvar_dados(dados):
+                st.rerun()
+
 # ── cabeçalho ────────────────────────────────────────────────────────────────
 st.title("👜 LB Collection — Painel")
-tab1, tab2, tab3, tab4 = st.tabs(["✅ Tarefas", "📢 Avisos", "✔️ Concluídos", "❓ Ajuda"])
+tab1, tab_fr, tab2, tab3, tab4 = st.tabs(
+    ["✅ Tarefas", "🧵 Freela", "📢 Avisos", "✔️ Concluídos", "❓ Ajuda"]
+)
 
 # ════════════════════════════════════════════════════════════════════════════
 with tab1:
@@ -474,11 +527,102 @@ with tab1:
 
 
 # ════════════════════════════════════════════════════════════════════════════
+with tab_fr:
+    st.subheader("🧵 Freela")
+    st.caption("Trabalhos de freela. Marque a caixinha quando terminar — "
+               "o item sai daqui e vai para a aba ✔️ Concluídos.")
+
+    with st.form("form_freela", clear_on_submit=True):
+        fc1, fc2 = st.columns([3, 2])
+        with fc1:
+            fr_tit = st.text_input("Título *", placeholder="O que é o freela?")
+        with fc2:
+            fr_cli = st.text_input("Cliente / de quem é", placeholder="opcional")
+        fr_desc = st.text_area("Descrição (opcional)", height=70)
+        fd1, fd2, fd3 = st.columns([1, 2, 2])
+        with fd1:
+            fr_tem_prazo = st.checkbox("Tem prazo?")
+        with fd2:
+            fr_data = st.date_input("Prazo", value=date.today(), format="DD/MM/YYYY")
+        with fd3:
+            fr_valor = st.number_input("Valor (R$)", min_value=0.0, step=10.0, format="%.2f")
+        if st.form_submit_button("➕ Adicionar freela", use_container_width=True, type="primary"):
+            if not fr_tit.strip():
+                st.warning("Por favor, preencha o título.")
+            else:
+                dados["freelas"].insert(0, {
+                    "id":        str(uuid.uuid4()),
+                    "titulo":    fr_tit.strip(),
+                    "cliente":   fr_cli.strip(),
+                    "descricao": fr_desc.strip(),
+                    "data":      str(fr_data) if fr_tem_prazo else None,
+                    "valor":     float(fr_valor),
+                    "feita":     False,
+                    "feita_em":  None,
+                    "criado_em": datetime.now().isoformat(),
+                })
+                if salvar_dados(dados):
+                    st.rerun()
+
+    st.divider()
+
+    freelas_abertos = sorted(
+        [f for f in dados["freelas"] if not f.get("feita")],
+        key=lambda x: (x.get("data") is None, x.get("data") or "", x.get("criado_em", ""))
+    )
+
+    if not freelas_abertos:
+        st.info("Nenhum freela em aberto.")
+    else:
+        total = sum(float(f.get("valor") or 0) for f in freelas_abertos)
+        cab = f"**{len(freelas_abertos)} em aberto**"
+        if total > 0:
+            cab += f"  ·  total R$ {total:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+        st.markdown(cab)
+        st.write("")
+
+    for f in freelas_abertos:
+        with st.container(border=True):
+            row = st.columns([8, 1, 1])
+            with row[0]:
+                marcado = st.checkbox(f"**{f['titulo']}**", value=False, key=f"fck{f['id']}")
+                if f.get("descricao"):
+                    st.caption(f["descricao"])
+                info = []
+                if f.get("cliente"):
+                    info.append(f"👤 {f['cliente']}")
+                if f.get("data"):
+                    atrasado = date.fromisoformat(f["data"]) < date.today()
+                    info.append(("⚠️ Prazo " if atrasado else "📅 Prazo ") + fmt_data(f["data"]))
+                if float(f.get("valor") or 0) > 0:
+                    info.append(f"💰 R$ {f['valor']:.2f}".replace(".", ","))
+                if info:
+                    st.caption("  ·  ".join(info))
+            with row[1]:
+                st.write("")
+                if st.button("✏️", key=f"fe{f['id']}", use_container_width=True, help="Editar"):
+                    popup_editar_freela(f["id"])
+            with row[2]:
+                st.write("")
+                if st.button("🗑️", key=f"fd{f['id']}", use_container_width=True, help="Excluir"):
+                    dados["freelas"] = [x for x in dados["freelas"] if x["id"] != f["id"]]
+                    if salvar_dados(dados):
+                        st.rerun()
+            if marcado:
+                f["feita"]    = True
+                f["feita_em"] = datetime.now().strftime("%d/%m/%y %H:%M")
+                if salvar_dados(dados):
+                    st.rerun()
+
+# ════════════════════════════════════════════════════════════════════════════
 with tab3:
     feitas = [t for t in dados.get("tarefas", []) if t.get("feita")]
     avisos_concluidos = [a for a in dados.get("avisos", []) if a.get("concluido")]
+    freelas_feitos = [f for f in dados.get("freelas", []) if f.get("feita")]
 
-    itens = [("tarefa", t) for t in feitas] + [("aviso", a) for a in avisos_concluidos]
+    itens = ([("tarefa", t) for t in feitas]
+             + [("freela", f) for f in freelas_feitos]
+             + [("aviso", a) for a in avisos_concluidos])
     itens.sort(key=lambda x: x[1].get("feita_em") or x[1].get("concluido_em") or "", reverse=True)
 
     if not itens:
@@ -503,6 +647,27 @@ with tab3:
                 with c2:
                     if st.button("🗑️", key=f"df{t['id']}", help="Excluir"):
                         dados["tarefas"] = [x for x in dados["tarefas"] if x["id"] != t["id"]]
+                        if salvar_dados(dados):
+                            st.rerun()
+            elif tipo == "freela":
+                f = item
+                c1, c2 = st.columns([10, 1], vertical_alignment="center")
+                with c1:
+                    st.markdown(f"🧵 Freela · ~~{f['titulo']}~~")
+                    info = f"✅ {f.get('feita_em','')}"
+                    if f.get("cliente"):
+                        info += f"  ·  👤 {f['cliente']}"
+                    if float(f.get("valor") or 0) > 0:
+                        info += f"  ·  💰 R$ {f['valor']:.2f}".replace(".", ",")
+                    st.caption(info)
+                with c2:
+                    if st.button("↩️", key=f"reab_fr_{f['id']}", help="Reabrir freela"):
+                        f["feita"]    = False
+                        f["feita_em"] = None
+                        if salvar_dados(dados):
+                            st.rerun()
+                    if st.button("🗑️", key=f"dfr_{f['id']}", help="Excluir"):
+                        dados["freelas"] = [x for x in dados["freelas"] if x["id"] != f["id"]]
                         if salvar_dados(dados):
                             st.rerun()
             else:
@@ -605,11 +770,28 @@ with tab4:
     st.subheader("❓ Como usar o painel")
     st.caption("Guia rápido — leia isso antes de começar a usar.")
 
-    with st.expander("📌 As 3 abas principais", expanded=True):
+    with st.expander("📌 As 4 abas principais", expanded=True):
         st.markdown("""
 - **✅ Tarefas** — onde você organiza o trabalho do dia. Tem duas partes: o **calendário** (em cima) e as **3 colunas de prioridade** (embaixo: 🔴 Alta, 🟡 Média, 🟢 Baixa).
+- **🧵 Freela** — lista separada só dos trabalhos de freela, para não misturar com as tarefas da loja.
 - **📢 Avisos** — mural de mão dupla entre Bruna e funcionária. Leia sempre que entrar.
-- **✔️ Concluídos** — histórico de tudo que já foi marcado como feito, tarefas e avisos juntos (cada um com uma etiqueta indicando o tipo: 🗹 Tarefa ou 📢 Aviso).
+- **✔️ Concluídos** — histórico de tudo que já foi marcado como feito: tarefas, freelas e avisos juntos (cada um com uma etiqueta indicando o tipo: 🗹 Tarefa, 🧵 Freela ou 📢 Aviso).
+        """)
+
+    with st.expander("🧵 Aba Freela", expanded=True):
+        st.markdown("""
+Lista à parte, só para os trabalhos de freela — o que você cadastra aqui **não** aparece nas colunas de prioridade nem no calendário.
+
+**Para adicionar:** preencha o **Título** (único campo obrigatório) e, se quiser, o **Cliente**, a **Descrição**, o **Prazo** e o **Valor (R$)**. O prazo só é gravado se você marcar a caixinha **"Tem prazo?"**. Depois clique em **➕ Adicionar freela**.
+
+**Para marcar como feito:** marque a **caixinha ☐ ao lado do título**. O freela sai desta aba na hora e vai para a aba **✔️ Concluídos**, com a etiqueta 🧵 Freela.
+
+**Outros botões:**
+- **✏️** — abre uma janelinha para alterar qualquer campo (também tem "✅ Marcar feito" lá dentro).
+- **🗑️** — apaga de vez, não tem como desfazer.
+- Em **✔️ Concluídos**, o **↩️** reabre o freela e traz ele de volta para esta aba, caso tenha marcado sem querer.
+
+**Detalhes que aparecem sozinhos:** em cima da lista mostra quantos freelas estão em aberto e a **soma dos valores**. Se o prazo já passou, o 📅 vira **⚠️**.
         """)
 
     with st.expander("🟢 Tarefa pontual × 📅 Evento — qual a diferença", expanded=True):
