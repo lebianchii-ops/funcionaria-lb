@@ -76,6 +76,15 @@
   "avisos": [],
   "freelas": [
     {
+      "id": "060a6dc8-9591-41df-a340-f6bad288088a",
+      "titulo": "Fazer caixa de bonecas KPOP",
+      "descricao": "",
+      "prioridade": "Fazer depois",
+      "feita": false,
+      "feita_em": null,
+      "criado_em": "2026-07-27T16:21:49.824944"
+    },
+    {
       "id": "cd72c253-8dbb-46e2-b897-bd898a28fcd3",
       "titulo": "Limpar 20 Guarda Chuvas Ferrari",
       "descricao": "",
