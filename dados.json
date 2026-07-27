@@ -80,8 +80,8 @@
       "titulo": "xasfsefcd",
       "descricao": "",
       "prioridade": "Fazer primeiro",
-      "feita": false,
-      "feita_em": null,
+      "feita": true,
+      "feita_em": "27/07/26 16:20",
       "criado_em": "2026-07-27T16:20:52.093830"
     }
   ]
