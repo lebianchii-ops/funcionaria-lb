@@ -32,8 +32,8 @@
       "data": null,
       "tipo": "tarefa",
       "prioridade": "Alta",
-      "feita": false,
-      "feita_em": null,
+      "feita": true,
+      "feita_em": "28/07/26 15:48",
       "criado_em": "2026-07-27T14:10:10.332544"
     },
     {
@@ -68,8 +68,8 @@
       "data": null,
       "tipo": "tarefa",
       "prioridade": "Alta",
-      "feita": false,
-      "feita_em": null,
+      "feita": true,
+      "feita_em": "28/07/26 15:48",
       "criado_em": "2026-07-27T15:18:09.383549"
     }
   ],
