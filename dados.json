@@ -89,8 +89,8 @@
       "titulo": "Kits Harry Potter",
       "descricao": "",
       "prioridade": "Fazer depois",
-      "feita": false,
-      "feita_em": null,
+      "feita": true,
+      "feita_em": "29/07/26 18:07",
       "criado_em": "2026-07-27T16:22:03.109144"
     },
     {
