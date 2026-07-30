@@ -113,15 +113,5 @@
       "obs_conclusao": ""
     }
   ],
-  "entradas": [
-    {
-      "id": "59070653-10db-4fdb-b96b-1710498fccab",
-      "data": "2026-07-30",
-      "fornecedor": "TESTE - apagar",
-      "categoria": "—",
-      "nota_bate": "Sim",
-      "observacao": "",
-      "criado_em": "2026-07-30T11:44:54.429996"
-    }
-  ]
+  "entradas": []
 }
