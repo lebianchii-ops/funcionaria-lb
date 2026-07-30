@@ -1,18 +1,6 @@
 {
   "tarefas": [
     {
-      "id": "c3510401-e7c9-47cc-8ae6-a1c86d13b5f1",
-      "titulo": "Gerar notas de devolução mês JULHO",
-      "categoria": "SH - LB Collection",
-      "descricao": "",
-      "data": null,
-      "tipo": "tarefa",
-      "prioridade": "Alta",
-      "feita": true,
-      "feita_em": "30/07/26 14:15",
-      "criado_em": "2026-07-27T13:33:56.593027"
-    },
-    {
       "id": "e100f459-ceb4-4ff9-8506-73a1c9c7e1af",
       "titulo": "Confirmar se a nota de DEV no tik é automática",
       "categoria": "TK TK - LB Collection",
