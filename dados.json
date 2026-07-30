@@ -82,6 +82,17 @@
   "avisos": [],
   "freelas": [
     {
+      "id": "00fe1a48-57fc-4902-8895-0ac006ab738e",
+      "titulo": "TESTE bug popup",
+      "descricao": "",
+      "prioridade": "Fazer primeiro",
+      "categoria": "—",
+      "feita": false,
+      "feita_em": null,
+      "obs_conclusao": "",
+      "criado_em": "2026-07-30T13:39:52.959007"
+    },
+    {
       "id": "11475785-63e9-407a-8445-b28ea7cd6eef",
       "titulo": "wdEWDw",
       "descricao": "dcWEFER",
