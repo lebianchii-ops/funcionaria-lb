@@ -64,6 +64,18 @@
       "feita_em": "28/07/26 15:48",
       "criado_em": "2026-07-27T15:18:09.383549",
       "obs_conclusao": ""
+    },
+    {
+      "id": "398cbf3f-4508-4963-84b2-510a06be3550",
+      "titulo": "Contar estoque",
+      "categoria": "K2 + LB",
+      "descricao": "jfcbEWUFIBIUEWF",
+      "data": null,
+      "tipo": "tarefa",
+      "prioridade": "Alta",
+      "feita": false,
+      "feita_em": null,
+      "criado_em": "2026-07-30T16:06:53.436247"
     }
   ],
   "avisos": [],
