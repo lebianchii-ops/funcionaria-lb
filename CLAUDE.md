@@ -54,4 +54,16 @@ Não é senha, não é o token base64, não é o código — o app nem baixa os 
 
 Todo fluxo de salvar (`salvar_dados(dados)` seguido de `st.rerun()`) tinha o `rerun()` incondicional — se o save falhasse, o erro nunca aparecia na tela (rerun apagava a mensagem antes do usuário ver). Corrigido em 10 pontos: agora é sempre `if salvar_dados(dados): st.rerun()`.
 
+## Categorias / marketplace (`CATS`, confirmado 30/07/2026)
+
+13 opções fixas, nesta ordem: `—`, `K2 COMÉRCIO`, `LB COLLECTION`, `AMBOS (K2 e LB)`, depois as 10 combinações marca×marketplace em ordem alfabética (`K2 - AMZ` ... `LB Collection - VD`). Existe `CATS_MIGRACAO` no `app.py` que traduz automaticamente rótulos antigos (ex: `ML - LB Collection`, `LB - ML`, `K2 + LB`) pro nome atual sempre que os dados carregam — ao renomear uma categoria de novo, adicionar a entrada de migração ao invés de só trocar o texto (senão dado antigo fica com rótulo morto, fora da lista de filtro).
+
+## Pop-up de confirmação de conclusão — padrão obrigatório (bug corrigido 30/07/2026)
+
+Marcar a caixinha de uma tarefa/freela como feita abre um `st.dialog` pedindo confirmação + observação. **Nunca** disparar esse pop-up checando o valor devolvido pelo `st.checkbox` diretamente (`if feita: ...`) — se a Bruna fechar o pop-up pelo X (em vez de clicar em Cancelar), o valor da caixinha fica preso em `True` no `session_state` para sempre, e como o Streamlit reexecuta o script inteiro (todas as abas, não só a que está visível) a cada interação em QUALQUER lugar do app, o pop-up reabre sozinho em ações completamente sem relação (ex: adicionar item no Freela). **Padrão certo:** o checkbox tem `on_change=_marcar_pendente_conclusao`, que roda antes do rerun e arma uma flag de disparo único (`st.session_state["confirmar_pendente"] = (tipo, item_id)`) — essa flag é lida e IMEDIATAMENTE apagada uma única vez, antes de qualquer aba renderizar, e só então o pop-up é aberto. Isso garante que o pop-up nunca reaparece sozinho, não importa como foi fechado. **Cuidado:** tentar resetar `st.session_state[f"ck{id}"] = False` na mesma linha logo depois de ler o checkbox (dentro do mesmo `st.checkbox(...)` → `if feita:`) dá `StreamlitAPIException` — Streamlit proíbe modificar o state de um widget depois que ele já foi instanciado no mesmo run. Só funciona resetar via callback `on_change` (roda numa fase anterior à reinstanciação do widget).
+
+## Testando localmente no Browser pane — cliques/digitação podem não registrar
+
+Ao rodar `streamlit run app.py` localmente (via `.claude/launch.json`) e testar no Browser pane: `computer.left_click`/`computer.type` às vezes não chegam na página de verdade (mesmo sintoma do bug "Chrome coberto" do CLAUDE.md global — `document.activeElement` fica em BODY mesmo depois do clique, e o campo continua vazio). Usar `javascript_tool` para focar (`.focus()`), setar valor (native setter + `dispatchEvent('input')`), `.blur()` (senão o Streamlit mostra "Press Enter to apply" e não comita o valor) e clicar botões via `querySelector(...).click()`. `get_page_text` às vezes omite texto de labels — conferir via `document.querySelectorAll('label')`.
+
 ⏳ **Comando de fechamento de sessão** (mesmo texto padrão dos outros projetos): descreva o que foi feito, regras descobertas, dificuldades — depois salve no CLAUDE.md desta pasta.
