@@ -3,62 +3,67 @@
     {
       "id": "e100f459-ceb4-4ff9-8506-73a1c9c7e1af",
       "titulo": "Confirmar se a nota de DEV no tik é automática",
-      "categoria": "TK TK - LB Collection",
+      "categoria": "LB - TK TK",
       "descricao": "",
       "data": null,
       "tipo": "tarefa",
       "prioridade": "Alta",
       "feita": false,
       "feita_em": null,
-      "criado_em": "2026-07-27T13:35:01.564526"
+      "criado_em": "2026-07-27T13:35:01.564526",
+      "obs_conclusao": ""
     },
     {
       "id": "ef461d11-505c-43b7-a4d5-da0b331d23dd",
       "titulo": "Mudar a foto das novas bonecas KPOP",
-      "categoria": "ML - LB Collection",
+      "categoria": "LB - ML",
       "descricao": "",
       "data": null,
       "tipo": "tarefa",
       "prioridade": "Alta",
       "feita": true,
       "feita_em": "28/07/26 15:48",
-      "criado_em": "2026-07-27T14:10:10.332544"
+      "criado_em": "2026-07-27T14:10:10.332544",
+      "obs_conclusao": ""
     },
     {
       "id": "4894d7de-df19-45fd-8cfd-f359a14aea5a",
       "titulo": "Subir as numerações da FANTASIA KPOP",
-      "categoria": "ML - LB Collection",
+      "categoria": "LB - ML",
       "descricao": "Os skus são:\nLB00487 (AINDA TEM PRODUTO NO FULL)",
       "data": null,
       "tipo": "tarefa",
       "prioridade": "Média",
       "feita": false,
       "feita_em": null,
-      "criado_em": "2026-07-27T14:17:13.582194"
+      "criado_em": "2026-07-27T14:17:13.582194",
+      "obs_conclusao": ""
     },
     {
       "id": "038c658d-e4b8-49cd-acdf-20d0c58b1cb0",
       "titulo": "Arrumar no anúncio",
-      "categoria": "ML - LB Collection",
+      "categoria": "LB - ML",
       "descricao": "Essa saia chegou um novo que muda a quantidade de renda, só temos que arrumar que na compra pode ir 2 opções, é que uma cliente reclamou >> ARRUMAR EM TODOS",
       "data": null,
       "tipo": "tarefa",
       "prioridade": "Baixa",
       "feita": false,
       "feita_em": null,
-      "criado_em": "2026-07-27T14:19:45.589972"
+      "criado_em": "2026-07-27T14:19:45.589972",
+      "obs_conclusao": ""
     },
     {
       "id": "c8880ab7-e792-4a33-866b-b65dafd14e0f",
       "titulo": "Peruca Moana",
-      "categoria": "ML - LB Collection",
+      "categoria": "LB - ML",
       "descricao": "Ver se no anúncio tem que a informação da flor e mudar a capa para a peruca com flor",
       "data": null,
       "tipo": "tarefa",
       "prioridade": "Alta",
       "feita": true,
       "feita_em": "28/07/26 15:48",
-      "criado_em": "2026-07-27T15:18:09.383549"
+      "criado_em": "2026-07-27T15:18:09.383549",
+      "obs_conclusao": ""
     }
   ],
   "avisos": [],
@@ -70,7 +75,9 @@
       "prioridade": "Fazer depois",
       "feita": false,
       "feita_em": null,
-      "criado_em": "2026-07-27T16:33:02.047866"
+      "criado_em": "2026-07-27T16:33:02.047866",
+      "categoria": "—",
+      "obs_conclusao": ""
     },
     {
       "id": "12f94dcd-4b80-43c7-8e34-1245e9921dab",
@@ -79,7 +86,9 @@
       "prioridade": "Fazer depois",
       "feita": true,
       "feita_em": "29/07/26 18:07",
-      "criado_em": "2026-07-27T16:22:03.109144"
+      "criado_em": "2026-07-27T16:22:03.109144",
+      "categoria": "—",
+      "obs_conclusao": ""
     },
     {
       "id": "060a6dc8-9591-41df-a340-f6bad288088a",
@@ -88,7 +97,9 @@
       "prioridade": "Fazer primeiro",
       "feita": true,
       "feita_em": "28/07/26 17:13",
-      "criado_em": "2026-07-27T16:21:49.824944"
+      "criado_em": "2026-07-27T16:21:49.824944",
+      "categoria": "—",
+      "obs_conclusao": ""
     },
     {
       "id": "cd72c253-8dbb-46e2-b897-bd898a28fcd3",
@@ -97,7 +108,10 @@
       "prioridade": "Fazer depois",
       "feita": false,
       "feita_em": null,
-      "criado_em": "2026-07-27T16:21:31.917353"
+      "criado_em": "2026-07-27T16:21:31.917353",
+      "categoria": "—",
+      "obs_conclusao": ""
     }
-  ]
+  ],
+  "entradas": []
 }
