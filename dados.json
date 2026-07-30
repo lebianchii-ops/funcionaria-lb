@@ -8,8 +8,8 @@
       "data": null,
       "tipo": "tarefa",
       "prioridade": "Alta",
-      "feita": false,
-      "feita_em": null,
+      "feita": true,
+      "feita_em": "30/07/26 14:15",
       "criado_em": "2026-07-27T13:33:56.593027"
     },
     {
