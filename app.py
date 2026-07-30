@@ -46,10 +46,10 @@ MES_ABREV = ["JAN","FEV","MAR","ABR","MAI","JUN","JUL","AGO","SET","OUT","NOV","
 PRIOS     = ["Alta", "Média", "Baixa"]
 COR       = {"Alta": "#e74c3c", "Média": "#f39c12", "Baixa": "#27ae60"}
 EMOJI     = {"Alta": "🔴",     "Média": "🟡",       "Baixa": "🟢"}
-CATS      = ["—",
-             "K2 - AMZ", "K2 - ML", "K2 - SH", "K2 - TK TK", "K2 - VD", "K2 COMÉRCIO",
-             "LB COLLECTION", "LB Collection - AMZ", "LB Collection - ML",
-             "LB Collection - SH", "LB Collection - TK TK", "LB Collection - VD"]
+CATS      = ["—", "K2 COMÉRCIO", "LB COLLECTION", "K2 + LB",
+             "K2 - AMZ", "K2 - ML", "K2 - SH", "K2 - TK TK", "K2 - VD",
+             "LB Collection - AMZ", "LB Collection - ML", "LB Collection - SH",
+             "LB Collection - TK TK", "LB Collection - VD"]
 FILTRO_CATS = ["Todos"] + CATS
 NOTA_OPCOES = ["Sim", "Não"]
 # freela — 2 níveis só para mostrar a ordem do que fazer primeiro
@@ -421,6 +421,9 @@ def popup_editar_freela(freela_id):
 
 # ── cabeçalho ────────────────────────────────────────────────────────────────
 st.title("👜 LB Collection — Painel")
+# valor atual do filtro global — o controle em si fica na coluna do mini-calendário (aba Tarefas),
+# mas o valor vale para todas as abas
+filtro_global = st.session_state.get("filtro_global", FILTRO_CATS[0])
 tab1, tab_fr, tab_ent, tab2, tab3, tab4 = st.tabs(
     ["✅ Tarefas", "🧵 Freela", "📦 Entrada de Mercadoria", "📢 Avisos", "✔️ Concluídos", "❓ Ajuda"]
 )
@@ -440,9 +443,8 @@ with tab1:
     while mes_cal > 12: mes_cal -= 12; ano_cal += 1
     while mes_cal < 1:  mes_cal += 12; ano_cal -= 1
 
-    filtro_tarefas = filtro_categoria("filtro_tab1")
     tarefas_ativas = aplica_filtro(
-        [t for t in dados.get("tarefas", []) if not t.get("feita")], filtro_tarefas
+        [t for t in dados.get("tarefas", []) if not t.get("feita")], filtro_global
     )
     datas_tarefas  = {t.get("data") for t in tarefas_ativas}
 
@@ -480,6 +482,8 @@ with tab1:
                      help="Recarregar do servidor (use se outra pessoa atualizou)"):
             st.session_state["dados"] = None
             st.rerun()
+        st.write("")
+        filtro_categoria("filtro_global")
 
     with col_sem:
         cols_d = st.columns(7)
@@ -668,9 +672,8 @@ with tab_fr:
 
     st.divider()
 
-    filtro_fr = filtro_categoria("filtro_tab_fr")
     freelas_abertos = aplica_filtro(
-        [f for f in dados["freelas"] if not f.get("feita")], filtro_fr
+        [f for f in dados["freelas"] if not f.get("feita")], filtro_global
     )
 
     def render_col_freela(col, prio):
@@ -754,9 +757,8 @@ with tab_ent:
 
     st.divider()
 
-    filtro_ent = filtro_categoria("filtro_tab_ent")
     entradas_lista = sorted(
-        aplica_filtro(dados["entradas"], filtro_ent),
+        aplica_filtro(dados["entradas"], filtro_global),
         key=lambda x: x.get("data", ""), reverse=True
     )
 
@@ -787,11 +789,9 @@ with tab_ent:
 
 # ════════════════════════════════════════════════════════════════════════════
 with tab3:
-    filtro_conc = filtro_categoria("filtro_tab3")
-
-    feitas = aplica_filtro([t for t in dados.get("tarefas", []) if t.get("feita")], filtro_conc)
-    avisos_concluidos = aplica_filtro([a for a in dados.get("avisos", []) if a.get("concluido")], filtro_conc)
-    freelas_feitos = aplica_filtro([f for f in dados.get("freelas", []) if f.get("feita")], filtro_conc)
+    feitas = aplica_filtro([t for t in dados.get("tarefas", []) if t.get("feita")], filtro_global)
+    avisos_concluidos = aplica_filtro([a for a in dados.get("avisos", []) if a.get("concluido")], filtro_global)
+    freelas_feitos = aplica_filtro([f for f in dados.get("freelas", []) if f.get("feita")], filtro_global)
 
     itens = ([("tarefa", t) for t in feitas]
              + [("freela", f) for f in freelas_feitos]
@@ -904,9 +904,8 @@ with tab2:
         a.setdefault("concluido_em", None)
         a.setdefault("categoria", "—")
 
-    filtro_av = filtro_categoria("filtro_tab2")
     abertos = aplica_filtro(
-        [a for a in dados.get("avisos", []) if not a.get("concluido")], filtro_av
+        [a for a in dados.get("avisos", []) if not a.get("concluido")], filtro_global
     )
 
     if not abertos:
@@ -965,14 +964,16 @@ with tab4:
 - **📢 Avisos** — mural de mão dupla entre Bruna e funcionária. Leia sempre que entrar.
 - **✔️ Concluídos** — histórico de tudo que já foi marcado como feito: tarefas, freelas e avisos juntos (cada um com uma etiqueta indicando o tipo: 🗹 Tarefa, 🧵 Freela ou 📢 Aviso).
 
-Todas as abas (menos Ajuda) têm um **filtro "🔍 Filtrar por marketplace"** no topo, para mostrar só os itens de uma categoria (ex: só "LB - ML") ou "Todos".
+Tem um **filtro "🔍 Filtrar por marketplace"** na aba Tarefas, logo abaixo do botão "🔄 Atualizar dados" (embaixo do mini-calendário). Ele é único e vale para todas as abas ao mesmo tempo (Tarefas, Freela, Entrada de Mercadoria, Avisos, Concluídos), mesmo aparecendo só nessa aba — escolha uma categoria (ex: "LB Collection - ML") ou deixe em "Todos" para ver tudo.
+
+**Categorias disponíveis:** "—" (sem categoria), "K2 COMÉRCIO", "LB COLLECTION" e "K2 + LB" (para quando for dos dois juntos) primeiro, depois as combinações por marketplace em ordem alfabética (K2 - AMZ, K2 - ML, K2 - SH, K2 - TK TK, K2 - VD, LB Collection - AMZ, LB Collection - ML, LB Collection - SH, LB Collection - TK TK, LB Collection - VD).
         """)
 
     with st.expander("📦 Aba Entrada de Mercadoria", expanded=True):
         st.markdown("""
 Use sempre que uma mercadoria chegar. Preencha:
 - **Dia que chegou** e **Fornecedor** (obrigatórios)
-- **Categoria / Marketplace** (opcional, ex: "LB - ML", "K2 - SH")
+- **Categoria / Marketplace** (opcional, ex: "LB Collection - ML", "K2 - SH")
 - **A nota bate com a quantidade?** — Sim ou Não
 - **Observação** — vira **obrigatória** se você marcar "Não", para explicar o que faltou ou veio errado
 
