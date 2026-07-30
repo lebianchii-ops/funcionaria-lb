@@ -4,11 +4,10 @@ App Streamlit (Community Cloud) para a funcionária da LB Collection. Sem UP Sel
 
 - **URL:** funcionaria-lb.streamlit.app
 - **Repo:** `lebianchii-ops/funcionaria-lb` (**tem que ficar PÚBLICO** — ver seção abaixo) — dados ficam em `dados.json` no próprio repo, escritos via GitHub Contents API (`app.py` → `salvar_dados()`/`carregar_dados()`)
-- **Senha do painel:** `8559` (compartilhada, sem login individual — ver `painel_senha` no secrets)
+- **Sem senha de acesso** — removida em 30/07/2026 (não estava sendo usada). Qualquer um com o link entra direto.
 - **Secrets (Streamlit Cloud → Settings → Secrets):**
   ```
   github_token = "<base64 do token ghp_...>"
-  painel_senha = "8559"
   ```
 
 ## ⚠️ Token do GitHub tem que ser em base64 (confirmado 25/07/2026)
