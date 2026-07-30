@@ -75,7 +75,8 @@
       "prioridade": "Alta",
       "feita": false,
       "feita_em": null,
-      "criado_em": "2026-07-30T16:06:53.436247"
+      "criado_em": "2026-07-30T16:06:53.436247",
+      "obs_conclusao": ""
     }
   ],
   "avisos": [],
