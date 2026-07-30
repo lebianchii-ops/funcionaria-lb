@@ -46,7 +46,7 @@ MES_ABREV = ["JAN","FEV","MAR","ABR","MAI","JUN","JUL","AGO","SET","OUT","NOV","
 PRIOS     = ["Alta", "Média", "Baixa"]
 COR       = {"Alta": "#e74c3c", "Média": "#f39c12", "Baixa": "#27ae60"}
 EMOJI     = {"Alta": "🔴",     "Média": "🟡",       "Baixa": "🟢"}
-CATS      = ["—", "K2 COMÉRCIO", "LB COLLECTION", "K2 + LB",
+CATS      = ["—", "K2 COMÉRCIO", "LB COLLECTION", "AMBOS (K2 e LB)",
              "K2 - AMZ", "K2 - ML", "K2 - SH", "K2 - TK TK", "K2 - VD",
              "LB Collection - AMZ", "LB Collection - ML", "LB Collection - SH",
              "LB Collection - TK TK", "LB Collection - VD"]
@@ -206,6 +206,7 @@ CATS_MIGRACAO = {
     "LB - AMZ":              "LB Collection - AMZ",
     "LB - TK TK":            "LB Collection - TK TK",
     "LB - VD":               "LB Collection - VD",
+    "K2 + LB":               "AMBOS (K2 e LB)",
 }
 precisa_migrar = False
 
@@ -966,7 +967,7 @@ with tab4:
 
 Tem um **filtro "🔍 Filtrar por marketplace"** na aba Tarefas, logo abaixo do botão "🔄 Atualizar dados" (embaixo do mini-calendário). Ele é único e vale para todas as abas ao mesmo tempo (Tarefas, Freela, Entrada de Mercadoria, Avisos, Concluídos), mesmo aparecendo só nessa aba — escolha uma categoria (ex: "LB Collection - ML") ou deixe em "Todos" para ver tudo.
 
-**Categorias disponíveis:** "—" (sem categoria), "K2 COMÉRCIO", "LB COLLECTION" e "K2 + LB" (para quando for dos dois juntos) primeiro, depois as combinações por marketplace em ordem alfabética (K2 - AMZ, K2 - ML, K2 - SH, K2 - TK TK, K2 - VD, LB Collection - AMZ, LB Collection - ML, LB Collection - SH, LB Collection - TK TK, LB Collection - VD).
+**Categorias disponíveis:** "—" (sem categoria), "K2 COMÉRCIO", "LB COLLECTION" e "AMBOS (K2 e LB)" (para quando for dos dois juntos) primeiro, depois as combinações por marketplace em ordem alfabética (K2 - AMZ, K2 - ML, K2 - SH, K2 - TK TK, K2 - VD, LB Collection - AMZ, LB Collection - ML, LB Collection - SH, LB Collection - TK TK, LB Collection - VD).
         """)
 
     with st.expander("📦 Aba Entrada de Mercadoria", expanded=True):
