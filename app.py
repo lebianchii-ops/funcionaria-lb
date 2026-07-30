@@ -47,8 +47,9 @@ PRIOS     = ["Alta", "Média", "Baixa"]
 COR       = {"Alta": "#e74c3c", "Média": "#f39c12", "Baixa": "#27ae60"}
 EMOJI     = {"Alta": "🔴",     "Média": "🟡",       "Baixa": "🟢"}
 CATS      = ["—",
-             "K2 - AMZ", "K2 - ML", "K2 - SH", "K2 - TK TK", "K2 - VD",
-             "LB - AMZ", "LB - ML", "LB - SH", "LB - TK TK", "LB - VD"]
+             "K2 - AMZ", "K2 - ML", "K2 - SH", "K2 - TK TK", "K2 - VD", "K2 COMÉRCIO",
+             "LB COLLECTION", "LB Collection - AMZ", "LB Collection - ML",
+             "LB Collection - SH", "LB Collection - TK TK", "LB Collection - VD"]
 FILTRO_CATS = ["Todos"] + CATS
 NOTA_OPCOES = ["Sim", "Não"]
 # freela — 2 níveis só para mostrar a ordem do que fazer primeiro
@@ -194,8 +195,29 @@ dados.setdefault("tarefas", [])
 dados.setdefault("avisos", [])
 dados.setdefault("freelas", [])
 dados.setdefault("entradas", [])
+
+CATS_MIGRACAO = {
+    "ML - LB Collection":    "LB Collection - ML",
+    "SH - LB Collection":    "LB Collection - SH",
+    "AMZ - LB Collection":   "LB Collection - AMZ",
+    "TK TK - LB Collection": "LB Collection - TK TK",
+    "LB - ML":               "LB Collection - ML",
+    "LB - SH":               "LB Collection - SH",
+    "LB - AMZ":              "LB Collection - AMZ",
+    "LB - TK TK":            "LB Collection - TK TK",
+    "LB - VD":               "LB Collection - VD",
+}
+precisa_migrar = False
+
+def migra_categoria(item):
+    global precisa_migrar
+    if item.get("categoria") in CATS_MIGRACAO:
+        item["categoria"] = CATS_MIGRACAO[item["categoria"]]
+        precisa_migrar = True
+
 for e in dados["entradas"]:
     e.setdefault("observacao", "")
+    migra_categoria(e)
 for f in dados["freelas"]:
     f.setdefault("feita", False)
     f.setdefault("feita_em", None)
@@ -203,13 +225,7 @@ for f in dados["freelas"]:
     f.setdefault("prioridade", FR_PRIOS[0])
     f.setdefault("categoria", "—")
     f.setdefault("obs_conclusao", "")
-CATS_MIGRACAO = {
-    "ML - LB Collection":    "LB - ML",
-    "SH - LB Collection":    "LB - SH",
-    "AMZ - LB Collection":   "LB - AMZ",
-    "TK TK - LB Collection": "LB - TK TK",
-}
-precisa_migrar = False
+    migra_categoria(f)
 for t in dados.get("tarefas", []):
     t.setdefault("feita", False)
     t.setdefault("feita_em", None)
@@ -219,14 +235,14 @@ for t in dados.get("tarefas", []):
     t.setdefault("categoria", "—")
     t.setdefault("tipo", "evento")
     t.setdefault("obs_conclusao", "")
-    if t["categoria"] in CATS_MIGRACAO:
-        t["categoria"] = CATS_MIGRACAO[t["categoria"]]
-        precisa_migrar = True
+    migra_categoria(t)
+for a in dados.get("avisos", []):
+    a.setdefault("categoria", "—")
+    migra_categoria(a)
+
 if precisa_migrar and not st.session_state.get("migrado_cats"):
     st.session_state["migrado_cats"] = True
     salvar_dados(dados)
-for a in dados.get("avisos", []):
-    a.setdefault("categoria", "—")
 
 # ── dialog nova tarefa (definido uma vez, no nível do script) ─────────────
 @st.dialog("Nova Tarefa")
