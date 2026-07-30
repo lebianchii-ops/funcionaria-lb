@@ -73,6 +73,13 @@ def aplica_filtro(lista, filtro):
         return lista
     return [x for x in lista if x.get("categoria", "—") == filtro]
 
+def _marcar_pendente_conclusao(tipo, item_id):
+    # callback do checkbox — roda antes do rerun, então pode resetar a própria caixinha com segurança
+    chave = f"ck{item_id}" if tipo == "tarefa" else f"fck{item_id}"
+    if st.session_state.get(chave):
+        st.session_state["confirmar_pendente"] = (tipo, item_id)
+        st.session_state[chave] = False
+
 def get_token():
     t = st.secrets["github_token"]
     t = ''.join(c for c in t if ord(c) < 128).strip()
@@ -301,8 +308,6 @@ def popup_confirmar_conclusao(item_id, tipo):
     with c2:
         if st.button("✕ Cancelar", use_container_width=True,
                       key=f"cancelar_{tipo}_{item_id}"):
-            chave_checkbox = f"ck{item_id}" if tipo == "tarefa" else f"fck{item_id}"
-            st.session_state[chave_checkbox] = False
             st.rerun()
 
 @st.dialog("Editar Tarefa")
@@ -428,6 +433,12 @@ filtro_global = st.session_state.get("filtro_global", FILTRO_CATS[0])
 tab1, tab_fr, tab_ent, tab2, tab3, tab4 = st.tabs(
     ["✅ Tarefas", "🧵 Freela", "📦 Entrada de Mercadoria", "📢 Avisos", "✔️ Concluídos", "❓ Ajuda"]
 )
+
+# pop-up de confirmação de conclusão — um único disparo por marcação de caixinha (evita reabrir sozinho)
+_pendente = st.session_state.get("confirmar_pendente")
+if _pendente:
+    st.session_state["confirmar_pendente"] = None
+    popup_confirmar_conclusao(_pendente[1], _pendente[0])
 
 # ════════════════════════════════════════════════════════════════════════════
 with tab1:
@@ -600,9 +611,10 @@ with tab1:
                     else:
                         row = st.columns([7, 1, 1])
                         with row[0]:
-                            feita = st.checkbox(
+                            st.checkbox(
                                 f"**{t['titulo']}**",
-                                value=False, key=f"ck{t['id']}"
+                                value=False, key=f"ck{t['id']}",
+                                on_change=_marcar_pendente_conclusao, args=("tarefa", t["id"])
                             )
                             cat = t.get("categoria", "—")
                             if t.get("descricao"):
@@ -625,8 +637,6 @@ with tab1:
                                 dados["tarefas"] = [x for x in dados["tarefas"] if x["id"] != t["id"]]
                                 if salvar_dados(dados):
                                     st.rerun()
-                        if feita:
-                            popup_confirmar_conclusao(t["id"], "tarefa")
                     if idx < len(bloco) - 1:
                         st.markdown("<hr class='task-sep'>", unsafe_allow_html=True)
 
@@ -695,7 +705,8 @@ with tab_fr:
                 for idx, f in enumerate(bloco):
                     row = st.columns([7, 1, 1])
                     with row[0]:
-                        marcado = st.checkbox(f"**{f['titulo']}**", value=False, key=f"fck{f['id']}")
+                        st.checkbox(f"**{f['titulo']}**", value=False, key=f"fck{f['id']}",
+                                    on_change=_marcar_pendente_conclusao, args=("freela", f["id"]))
                         if f.get("descricao"):
                             st.caption(f["descricao"])
                         if f.get("categoria", "—") != "—":
@@ -710,8 +721,6 @@ with tab_fr:
                             dados["freelas"] = [x for x in dados["freelas"] if x["id"] != f["id"]]
                             if salvar_dados(dados):
                                 st.rerun()
-                    if marcado:
-                        popup_confirmar_conclusao(f["id"], "freela")
                     if idx < len(bloco) - 1:
                         st.markdown("<hr class='task-sep'>", unsafe_allow_html=True)
 
