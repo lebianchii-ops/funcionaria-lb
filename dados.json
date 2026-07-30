@@ -113,5 +113,15 @@
       "obs_conclusao": ""
     }
   ],
-  "entradas": []
+  "entradas": [
+    {
+      "id": "cb8d6783-ff6a-422c-927a-e3d6212ef394",
+      "data": "2026-07-30",
+      "fornecedor": "Art Lille",
+      "categoria": "K2 COMÉRCIO",
+      "nota_bate": "Não",
+      "observacao": "jndiwehnqioefnqoiewrfn",
+      "criado_em": "2026-07-30T15:24:55.231274"
+    }
+  ]
 }
