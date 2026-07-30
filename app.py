@@ -46,8 +46,11 @@ MES_ABREV = ["JAN","FEV","MAR","ABR","MAI","JUN","JUL","AGO","SET","OUT","NOV","
 PRIOS     = ["Alta", "Média", "Baixa"]
 COR       = {"Alta": "#e74c3c", "Média": "#f39c12", "Baixa": "#27ae60"}
 EMOJI     = {"Alta": "🔴",     "Média": "🟡",       "Baixa": "🟢"}
-CATS      = ["—", "ML - LB Collection", "SH - LB Collection",
-             "AMZ - LB Collection", "TK TK - LB Collection"]
+CATS      = ["—",
+             "K2 - AMZ", "K2 - ML", "K2 - SH", "K2 - TK TK", "K2 - VD",
+             "LB - AMZ", "LB - ML", "LB - SH", "LB - TK TK", "LB - VD"]
+FILTRO_CATS = ["Todos"] + CATS
+NOTA_OPCOES = ["Sim", "Não"]
 # freela — 2 níveis só para mostrar a ordem do que fazer primeiro
 FR_PRIOS  = ["Fazer primeiro", "Fazer depois"]
 FR_COR    = {"Fazer primeiro": "#e74c3c", "Fazer depois": "#27ae60"}
@@ -60,6 +63,14 @@ def fmt_data(d_str):
         return date.fromisoformat(d_str).strftime("%d/%m/%y")
     except Exception:
         return d_str
+
+def filtro_categoria(key, label="🔍 Filtrar por marketplace"):
+    return st.selectbox(label, FILTRO_CATS, key=key)
+
+def aplica_filtro(lista, filtro):
+    if filtro == "Todos":
+        return lista
+    return [x for x in lista if x.get("categoria", "—") == filtro]
 
 def get_token():
     t = st.secrets["github_token"]
@@ -182,11 +193,23 @@ dados = st.session_state["dados"]
 dados.setdefault("tarefas", [])
 dados.setdefault("avisos", [])
 dados.setdefault("freelas", [])
+dados.setdefault("entradas", [])
+for e in dados["entradas"]:
+    e.setdefault("observacao", "")
 for f in dados["freelas"]:
     f.setdefault("feita", False)
     f.setdefault("feita_em", None)
     f.setdefault("descricao", "")
     f.setdefault("prioridade", FR_PRIOS[0])
+    f.setdefault("categoria", "—")
+    f.setdefault("obs_conclusao", "")
+CATS_MIGRACAO = {
+    "ML - LB Collection":    "LB - ML",
+    "SH - LB Collection":    "LB - SH",
+    "AMZ - LB Collection":   "LB - AMZ",
+    "TK TK - LB Collection": "LB - TK TK",
+}
+precisa_migrar = False
 for t in dados.get("tarefas", []):
     t.setdefault("feita", False)
     t.setdefault("feita_em", None)
@@ -195,6 +218,15 @@ for t in dados.get("tarefas", []):
     t.setdefault("data", str(date.today()))
     t.setdefault("categoria", "—")
     t.setdefault("tipo", "evento")
+    t.setdefault("obs_conclusao", "")
+    if t["categoria"] in CATS_MIGRACAO:
+        t["categoria"] = CATS_MIGRACAO[t["categoria"]]
+        precisa_migrar = True
+if precisa_migrar and not st.session_state.get("migrado_cats"):
+    st.session_state["migrado_cats"] = True
+    salvar_dados(dados)
+for a in dados.get("avisos", []):
+    a.setdefault("categoria", "—")
 
 # ── dialog nova tarefa (definido uma vez, no nível do script) ─────────────
 @st.dialog("Nova Tarefa")
@@ -231,6 +263,31 @@ def popup_nova_tarefa(data_inicial, prioridade_inicial="Baixa", tipo="evento"):
         if salvar_dados(dados):
             st.rerun()
 
+@st.dialog("Confirmar conclusão")
+def popup_confirmar_conclusao(item_id, tipo):
+    colecao = "tarefas" if tipo == "tarefa" else "freelas"
+    item = next((x for x in dados[colecao] if x["id"] == item_id), None)
+    if not item:
+        st.error("Item não encontrado.")
+        return
+    st.write(f"Marcar **{item['titulo']}** como concluída?")
+    obs = st.text_area("Observação (opcional)", height=80, key=f"obs_{tipo}_{item_id}")
+    c1, c2 = st.columns(2)
+    with c1:
+        if st.button("✅ Confirmar", use_container_width=True, type="primary",
+                      key=f"confirmar_{tipo}_{item_id}"):
+            item["feita"]         = True
+            item["feita_em"]      = datetime.now().strftime("%d/%m/%y %H:%M")
+            item["obs_conclusao"] = obs.strip()
+            if salvar_dados(dados):
+                st.rerun()
+    with c2:
+        if st.button("✕ Cancelar", use_container_width=True,
+                      key=f"cancelar_{tipo}_{item_id}"):
+            chave_checkbox = f"ck{item_id}" if tipo == "tarefa" else f"fck{item_id}"
+            st.session_state[chave_checkbox] = False
+            st.rerun()
+
 @st.dialog("Editar Tarefa")
 def popup_editar_tarefa(tarefa_id):
     t = next((x for x in dados["tarefas"] if x["id"] == tarefa_id), None)
@@ -249,6 +306,9 @@ def popup_editar_tarefa(tarefa_id):
     with c2:
         nv_p = st.selectbox("Prioridade", PRIOS,
                             index=PRIOS.index(t.get("prioridade", "Baixa")))
+    obs_conc = st.text_area("Observação de conclusão (opcional)",
+                             value=t.get("obs_conclusao", ""), height=70,
+                             key=f"obsedit_{tarefa_id}")
     st.write("")
     c_sv, c_ok, c_del = st.columns(3)
     with c_sv:
@@ -263,13 +323,44 @@ def popup_editar_tarefa(tarefa_id):
         if st.button("✅ Marcar feita", use_container_width=True):
             for x in dados["tarefas"]:
                 if x["id"] == tarefa_id:
-                    x["feita"]    = True
-                    x["feita_em"] = datetime.now().strftime("%d/%m/%y %H:%M")
+                    x["feita"]         = True
+                    x["feita_em"]      = datetime.now().strftime("%d/%m/%y %H:%M")
+                    x["obs_conclusao"] = obs_conc.strip()
             if salvar_dados(dados):
                 st.rerun()
     with c_del:
         if st.button("🗑️ Excluir", use_container_width=True):
             dados["tarefas"] = [x for x in dados["tarefas"] if x["id"] != tarefa_id]
+            if salvar_dados(dados):
+                st.rerun()
+
+@st.dialog("Editar Entrada")
+def popup_editar_entrada(entrada_id):
+    e = next((x for x in dados["entradas"] if x["id"] == entrada_id), None)
+    if not e:
+        st.error("Entrada não encontrada.")
+        return
+    nv_dt = st.date_input("Dia que chegou",
+                          value=date.fromisoformat(e["data"]) if e.get("data") else date.today(),
+                          format="DD/MM/YYYY")
+    nv_forn = st.text_input("Fornecedor", value=e.get("fornecedor", ""))
+    nv_cat = st.selectbox("Categoria / Marketplace", CATS,
+                          index=CATS.index(e.get("categoria", "—")) if e.get("categoria", "—") in CATS else 0)
+    nv_bate = st.selectbox("A nota bate com a quantidade?", NOTA_OPCOES,
+                           index=NOTA_OPCOES.index(e.get("nota_bate", "Sim")) if e.get("nota_bate", "Sim") in NOTA_OPCOES else 0)
+    nv_obs = st.text_area("Observação", value=e.get("observacao", ""), height=80)
+    st.write("")
+    c_sv, c_del = st.columns(2)
+    with c_sv:
+        if st.button("💾 Salvar", use_container_width=True, type="primary", key=f"esv{entrada_id}"):
+            e.update({"data": str(nv_dt), "fornecedor": nv_forn.strip(),
+                       "categoria": nv_cat, "nota_bate": nv_bate,
+                       "observacao": nv_obs.strip()})
+            if salvar_dados(dados):
+                st.rerun()
+    with c_del:
+        if st.button("🗑️ Excluir", use_container_width=True, key=f"edl{entrada_id}"):
+            dados["entradas"] = [x for x in dados["entradas"] if x["id"] != entrada_id]
             if salvar_dados(dados):
                 st.rerun()
 
@@ -280,22 +371,30 @@ def popup_editar_freela(freela_id):
         st.error("Freela não encontrado.")
         return
     nv_t = st.text_input("Título", value=f["titulo"])
+    nv_cat = st.selectbox("Categoria / Marketplace", CATS,
+                          index=CATS.index(f.get("categoria", "—")) if f.get("categoria", "—") in CATS else 0,
+                          key=f"fcat{freela_id}")
     nv_d = st.text_area("Descrição", value=f.get("descricao", ""), height=80)
     prio_atual = f.get("prioridade", FR_PRIOS[0])
     nv_p = st.selectbox("Ordem", FR_PRIOS,
                         index=FR_PRIOS.index(prio_atual) if prio_atual in FR_PRIOS else 0,
                         format_func=lambda p: f"{FR_EMOJI[p]} {p}")
+    obs_conc = st.text_area("Observação de conclusão (opcional)",
+                             value=f.get("obs_conclusao", ""), height=70,
+                             key=f"fobsedit{freela_id}")
     st.write("")
     c_sv, c_ok, c_del = st.columns(3)
     with c_sv:
         if st.button("💾 Salvar", use_container_width=True, type="primary", key=f"fsv{freela_id}"):
-            f.update({"titulo": nv_t.strip(), "descricao": nv_d.strip(), "prioridade": nv_p})
+            f.update({"titulo": nv_t.strip(), "categoria": nv_cat,
+                       "descricao": nv_d.strip(), "prioridade": nv_p})
             if salvar_dados(dados):
                 st.rerun()
     with c_ok:
         if st.button("✅ Marcar feito", use_container_width=True, key=f"fok{freela_id}"):
-            f["feita"]    = True
-            f["feita_em"] = datetime.now().strftime("%d/%m/%y %H:%M")
+            f["feita"]         = True
+            f["feita_em"]      = datetime.now().strftime("%d/%m/%y %H:%M")
+            f["obs_conclusao"] = obs_conc.strip()
             if salvar_dados(dados):
                 st.rerun()
     with c_del:
@@ -306,8 +405,8 @@ def popup_editar_freela(freela_id):
 
 # ── cabeçalho ────────────────────────────────────────────────────────────────
 st.title("👜 LB Collection — Painel")
-tab1, tab_fr, tab2, tab3, tab4 = st.tabs(
-    ["✅ Tarefas", "🧵 Freela", "📢 Avisos", "✔️ Concluídos", "❓ Ajuda"]
+tab1, tab_fr, tab_ent, tab2, tab3, tab4 = st.tabs(
+    ["✅ Tarefas", "🧵 Freela", "📦 Entrada de Mercadoria", "📢 Avisos", "✔️ Concluídos", "❓ Ajuda"]
 )
 
 # ════════════════════════════════════════════════════════════════════════════
@@ -325,7 +424,10 @@ with tab1:
     while mes_cal > 12: mes_cal -= 12; ano_cal += 1
     while mes_cal < 1:  mes_cal += 12; ano_cal -= 1
 
-    tarefas_ativas = [t for t in dados.get("tarefas", []) if not t.get("feita")]
+    filtro_tarefas = filtro_categoria("filtro_tab1")
+    tarefas_ativas = aplica_filtro(
+        [t for t in dados.get("tarefas", []) if not t.get("feita")], filtro_tarefas
+    )
     datas_tarefas  = {t.get("data") for t in tarefas_ativas}
 
     # ── barra de navegação ───────────────────────────────────────────────────
@@ -405,7 +507,7 @@ with tab1:
     st.divider()
 
     # ── colunas de prioridade ────────────────────────────────────────────────
-    pendentes = [t for t in dados.get("tarefas", []) if not t.get("feita")]
+    pendentes = tarefas_ativas
 
     def render_col(col, prio):
         bloco = sorted(
@@ -503,12 +605,7 @@ with tab1:
                                 if salvar_dados(dados):
                                     st.rerun()
                         if feita:
-                            for x in dados["tarefas"]:
-                                if x["id"] == t["id"]:
-                                    x["feita"]    = True
-                                    x["feita_em"] = datetime.now().strftime("%d/%m/%y %H:%M")
-                            if salvar_dados(dados):
-                                st.rerun()
+                            popup_confirmar_conclusao(t["id"], "tarefa")
                     if idx < len(bloco) - 1:
                         st.markdown("<hr class='task-sep'>", unsafe_allow_html=True)
 
@@ -525,12 +622,14 @@ with tab_fr:
                "Marque a caixinha quando terminar — a tarefa sai daqui e vai para a aba ✔️ Concluídos.")
 
     with st.form("form_freela", clear_on_submit=True):
-        fc1, fc2 = st.columns([3, 2])
+        fc1, fc2, fc3 = st.columns([3, 2, 2])
         with fc1:
             fr_tit = st.text_input("Título *", placeholder="O que precisa ser feito?")
         with fc2:
             fr_prio = st.selectbox("Ordem", FR_PRIOS,
                                    format_func=lambda p: f"{FR_EMOJI[p]} {p}")
+        with fc3:
+            fr_cat = st.selectbox("Categoria / Marketplace", CATS, key="fr_cat_novo")
         fr_desc = st.text_area("Descrição (opcional)", height=70)
         if st.form_submit_button("➕ Adicionar tarefa de freela",
                                  use_container_width=True, type="primary"):
@@ -542,8 +641,10 @@ with tab_fr:
                     "titulo":     fr_tit.strip(),
                     "descricao":  fr_desc.strip(),
                     "prioridade": fr_prio,
+                    "categoria":  fr_cat,
                     "feita":      False,
                     "feita_em":   None,
+                    "obs_conclusao": "",
                     "criado_em":  datetime.now().isoformat(),
                 })
                 if salvar_dados(dados):
@@ -551,7 +652,10 @@ with tab_fr:
 
     st.divider()
 
-    freelas_abertos = [f for f in dados["freelas"] if not f.get("feita")]
+    filtro_fr = filtro_categoria("filtro_tab_fr")
+    freelas_abertos = aplica_filtro(
+        [f for f in dados["freelas"] if not f.get("feita")], filtro_fr
+    )
 
     def render_col_freela(col, prio):
         bloco = sorted([f for f in freelas_abertos
@@ -574,6 +678,8 @@ with tab_fr:
                         marcado = st.checkbox(f"**{f['titulo']}**", value=False, key=f"fck{f['id']}")
                         if f.get("descricao"):
                             st.caption(f["descricao"])
+                        if f.get("categoria", "—") != "—":
+                            st.caption(f["categoria"])
                     with row[1]:
                         st.write("")
                         if st.button("✏️", key=f"fe{f['id']}", use_container_width=True, help="Editar"):
@@ -585,10 +691,7 @@ with tab_fr:
                             if salvar_dados(dados):
                                 st.rerun()
                     if marcado:
-                        f["feita"]    = True
-                        f["feita_em"] = datetime.now().strftime("%d/%m/%y %H:%M")
-                        if salvar_dados(dados):
-                            st.rerun()
+                        popup_confirmar_conclusao(f["id"], "freela")
                     if idx < len(bloco) - 1:
                         st.markdown("<hr class='task-sep'>", unsafe_allow_html=True)
 
@@ -599,10 +702,80 @@ with tab_fr:
     render_col_freela(c_fd, FR_PRIOS[1])
 
 # ════════════════════════════════════════════════════════════════════════════
+with tab_ent:
+    st.subheader("📦 Entrada de Mercadoria")
+    st.caption("Registre toda mercadoria que chegar: dia, fornecedor e se a nota bate com a quantidade recebida.")
+
+    with st.form("form_entrada", clear_on_submit=True):
+        ec1, ec2 = st.columns(2)
+        with ec1:
+            ent_data = st.date_input("Dia que chegou *", value=date.today(), format="DD/MM/YYYY")
+        with ec2:
+            ent_forn = st.text_input("Fornecedor *", placeholder="Nome do fornecedor")
+        ec3, ec4 = st.columns(2)
+        with ec3:
+            ent_cat = st.selectbox("Categoria / Marketplace", CATS, key="ent_cat_novo")
+        with ec4:
+            ent_bate = st.selectbox("A nota bate com a quantidade?", NOTA_OPCOES)
+        ent_obs = st.text_area("Observação (obrigatório se a nota não bater)", height=70)
+        if st.form_submit_button("➕ Registrar entrada", use_container_width=True, type="primary"):
+            if not ent_forn.strip():
+                st.warning("Por favor, preencha o fornecedor.")
+            elif ent_bate == "Não" and not ent_obs.strip():
+                st.warning("A nota não bateu — preencha a observação explicando o que houve.")
+            else:
+                dados["entradas"].insert(0, {
+                    "id":          str(uuid.uuid4()),
+                    "data":        str(ent_data),
+                    "fornecedor":  ent_forn.strip(),
+                    "categoria":   ent_cat,
+                    "nota_bate":   ent_bate,
+                    "observacao":  ent_obs.strip(),
+                    "criado_em":   datetime.now().isoformat(),
+                })
+                if salvar_dados(dados):
+                    st.rerun()
+
+    st.divider()
+
+    filtro_ent = filtro_categoria("filtro_tab_ent")
+    entradas_lista = sorted(
+        aplica_filtro(dados["entradas"], filtro_ent),
+        key=lambda x: x.get("data", ""), reverse=True
+    )
+
+    if not entradas_lista:
+        st.info("Nenhuma entrada registrada.")
+
+    for e in entradas_lista:
+        with st.container(border=True):
+            c1, c2, c3 = st.columns([8, 2, 1])
+            with c1:
+                bate = e.get("nota_bate", "Sim")
+                icone_bate = "✅" if bate == "Sim" else "⚠️"
+                st.markdown(f"**{e.get('fornecedor','')}**  ·  📅 {fmt_data(e.get('data',''))}")
+                info_ent = f"{icone_bate} Nota bate: {bate}"
+                if e.get("categoria", "—") != "—":
+                    info_ent += f"  ·  {e['categoria']}"
+                st.caption(info_ent)
+                if e.get("observacao"):
+                    st.caption(f"📝 {e['observacao']}")
+            with c2:
+                if st.button("✏️", key=f"eed{e['id']}", use_container_width=True, help="Editar"):
+                    popup_editar_entrada(e["id"])
+            with c3:
+                if st.button("🗑️", key=f"edel{e['id']}", use_container_width=True, help="Excluir"):
+                    dados["entradas"] = [x for x in dados["entradas"] if x["id"] != e["id"]]
+                    if salvar_dados(dados):
+                        st.rerun()
+
+# ════════════════════════════════════════════════════════════════════════════
 with tab3:
-    feitas = [t for t in dados.get("tarefas", []) if t.get("feita")]
-    avisos_concluidos = [a for a in dados.get("avisos", []) if a.get("concluido")]
-    freelas_feitos = [f for f in dados.get("freelas", []) if f.get("feita")]
+    filtro_conc = filtro_categoria("filtro_tab3")
+
+    feitas = aplica_filtro([t for t in dados.get("tarefas", []) if t.get("feita")], filtro_conc)
+    avisos_concluidos = aplica_filtro([a for a in dados.get("avisos", []) if a.get("concluido")], filtro_conc)
+    freelas_feitos = aplica_filtro([f for f in dados.get("freelas", []) if f.get("feita")], filtro_conc)
 
     itens = ([("tarefa", t) for t in feitas]
              + [("freela", f) for f in freelas_feitos]
@@ -628,6 +801,8 @@ with tab3:
                     if cat and cat != "—":
                         info += f"  ·  {cat}"
                     st.caption(info)
+                    if t.get("obs_conclusao"):
+                        st.caption(f"📝 {t['obs_conclusao']}")
                 with c2:
                     if st.button("🗑️", key=f"df{t['id']}", help="Excluir"):
                         dados["tarefas"] = [x for x in dados["tarefas"] if x["id"] != t["id"]]
@@ -638,7 +813,12 @@ with tab3:
                 c1, c2 = st.columns([10, 1], vertical_alignment="center")
                 with c1:
                     st.markdown(f"🧵 Freela · ~~{f['titulo']}~~")
-                    st.caption(f"✅ {f.get('feita_em','')}")
+                    info_f = f"✅ {f.get('feita_em','')}"
+                    if f.get("categoria", "—") != "—":
+                        info_f += f"  ·  {f['categoria']}"
+                    st.caption(info_f)
+                    if f.get("obs_conclusao"):
+                        st.caption(f"📝 {f['obs_conclusao']}")
                 with c2:
                     if st.button("↩️", key=f"reab_fr_{f['id']}", help="Reabrir freela"):
                         f["feita"]    = False
@@ -654,7 +834,10 @@ with tab3:
                 c1, c2 = st.columns([10, 1], vertical_alignment="center")
                 with c1:
                     st.markdown(f"📢 Aviso · ~~{a['texto']}~~")
-                    st.caption(f"✅ {a.get('concluido_em','')}  ·  {a.get('autor','')}")
+                    info_a = f"✅ {a.get('concluido_em','')}  ·  {a.get('autor','')}"
+                    if a.get("categoria", "—") != "—":
+                        info_a += f"  ·  {a['categoria']}"
+                    st.caption(info_a)
                     for r in a.get("respostas", []):
                         st.markdown(f"↳ ~~{r['texto']}~~")
                         st.caption(f"🕐 {r['autor']} · {r['data']}")
@@ -679,12 +862,14 @@ with tab2:
 
     with st.form("form_aviso", clear_on_submit=True):
         av_txt = st.text_area("Nova mensagem", placeholder="Digite o aviso...")
+        av_cat = st.selectbox("Categoria / Marketplace", CATS, key="av_cat_novo")
         if st.form_submit_button("📢 Publicar aviso", use_container_width=True, type="primary"):
             if av_txt.strip():
                 dados["avisos"].insert(0, {
                     "id":         str(uuid.uuid4()),
                     "texto":      av_txt.strip(),
                     "autor":      quem,
+                    "categoria":  av_cat,
                     "data":       datetime.now().strftime("%d/%m/%Y %H:%M"),
                     "respostas":  [],
                 })
@@ -701,8 +886,12 @@ with tab2:
         a.setdefault("autor", "Bruna")
         a.setdefault("concluido", False)
         a.setdefault("concluido_em", None)
+        a.setdefault("categoria", "—")
 
-    abertos = [a for a in dados.get("avisos", []) if not a.get("concluido")]
+    filtro_av = filtro_categoria("filtro_tab2")
+    abertos = aplica_filtro(
+        [a for a in dados.get("avisos", []) if not a.get("concluido")], filtro_av
+    )
 
     if not abertos:
         st.info("Nenhum aviso em aberto.")
@@ -712,7 +901,10 @@ with tab2:
             c1, c2, c3 = st.columns([8, 2, 1])
             with c1:
                 st.markdown(f"**{a['texto']}**")
-                st.caption(f"🕐 {a['autor']} · {a['data']}")
+                info_av = f"🕐 {a['autor']} · {a['data']}"
+                if a.get("categoria", "—") != "—":
+                    info_av += f"  ·  {a['categoria']}"
+                st.caption(info_av)
             with c2:
                 if st.button("✅ Concluído", key=f"cc_av_{a['id']}", use_container_width=True,
                              help="Marcar como concluído"):
@@ -749,12 +941,26 @@ with tab4:
     st.subheader("❓ Como usar o painel")
     st.caption("Guia rápido — leia isso antes de começar a usar.")
 
-    with st.expander("📌 As 4 abas principais", expanded=True):
+    with st.expander("📌 As abas principais", expanded=True):
         st.markdown("""
 - **✅ Tarefas** — onde você organiza o trabalho do dia. Tem duas partes: o **calendário** (em cima) e as **3 colunas de prioridade** (embaixo: 🔴 Alta, 🟡 Média, 🟢 Baixa).
 - **🧵 Freela** — lista de tarefas só do freela, separada das tarefas da loja.
+- **📦 Entrada de Mercadoria** — registro de toda mercadoria que chegar (dia, fornecedor, se a nota bate com a quantidade e observação).
 - **📢 Avisos** — mural de mão dupla entre Bruna e funcionária. Leia sempre que entrar.
 - **✔️ Concluídos** — histórico de tudo que já foi marcado como feito: tarefas, freelas e avisos juntos (cada um com uma etiqueta indicando o tipo: 🗹 Tarefa, 🧵 Freela ou 📢 Aviso).
+
+Todas as abas (menos Ajuda) têm um **filtro "🔍 Filtrar por marketplace"** no topo, para mostrar só os itens de uma categoria (ex: só "LB - ML") ou "Todos".
+        """)
+
+    with st.expander("📦 Aba Entrada de Mercadoria", expanded=True):
+        st.markdown("""
+Use sempre que uma mercadoria chegar. Preencha:
+- **Dia que chegou** e **Fornecedor** (obrigatórios)
+- **Categoria / Marketplace** (opcional, ex: "LB - ML", "K2 - SH")
+- **A nota bate com a quantidade?** — Sim ou Não
+- **Observação** — vira **obrigatória** se você marcar "Não", para explicar o que faltou ou veio errado
+
+Clique em **➕ Registrar entrada**. Os registros ficam listados abaixo, do mais recente para o mais antigo — use **✏️** para corrigir algo ou **🗑️** para apagar.
         """)
 
     with st.expander("🧵 Aba Freela", expanded=True):
@@ -797,7 +1003,7 @@ Existem **dois jeitos** de adicionar algo no painel, e cada um serve pra uma coi
     with st.expander("✏️ Editar, marcar como feita e excluir"):
         st.markdown("""
 - **Editar:** clique no lápis ✏️ do lado da tarefa (nas colunas) ou clique em cima do evento (no calendário) — abre um formulário pra alterar.
-- **Marcar como feita:** marque a caixinha ☐ do lado do título — a tarefa some da lista e vai para a aba **✔️ Concluídos**.
+- **Marcar como feita:** marque a caixinha ☐ do lado do título (tarefa ou freela) — abre uma **janela de confirmação** perguntando se quer mesmo marcar como concluída, com um campo de **Observação** (opcional). Só depois de clicar em **✅ Confirmar** é que a tarefa some da lista e vai para a aba **✔️ Concluídos**. Se clicar em **✕ Cancelar**, nada muda.
 - **Excluir:** clique na lixeira 🗑️ — apaga de vez, não tem como desfazer.
         """)
 
