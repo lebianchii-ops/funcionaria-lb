@@ -844,24 +844,21 @@ with tab_an:
     if not anuncios_abertos:
         st.info("Nenhum anúncio pendente.")
     else:
-        for idx, n in enumerate(anuncios_abertos):
-            row = st.columns([7, 1, 1])
-            with row[0]:
-                st.checkbox(f"**{n['titulo']}**", value=False, key=f"ack{n['id']}",
-                            on_change=_marcar_pendente_conclusao, args=("anuncio", n["id"]))
-                st.caption(n.get("marca", "LB COLLECTION"))
-            with row[1]:
-                st.write("")
-                if st.button("✏️", key=f"ae{n['id']}", use_container_width=True, help="Editar"):
-                    popup_editar_anuncio(n["id"])
-            with row[2]:
-                st.write("")
-                if st.button("🗑️", key=f"ad{n['id']}", use_container_width=True, help="Excluir"):
-                    dados["anuncios_pendentes"] = [x for x in dados["anuncios_pendentes"] if x["id"] != n["id"]]
-                    if salvar_dados(dados):
-                        st.rerun()
-            if idx < len(anuncios_abertos) - 1:
-                st.markdown("<hr class='task-sep'>", unsafe_allow_html=True)
+        for n in anuncios_abertos:
+            with st.container(border=True):
+                row = st.columns([8, 1, 1], vertical_alignment="center")
+                with row[0]:
+                    st.checkbox(f"**{n['titulo']}**", value=False, key=f"ack{n['id']}",
+                                on_change=_marcar_pendente_conclusao, args=("anuncio", n["id"]))
+                    st.caption(n.get("marca", "LB COLLECTION"))
+                with row[1]:
+                    if st.button("✏️", key=f"ae{n['id']}", use_container_width=True, help="Editar"):
+                        popup_editar_anuncio(n["id"])
+                with row[2]:
+                    if st.button("🗑️", key=f"ad{n['id']}", use_container_width=True, help="Excluir"):
+                        dados["anuncios_pendentes"] = [x for x in dados["anuncios_pendentes"] if x["id"] != n["id"]]
+                        if salvar_dados(dados):
+                            st.rerun()
 
 # ════════════════════════════════════════════════════════════════════════════
 with tab_ent:
