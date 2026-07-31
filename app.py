@@ -2,6 +2,7 @@ import streamlit as st
 import json
 import requests
 import base64
+import unicodedata
 from datetime import datetime, date, timedelta
 import uuid
 import calendar
@@ -42,8 +43,28 @@ NOTA_OPCOES = ["Sim", "Não"]
 FR_PRIOS  = ["Fazer primeiro", "Fazer depois"]
 FR_COR    = {"Fazer primeiro": "#e74c3c", "Fazer depois": "#27ae60"}
 FR_EMOJI  = {"Fazer primeiro": "🔴",      "Fazer depois": "🟢"}
+# anúncios pendentes — marca/marketplace restrito a 3 opções (sem as 10 combinações por marketplace)
+MARCA_OPCOES = ["K2 COMÉRCIO", "LB COLLECTION", "AMBOS (K2 e LB)"]
+SEED_ANUNCIOS_PENDENTES = [
+    "Apontador e Branquinho Bichinhos", "Asa Led Menos", "Bíquini sereia",
+    "Brinquedo Família Urso", "Brinquedo sanfonado", "Caderno astronauta pqno",
+    "Caderno dino pqno", "Caderno inteligente", "Caixa porta jóias", "Carrinho lego",
+    "Cartão bloqueador aproximação", "Chapéuzinho Vermelho", "Colar Maui",
+    "Coroa Princesa Led", "Enfermeira/ Médica", "Faixa P/ Personalizar Color",
+    "Fantasia Gatinha", "Fantasia Jessie Toy Story", "Fantasia Sereia Capa",
+    "Festão Carnaval", "Kit Carrinhos", "Leque Madeira", "Necessaire Personalizada",
+    "Óculos carnaval gatinho", "Óculos Festa Led", "Pijama Pintar", "Pinto Petisco Bride",
+    "Porta Copos Piscina Rosa Glitter", "Presépio Luz e Som", "Rede Banheira BB",
+    "Saco holográfico brinde", "Stick Casinha e Capivara", "Tiara noiva chic",
+    "Tiara véu", "Varinha Princesa",
+]
 
 # ─── helpers ────────────────────────────────────────────────────────────────
+
+def chave_alfabetica(texto):
+    # remove acentos pra ordenar "Ó" junto de "O", não depois de "Z"
+    sem_acento = unicodedata.normalize("NFKD", texto or "").encode("ascii", "ignore").decode()
+    return sem_acento.lower()
 
 def fmt_data(d_str):
     try:
@@ -59,9 +80,11 @@ def aplica_filtro(lista, filtro):
         return lista
     return [x for x in lista if x.get("categoria", "—") == filtro]
 
+_CHAVE_CHECKBOX = {"tarefa": "ck", "freela": "fck", "anuncio": "ack"}
+
 def _marcar_pendente_conclusao(tipo, item_id):
     # callback do checkbox — roda antes do rerun, então pode resetar a própria caixinha com segurança
-    chave = f"ck{item_id}" if tipo == "tarefa" else f"fck{item_id}"
+    chave = f"{_CHAVE_CHECKBOX[tipo]}{item_id}"
     if st.session_state.get(chave):
         st.session_state["confirmar_pendente"] = (tipo, item_id)
         st.session_state[chave] = False
@@ -189,6 +212,21 @@ dados.setdefault("avisos", [])
 dados.setdefault("freelas", [])
 dados.setdefault("entradas", [])
 
+precisa_seed_anuncios = "anuncios_pendentes" not in dados
+if precisa_seed_anuncios:
+    dados["anuncios_pendentes"] = [
+        {
+            "id":            str(uuid.uuid4()),
+            "titulo":        titulo,
+            "marca":         "LB COLLECTION",
+            "feita":         False,
+            "feita_em":      None,
+            "obs_conclusao": "",
+            "criado_em":     datetime.now().isoformat(),
+        }
+        for titulo in SEED_ANUNCIOS_PENDENTES
+    ]
+
 CATS_MIGRACAO = {
     "ML - LB Collection":    "LB Collection - ML",
     "SH - LB Collection":    "LB Collection - SH",
@@ -233,9 +271,20 @@ for t in dados.get("tarefas", []):
 for a in dados.get("avisos", []):
     a.setdefault("categoria", "—")
     migra_categoria(a)
+for n in dados.get("anuncios_pendentes", []):
+    n.setdefault("feita", False)
+    n.setdefault("feita_em", None)
+    n.setdefault("obs_conclusao", "")
+    n.setdefault("marca", "LB COLLECTION")
+    if n["marca"] not in MARCA_OPCOES:
+        n["marca"] = "LB COLLECTION"
 
 if precisa_migrar and not st.session_state.get("migrado_cats"):
     st.session_state["migrado_cats"] = True
+    salvar_dados(dados)
+
+if precisa_seed_anuncios and not st.session_state.get("seed_anuncios_feito"):
+    st.session_state["seed_anuncios_feito"] = True
     salvar_dados(dados)
 
 # ── dialog nova tarefa (definido uma vez, no nível do script) ─────────────
@@ -273,9 +322,11 @@ def popup_nova_tarefa(data_inicial, prioridade_inicial="Baixa", tipo="evento"):
         if salvar_dados(dados):
             st.rerun()
 
+_COLECAO_POR_TIPO = {"tarefa": "tarefas", "freela": "freelas", "anuncio": "anuncios_pendentes"}
+
 @st.dialog("Confirmar conclusão")
 def popup_confirmar_conclusao(item_id, tipo):
-    colecao = "tarefas" if tipo == "tarefa" else "freelas"
+    colecao = _COLECAO_POR_TIPO[tipo]
     item = next((x for x in dados[colecao] if x["id"] == item_id), None)
     if not item:
         st.error("Item não encontrado.")
@@ -411,13 +462,46 @@ def popup_editar_freela(freela_id):
             if salvar_dados(dados):
                 st.rerun()
 
+@st.dialog("Editar Anúncio Pendente")
+def popup_editar_anuncio(anuncio_id):
+    n = next((x for x in dados["anuncios_pendentes"] if x["id"] == anuncio_id), None)
+    if not n:
+        st.error("Item não encontrado.")
+        return
+    nv_t = st.text_input("Título", value=n["titulo"])
+    nv_m = st.selectbox("Marca / Marketplace", MARCA_OPCOES,
+                        index=MARCA_OPCOES.index(n.get("marca", "LB COLLECTION")))
+    obs_conc = st.text_area("Observação de conclusão (opcional)",
+                             value=n.get("obs_conclusao", ""), height=70,
+                             key=f"nobsedit{anuncio_id}")
+    st.write("")
+    c_sv, c_ok, c_del = st.columns(3)
+    with c_sv:
+        if st.button("💾 Salvar", use_container_width=True, type="primary", key=f"nsv{anuncio_id}"):
+            n.update({"titulo": nv_t.strip(), "marca": nv_m})
+            if salvar_dados(dados):
+                st.rerun()
+    with c_ok:
+        if st.button("✅ Marcar feito", use_container_width=True, key=f"nok{anuncio_id}"):
+            n["feita"]         = True
+            n["feita_em"]      = datetime.now().strftime("%d/%m/%y %H:%M")
+            n["obs_conclusao"] = obs_conc.strip()
+            if salvar_dados(dados):
+                st.rerun()
+    with c_del:
+        if st.button("🗑️ Excluir", use_container_width=True, key=f"ndl{anuncio_id}"):
+            dados["anuncios_pendentes"] = [x for x in dados["anuncios_pendentes"] if x["id"] != anuncio_id]
+            if salvar_dados(dados):
+                st.rerun()
+
 # ── cabeçalho ────────────────────────────────────────────────────────────────
 st.title("👜 LB Collection — Painel")
 # valor atual do filtro global — o controle em si fica na coluna do mini-calendário (aba Tarefas),
 # mas o valor vale para todas as abas
 filtro_global = st.session_state.get("filtro_global", FILTRO_CATS[0])
-tab1, tab_fr, tab_ent, tab2, tab3, tab4 = st.tabs(
-    ["✅ Tarefas", "🧵 Freela", "📦 Entrada de Mercadoria", "📢 Avisos", "✔️ Concluídos", "❓ Ajuda"]
+tab1, tab_fr, tab_an, tab_ent, tab2, tab3, tab4 = st.tabs(
+    ["✅ Tarefas", "🧵 Freela", "📋 Anúncios Pendentes", "📦 Entrada de Mercadoria",
+     "📢 Avisos", "✔️ Concluídos", "❓ Ajuda"]
 )
 
 # pop-up de confirmação de conclusão — um único disparo por marcação de caixinha (evita reabrir sozinho)
@@ -717,6 +801,69 @@ with tab_fr:
     render_col_freela(c_fd, FR_PRIOS[1])
 
 # ════════════════════════════════════════════════════════════════════════════
+with tab_an:
+    st.subheader("📋 Anúncios Pendentes")
+    st.caption("Lista completa de anúncios ainda por criar, em ordem alfabética. "
+               "Marque a caixinha quando o anúncio for criado — ele sai daqui e vai para a aba ✔️ Concluídos.")
+
+    with st.form("form_anuncio_pendente", clear_on_submit=True):
+        ac1, ac2 = st.columns([3, 2])
+        with ac1:
+            an_tit = st.text_input("Título *", placeholder="Nome do produto/anúncio")
+        with ac2:
+            an_marca = st.selectbox("Marca / Marketplace", MARCA_OPCOES, index=1)
+        if st.form_submit_button("➕ Adicionar anúncio pendente", use_container_width=True, type="primary"):
+            if not an_tit.strip():
+                st.warning("Por favor, preencha o título.")
+            else:
+                dados["anuncios_pendentes"].append({
+                    "id":            str(uuid.uuid4()),
+                    "titulo":        an_tit.strip(),
+                    "marca":         an_marca,
+                    "feita":         False,
+                    "feita_em":      None,
+                    "obs_conclusao": "",
+                    "criado_em":     datetime.now().isoformat(),
+                })
+                if salvar_dados(dados):
+                    st.rerun()
+
+    st.divider()
+
+    filtro_marca = st.selectbox("🔍 Filtrar por marca", ["Todas"] + MARCA_OPCOES, key="filtro_marca_anuncio")
+
+    anuncios_abertos = sorted(
+        [n for n in dados["anuncios_pendentes"] if not n.get("feita")],
+        key=lambda x: chave_alfabetica(x.get("titulo", ""))
+    )
+    if filtro_marca != "Todas":
+        anuncios_abertos = [n for n in anuncios_abertos if n.get("marca") == filtro_marca]
+
+    st.caption(f"**{len(anuncios_abertos)} pendente(s)**")
+
+    if not anuncios_abertos:
+        st.info("Nenhum anúncio pendente.")
+    else:
+        for idx, n in enumerate(anuncios_abertos):
+            row = st.columns([7, 1, 1])
+            with row[0]:
+                st.checkbox(f"**{n['titulo']}**", value=False, key=f"ack{n['id']}",
+                            on_change=_marcar_pendente_conclusao, args=("anuncio", n["id"]))
+                st.caption(n.get("marca", "LB COLLECTION"))
+            with row[1]:
+                st.write("")
+                if st.button("✏️", key=f"ae{n['id']}", use_container_width=True, help="Editar"):
+                    popup_editar_anuncio(n["id"])
+            with row[2]:
+                st.write("")
+                if st.button("🗑️", key=f"ad{n['id']}", use_container_width=True, help="Excluir"):
+                    dados["anuncios_pendentes"] = [x for x in dados["anuncios_pendentes"] if x["id"] != n["id"]]
+                    if salvar_dados(dados):
+                        st.rerun()
+            if idx < len(anuncios_abertos) - 1:
+                st.markdown("<hr class='task-sep'>", unsafe_allow_html=True)
+
+# ════════════════════════════════════════════════════════════════════════════
 with tab_ent:
     st.subheader("📦 Entrada de Mercadoria")
     st.caption("Registre toda mercadoria que chegar: dia, fornecedor e se a nota bate com a quantidade recebida.")
@@ -788,9 +935,11 @@ with tab3:
     feitas = aplica_filtro([t for t in dados.get("tarefas", []) if t.get("feita")], filtro_global)
     avisos_concluidos = aplica_filtro([a for a in dados.get("avisos", []) if a.get("concluido")], filtro_global)
     freelas_feitos = aplica_filtro([f for f in dados.get("freelas", []) if f.get("feita")], filtro_global)
+    anuncios_feitos = [n for n in dados.get("anuncios_pendentes", []) if n.get("feita")]
 
     itens = ([("tarefa", t) for t in feitas]
              + [("freela", f) for f in freelas_feitos]
+             + [("anuncio", n) for n in anuncios_feitos]
              + [("aviso", a) for a in avisos_concluidos])
     itens.sort(key=lambda x: x[1].get("feita_em") or x[1].get("concluido_em") or "", reverse=True)
 
@@ -839,6 +988,25 @@ with tab3:
                             st.rerun()
                     if st.button("🗑️", key=f"dfr_{f['id']}", help="Excluir"):
                         dados["freelas"] = [x for x in dados["freelas"] if x["id"] != f["id"]]
+                        if salvar_dados(dados):
+                            st.rerun()
+            elif tipo == "anuncio":
+                n = item
+                c1, c2 = st.columns([10, 1], vertical_alignment="center")
+                with c1:
+                    st.markdown(f"📋 Anúncio Pendente · ~~{n['titulo']}~~")
+                    info_n = f"✅ {n.get('feita_em','')}  ·  {n.get('marca','LB COLLECTION')}"
+                    st.caption(info_n)
+                    if n.get("obs_conclusao"):
+                        st.caption(f"📝 {n['obs_conclusao']}")
+                with c2:
+                    if st.button("↩️", key=f"reab_an_{n['id']}", help="Reabrir anúncio pendente"):
+                        n["feita"]    = False
+                        n["feita_em"] = None
+                        if salvar_dados(dados):
+                            st.rerun()
+                    if st.button("🗑️", key=f"dan_{n['id']}", help="Excluir"):
+                        dados["anuncios_pendentes"] = [x for x in dados["anuncios_pendentes"] if x["id"] != n["id"]]
                         if salvar_dados(dados):
                             st.rerun()
             else:
@@ -956,6 +1124,7 @@ with tab4:
         st.markdown("""
 - **✅ Tarefas** — onde você organiza o trabalho do dia. Tem duas partes: o **calendário** (em cima) e as **3 colunas de prioridade** (embaixo: 🔴 Alta, 🟡 Média, 🟢 Baixa).
 - **🧵 Freela** — lista de tarefas só do freela, separada das tarefas da loja.
+- **📋 Anúncios Pendentes** — lista completa de produtos que ainda precisam ter anúncio criado, em ordem alfabética, cada um com a marca/marketplace (K2 COMÉRCIO, LB COLLECTION ou AMBOS).
 - **📦 Entrada de Mercadoria** — registro de toda mercadoria que chegar (dia, fornecedor, se a nota bate com a quantidade e observação).
 - **📢 Avisos** — mural de mão dupla entre Bruna e funcionária. Leia sempre que entrar.
 - **✔️ Concluídos** — histórico de tudo que já foi marcado como feito: tarefas, freelas e avisos juntos (cada um com uma etiqueta indicando o tipo: 🗹 Tarefa, 🧵 Freela ou 📢 Aviso).
@@ -992,6 +1161,19 @@ São **2 colunas**, que servem só para mostrar a ordem do que fazer:
 - **✏️** — abre uma janelinha para mudar o título, a descrição ou a ordem (🔴/🟢). Também tem "✅ Marcar feito" lá dentro.
 - **🗑️** — apaga de vez, não tem como desfazer.
 - Em **✔️ Concluídos**, o **↩️** traz a tarefa de volta para esta aba, caso tenha marcado sem querer.
+        """)
+
+    with st.expander("📋 Aba Anúncios Pendentes", expanded=True):
+        st.markdown("""
+Lista de produtos que ainda precisam ter o anúncio criado em algum marketplace.
+
+**Para adicionar:** escreva o **Título** (obrigatório) e escolha a **Marca / Marketplace** — K2 COMÉRCIO, LB COLLECTION ou AMBOS (K2 e LB). Depois clique em **➕ Adicionar anúncio pendente**.
+
+A lista aparece sempre em **ordem alfabética**. Tem um filtro **"🔍 Filtrar por marca"** para ver só os de uma marca.
+
+**Para marcar como criado:** marque a **caixinha ☐** — abre a mesma confirmação das outras abas. Depois de confirmar, vai para **✔️ Concluídos** com a etiqueta 📋 Anúncio Pendente.
+
+**Outros botões:** **✏️** edita título e marca (também tem "Marcar feito" lá dentro) · **🗑️** apaga de vez.
         """)
 
     with st.expander("🟢 Tarefa pontual × 📅 Evento — qual a diferença", expanded=True):
