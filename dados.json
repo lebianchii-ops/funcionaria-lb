@@ -299,8 +299,8 @@
       "id": "f4053cd5-8de5-4a1c-8cda-cc848babfae7",
       "titulo": "Enfermeira/ Médica",
       "marca": "LB COLLECTION",
-      "feita": false,
-      "feita_em": null,
+      "feita": true,
+      "feita_em": "01/08/26 16:51",
       "obs_conclusao": "",
       "criado_em": "2026-07-31T16:03:27.675853"
     },
