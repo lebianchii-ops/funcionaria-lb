@@ -64,6 +64,18 @@
       "feita_em": "28/07/26 15:48",
       "criado_em": "2026-07-27T15:18:09.383549",
       "obs_conclusao": ""
+    },
+    {
+      "id": "eab96821-de70-4d84-82d9-d49ddba3a6d4",
+      "titulo": "Preencher na planilha BASE",
+      "categoria": "LB COLLECTION",
+      "descricao": "PESOS e MEDIDAS \n- Fantasia Harry \n- Fantasia Gatinho\n- Fantasia Sereia Capa",
+      "data": null,
+      "tipo": "tarefa",
+      "prioridade": "Alta",
+      "feita": false,
+      "feita_em": null,
+      "criado_em": "2026-08-01T21:45:52.183357"
     }
   ],
   "avisos": [],
