@@ -75,7 +75,20 @@
       "prioridade": "Alta",
       "feita": false,
       "feita_em": null,
-      "criado_em": "2026-08-01T21:45:52.183357"
+      "criado_em": "2026-08-01T21:45:52.183357",
+      "obs_conclusao": ""
+    },
+    {
+      "id": "926f13a2-2d2b-4345-8d1a-7d0802d902a6",
+      "titulo": "Confirmar o estoque:",
+      "categoria": "LB COLLECTION",
+      "descricao": "- Varinha Mágina",
+      "data": null,
+      "tipo": "tarefa",
+      "prioridade": "Alta",
+      "feita": false,
+      "feita_em": null,
+      "criado_em": "2026-08-02T13:02:34.715381"
     }
   ],
   "avisos": [],
