@@ -88,7 +88,20 @@
       "prioridade": "Alta",
       "feita": false,
       "feita_em": null,
-      "criado_em": "2026-08-02T13:02:34.715381"
+      "criado_em": "2026-08-02T13:02:34.715381",
+      "obs_conclusao": ""
+    },
+    {
+      "id": "3ed1bba7-cf8d-49a0-8b92-03914c96aed9",
+      "titulo": "Pq a peruca chanel não esta ativa?",
+      "categoria": "LB COLLECTION",
+      "descricao": "",
+      "data": null,
+      "tipo": "tarefa",
+      "prioridade": "Alta",
+      "feita": false,
+      "feita_em": null,
+      "criado_em": "2026-08-02T13:04:52.623555"
     }
   ],
   "avisos": [],
