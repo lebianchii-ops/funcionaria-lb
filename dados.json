@@ -86,8 +86,8 @@
       "data": null,
       "tipo": "tarefa",
       "prioridade": "Alta",
-      "feita": false,
-      "feita_em": null,
+      "feita": true,
+      "feita_em": "03/08/26 15:39",
       "criado_em": "2026-08-02T13:02:34.715381",
       "obs_conclusao": ""
     },
