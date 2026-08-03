@@ -61,6 +61,25 @@ SEED_ANUNCIOS_PENDENTES = [
 
 # ─── helpers ────────────────────────────────────────────────────────────────
 
+def num_seguro(v, cast=float):
+    # a BASE.xlsx pode ter celula de custo/peso/medida como texto (ex: "10,50"
+    # com virgula, ou vazio) — nunca deixar isso quebrar o app, sempre cai pra 0
+    if v is None or v == "":
+        return cast(0)
+    if isinstance(v, (int, float)):
+        return cast(v)
+    s = str(v).strip()
+    if not s:
+        return cast(0)
+    if "," in s and "." in s:
+        s = s.replace(".", "").replace(",", ".")
+    elif "," in s:
+        s = s.replace(",", ".")
+    try:
+        return cast(float(s))
+    except (TypeError, ValueError):
+        return cast(0)
+
 def chave_alfabetica(texto):
     # remove acentos pra ordenar "Ó" junto de "O", não depois de "Z"
     sem_acento = unicodedata.normalize("NFKD", texto or "").encode("ascii", "ignore").decode()
@@ -1008,8 +1027,9 @@ with tab_prod:
                 with c1:
                     extra = f" · variação de {p['sku_pai']} ({p['variacao']})" if p.get("sku_pai") else ""
                     st.markdown(f"**{p['titulo']}**{extra}")
-                    st.caption(f"Custo R$ {p.get('custo',0):.2f} · {p.get('peso',0)}g · "
-                               f"{p.get('comprimento',0)}×{p.get('largura',0)}×{p.get('altura',0)}cm")
+                    st.caption(f"Custo R$ {num_seguro(p.get('custo')):.2f} · {num_seguro(p.get('peso'), int)}g · "
+                               f"{num_seguro(p.get('comprimento'), int)}×{num_seguro(p.get('largura'), int)}×"
+                               f"{num_seguro(p.get('altura'), int)}cm")
                     if p.get("erro"):
                         st.error(f"⚠️ {p['erro']}")
                 with c2:
@@ -1031,7 +1051,7 @@ with tab_prod:
     existentes = [p for p in dados["produtos"] if p.get("sku") and (p.get("titulo") or "").strip()]
 
     if so_faltando and not busca_prod:
-        existentes = [p for p in existentes if p.get("peso_fake") or p.get("ean_fake") or not p.get("custo")]
+        existentes = [p for p in existentes if p.get("peso_fake") or p.get("ean_fake") or num_seguro(p.get("custo")) <= 0]
 
     if busca_prod:
         alvo = chave_alfabetica(busca_prod)
@@ -1052,7 +1072,7 @@ with tab_prod:
             avisos_p.append("⚠️ peso/medida provisório")
         if p.get("ean_fake"):
             avisos_p.append("⚠️ EAN provisório")
-        if not p.get("custo"):
+        if num_seguro(p.get("custo")) <= 0:
             avisos_p.append("⚠️ sem custo")
         titulo_linha = f"**{p.get('sku')}** — {p.get('titulo','')}"
         if p.get("variacao"):
@@ -1064,20 +1084,20 @@ with tab_prod:
                 fc1, fc2, fc3, fc4, fc5 = st.columns(5)
                 with fc1:
                     v_custo = st.number_input("Custo (R$)", min_value=0.0, step=0.5, format="%.2f",
-                                               value=float(p.get("custo") or 0))
+                                               value=num_seguro(p.get("custo")))
                 with fc2:
-                    v_peso = st.number_input("Peso (g)", min_value=0, step=1, value=int(p.get("peso") or 0))
+                    v_peso = st.number_input("Peso (g)", min_value=0, step=1, value=num_seguro(p.get("peso"), int))
                 with fc3:
-                    v_comp = st.number_input("Comprim. (cm)", min_value=0, step=1, value=int(p.get("comprimento") or 0))
+                    v_comp = st.number_input("Comprim. (cm)", min_value=0, step=1, value=num_seguro(p.get("comprimento"), int))
                 with fc4:
-                    v_larg = st.number_input("Largura (cm)", min_value=0, step=1, value=int(p.get("largura") or 0))
+                    v_larg = st.number_input("Largura (cm)", min_value=0, step=1, value=num_seguro(p.get("largura"), int))
                 with fc5:
-                    v_alt = st.number_input("Altura (cm)", min_value=0, step=1, value=int(p.get("altura") or 0))
+                    v_alt = st.number_input("Altura (cm)", min_value=0, step=1, value=num_seguro(p.get("altura"), int))
                 fe1, fe2 = st.columns(2)
                 with fe1:
                     v_ean = st.text_input("EAN / Código de barras", value=p.get("ean") or "")
                 with fe2:
-                    v_estoque = st.number_input("Estoque", min_value=0, step=1, value=int(p.get("estoque") or 0))
+                    v_estoque = st.number_input("Estoque", min_value=0, step=1, value=num_seguro(p.get("estoque"), int))
                 if st.form_submit_button("💾 Salvar", type="primary", use_container_width=True):
                     p.update({
                         "custo": v_custo, "peso": v_peso, "comprimento": v_comp,
