@@ -1,6 +1,6 @@
-# Funcionaria-lb — Painel de tarefas e avisos
+# Funcionaria-lb — Painel de tarefas, avisos e produtos
 
-App Streamlit (Community Cloud) para a funcionária da LB Collection. Sem UP Seller/ML — é só organização de tarefas e comunicação.
+App Streamlit (Community Cloud) para a funcionária da LB Collection. Sem UP Seller/ML direto — é organização de tarefas, comunicação e, desde 03/08/2026, cadastro/correção de produtos (aba 🧾 Produtos) sem precisar de conta do Windows nem OneDrive.
 
 - **URL:** funcionaria-lb.streamlit.app
 - **Repo:** `lebianchii-ops/funcionaria-lb` (**tem que ficar PÚBLICO** — ver seção abaixo) — dados ficam em `dados.json` no próprio repo, escritos via GitHub Contents API (`app.py` → `salvar_dados()`/`carregar_dados()`)
@@ -67,6 +67,16 @@ Marcar a caixinha de uma tarefa/freela como feita abre um `st.dialog` pedindo co
 7ª aba do painel — lista de produtos sem anúncio criado ainda, com campo `marca` restrito a 3 opções (`MARCA_OPCOES`): K2 COMÉRCIO / LB COLLECTION / AMBOS (K2 e LB). Dado fica em `dados["anuncios_pendentes"]`, seedado uma única vez (35 itens iniciais, todos LB COLLECTION) na primeira carga após o deploy — mesmo padrão de migração único usado pelo `CATS_MIGRACAO`. Segue o mesmo mecanismo de conclusão com pop-up de confirmação das abas Tarefas/Freela (`_marcar_pendente_conclusao`/`popup_confirmar_conclusao`, agora genéricos por `_COLECAO_POR_TIPO`/`_CHAVE_CHECKBOX`).
 
 **Bug corrigido:** `sorted(..., key=lambda x: x["titulo"].lower())` deixa palavras acentuadas (ex: "Óculos") no fim da lista em vez de perto do "O" — `.lower()` não remove acento, e o código-ponto de "ó" é maior que o de "z". Corrigido com `chave_alfabetica()` (usa `unicodedata.normalize("NFKD", ...).encode("ascii","ignore")` pra tirar o acento só na hora de ordenar, mantendo o texto original na tela). Vale pra qualquer ordenação alfabética futura no projeto.
+
+## Aba "🧾 Produtos" (adicionada 03/08/2026)
+
+8ª aba — cadastro/correção de produtos da BASE.xlsx (Site ML) sem a funcionária precisar de conta do Windows nem acesso ao OneDrive. Motivo: a trava nativa Excel/OneDrive (ver `Site ML\CLAUDE.md`, seção "BASE.xlsx — onde mora de verdade") exige conta Microsoft, o que era trabalhoso de configurar.
+
+- Dado fica em `dados["produtos"]` — lista de itens com `id`, `sku` (`None` até o script de sincronização atribuir), `novo`/`editado_funcionaria` (flags que o script consome e limpa), `erro` (mensagem visível se algo não pôde ser aplicado), mais os campos da BASE (`titulo`, `variacao`, `custo`, `peso`, `comprimento`, `largura`, `altura`, `ean`, `estoque`, `ncm`, `origem`, `tipo`, `mlb`, `status_ml`, `peso_fake`, `ean_fake`).
+- **Produto novo:** ela preenche o formulário; se for variação de algo que já existe, informa o **`sku_pai`** (nunca inventa o SKU — quem atribui é o script de sincronização, que também valida que o `sku_pai` existe antes de criar a variação).
+- **Produto existente:** busca por SKU/título (com o mesmo `chave_alfabetica()` já usado nas outras abas) ou vê a lista "Só o que está faltando" (peso/EAN provisórios ou sem custo).
+- **A ponte pra BASE.xlsx é externa a este app:** `sincronizar_editor_produtos.py` (na pasta `Site ML`) roda a cada 20min via Task Scheduler (`LB_Sync_Editor_Produtos`), aplica os pendentes na BASE.xlsx e sobe de volta o snapshot completo (limpando `novo`/`editado_funcionaria`, preenchendo `sku` e `erro`). Detalhes técnicos completos — incluindo o bug de `openpyxl read_only=True` catastroficamente lento — estão no `Site ML\CLAUDE.md`, seção "Editor de Produtos da Funcionária".
+- Este app **nunca fala direto com a BASE.xlsx** — só lê/escreve `dados.json`. Toda a lógica de atribuir SKU, validar `sku_pai`, aplicar na planilha e gerar EAN provisório mora no script de sincronização, não aqui.
 
 ## Testando localmente no Browser pane — cliques/digitação podem não registrar
 
