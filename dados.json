@@ -108,6 +108,17 @@
   "avisos": [],
   "freelas": [
     {
+      "id": "4fe8d799-ce54-47db-92b9-e9cb28652104",
+      "titulo": "TESTE PROTECAO PRODUTOS - PODE APAGAR",
+      "descricao": "",
+      "prioridade": "Fazer primeiro",
+      "categoria": "—",
+      "feita": false,
+      "feita_em": null,
+      "obs_conclusao": "",
+      "criado_em": "2026-08-03T14:03:09.758159"
+    },
+    {
       "id": "11475785-63e9-407a-8445-b28ea7cd6eef",
       "titulo": "wdEWDw",
       "descricao": "dcWEFER",
