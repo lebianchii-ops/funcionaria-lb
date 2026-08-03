@@ -10525,13 +10525,13 @@
       "id": "LB00440D",
       "sku": "LB00440D",
       "novo": false,
-      "editado_funcionaria": true,
+      "editado_funcionaria": false,
       "erro": "",
       "titulo": "100 Laços Pronto Fácil Mágico 30mm Fita P/ Presente TESTE EDICAO",
       "variacao": "Dourado / Lisa",
       "tipo": "Filho",
-      "estoque": 0,
-      "custo": 14.0,
+      "estoque": null,
+      "custo": 14,
       "peso": 132,
       "comprimento": 21,
       "largura": 14,
@@ -10542,8 +10542,7 @@
       "mlb": "MLB5982712794",
       "status_ml": "⏸ Pausado",
       "peso_fake": false,
-      "ean_fake": true,
-      "editado_em": "2026-08-03T14:55:21.154499"
+      "ean_fake": true
     },
     {
       "id": "LB00441",
