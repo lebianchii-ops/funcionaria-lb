@@ -511,5 +511,25 @@
       "criado_em": "2026-07-31T16:03:27.677123"
     }
   ],
-  "produtos": []
+  "produtos": [
+    {
+      "id": "TESTE-SYNC-001",
+      "sku": null,
+      "novo": true,
+      "editado_funcionaria": false,
+      "titulo": "TESTE SYNC EDITOR PRODUTOS - PODE APAGAR",
+      "sku_pai": "",
+      "variacao": "",
+      "custo": 1.0,
+      "peso": 1,
+      "comprimento": 1,
+      "largura": 1,
+      "altura": 1,
+      "ean": "",
+      "estoque": 0,
+      "ncm": "",
+      "origem": "",
+      "erro": ""
+    }
+  ]
 }
