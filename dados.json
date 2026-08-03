@@ -22260,6 +22260,25 @@
       "status_ml": "🔴 Falta criar",
       "peso_fake": true,
       "ean_fake": true
+    },
+    {
+      "id": "a7b6eedc-cb4f-4bdf-9d76-e5af8a36840f",
+      "sku": null,
+      "novo": true,
+      "titulo": "Cavalinho Pelúcia Horse Rédeas",
+      "sku_pai": "",
+      "variacao": "",
+      "custo": 45.82,
+      "peso": 258,
+      "comprimento": 30,
+      "largura": 12,
+      "altura": 30,
+      "ean": "",
+      "estoque": 5,
+      "ncm": "95030031",
+      "origem": "0",
+      "erro": "",
+      "criado_em": "2026-08-03T17:14:45.095045"
     }
   ]
 }
