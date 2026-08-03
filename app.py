@@ -1026,7 +1026,9 @@ with tab_prod:
     with col_toggle:
         so_faltando = st.toggle("Mostrar só o que está faltando/incompleto", value=True, key="toggle_faltando")
 
-    existentes = [p for p in dados["produtos"] if p.get("sku")]
+    # linhas-modelo sem produto ainda (SKU reservado, sem título) nao aparecem
+    # aqui - nao sao produtos reais pra ela completar, sao slots vazios da BASE
+    existentes = [p for p in dados["produtos"] if p.get("sku") and (p.get("titulo") or "").strip()]
 
     if so_faltando and not busca_prod:
         existentes = [p for p in existentes if p.get("peso_fake") or p.get("ean_fake") or not p.get("custo")]
