@@ -1006,7 +1006,7 @@ with tab_prod:
                                              placeholder="ex: Rosa, P, M, G")
             pnc1, pnc2, pnc3, pnc4, pnc5 = st.columns(5)
             with pnc1:
-                pn_custo = st.number_input("Custo (R$) *", min_value=0.0, step=0.5, format="%.2f")
+                pn_custo = st.number_input("Custo (R$) *", min_value=0.0, step=0.01, format="%.2f")
             with pnc2:
                 pn_peso = st.number_input("Peso (g) *", min_value=0, step=1)
             with pnc3:
@@ -1156,7 +1156,7 @@ with tab_prod:
             num_rows="fixed",
             disabled=["SKU", "Pendência"],
             column_config={
-                "Custo (R$)":  st.column_config.NumberColumn(format="%.2f", min_value=0.0, step=0.5),
+                "Custo (R$)":  st.column_config.NumberColumn(format="%.2f", min_value=0.0, step=0.01),
                 "Peso (g)":    st.column_config.NumberColumn(min_value=0, step=1),
                 "Compr. (cm)": st.column_config.NumberColumn(min_value=0, step=1),
                 "Larg. (cm)":  st.column_config.NumberColumn(min_value=0, step=1),
