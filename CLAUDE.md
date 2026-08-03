@@ -99,6 +99,22 @@ Marcar a caixinha de uma tarefa/freela como feita abre um `st.dialog` pedindo co
 
 **Regra pra qualquer chave nova que passe a ser escrita por scripts automáticos além do app:** aplicar o mesmo padrão de proteção — nunca confiar que uma sessão de navegador de vida longa tem a cópia mais atual dessa chave.
 
+## 🚨 CRÍTICO — `st.number_input` na grade de Produtos perdia o valor digitado (incidente real 03/08/2026)
+
+**O que a Bruna relatou:** "eu tinha editado praticamente tudo, salvei, e não foi" — ela editou vários campos numéricos (custo, peso, medidas) de um produto na aba Produtos, clicou em Salvar, e nada mudou na BASE.
+
+**Causa confirmada por teste exaustivo:** os campos numéricos da grade (`st.number_input` dentro de `st.form`) não confirmavam o valor digitado de forma confiável antes do clique em Salvar conseguir ler o estado. Testado sistematicamente:
+1. Evento sintético simples (`input`+`change`+`blur`) → valor não salvou.
+2. Mesmo evento com 1s de espera antes do `blur` (pra descartar timing/batching do React) → não salvou.
+3. Reduzindo a grade de 200 para 12 linhas e confirmando **zero** `stSkeleton` (widget "carregando") pendente antes de editar → ainda não salvou.
+4. Os mesmos campos como `st.text_input` (com o MESMO padrão de evento sintético) → **salvaram certo, sempre**, em todos os testes.
+
+Ou seja: não era timing, não era quantidade de linhas, não era o `st.form` — era especificamente o componente `st.number_input`/`NumberColumn` do Streamlit não confirmando o valor de forma confiável nesse fluxo. **Corrigido: todos os campos numéricos (custo, peso, comprimento, largura, altura, estoque) viraram `st.text_input`**, tanto no formulário de cadastro novo quanto na grade de edição — parseados com segurança via `num_seguro()` no submit (já tratava vírgula/ponto/vazio). **Regra: nunca usar `st.number_input` nesta aba — sempre `text_input` + `num_seguro()`.**
+
+**Bônus achado no mesmo teste — `LIMITE_GRADE` reduzido de 200 para 12:** com 120 linhas visíveis, 631 campos ficaram no estado "carregando" (`stSkeleton`) mesmo depois de 15+ segundos — cada linha tem 11 widgets, e o Streamlit não escala bem pra isso. Com poucas linhas (12), tudo monta em ~1-3s de forma confiável. Prefira sempre orientar a busca por SKU/nome a aumentar esse número.
+
+**Dados de teste usados pra validar isso foram restaurados** (LB00440D, LB00007A) — valores originais recuperados de um backup em `Site ML\backups_base\` de antes do teste (o script sempre faz backup antes de aplicar qualquer edição).
+
 ## Testando localmente no Browser pane — cliques/digitação podem não registrar
 
 Ao rodar `streamlit run app.py` localmente (via `.claude/launch.json`) e testar no Browser pane: `computer.left_click`/`computer.type` às vezes não chegam na página de verdade (mesmo sintoma do bug "Chrome coberto" do CLAUDE.md global — `document.activeElement` fica em BODY mesmo depois do clique, e o campo continua vazio). Usar `javascript_tool` para focar (`.focus()`), setar valor (native setter + `dispatchEvent('input')`), `.blur()` (senão o Streamlit mostra "Press Enter to apply" e não comita o valor) e clicar botões via `querySelector(...).click()`. `get_page_text` às vezes omite texto de labels — conferir via `document.querySelectorAll('label')`.
