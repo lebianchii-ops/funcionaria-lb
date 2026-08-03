@@ -1139,8 +1139,8 @@ with tab_prod:
                 "Compr. (cm)":  num_seguro(p.get("comprimento"), int),
                 "Larg. (cm)":   num_seguro(p.get("largura"), int),
                 "Alt. (cm)":    num_seguro(p.get("altura"), int),
-                "NCM":          p.get("ncm") or "",
-                "Origem":       p.get("origem") or "",
+                "NCM":          p.get("ncm") if p.get("ncm") not in (None, "") else "",
+                "Origem":       p.get("origem") if p.get("origem") not in (None, "") else "",
                 "EAN":          p.get("ean") or "",
                 "Estoque":      num_seguro(p.get("estoque"), int),
             })
