@@ -139,6 +139,21 @@ def salvar_dados(data):
     if r_get.status_code == 200:
         sha_atual = r_get.json()["sha"]
         st.session_state["sha"] = sha_atual
+
+        # "produtos" é escrito por ESTE app E pelo sincronizar_editor_produtos.py
+        # (script automático, roda a cada ~20min) — uma aba aberta há muito tempo
+        # (ex: alguém deixou a aba Tarefas aberta desde antes de o script rodar)
+        # tem em memória um "produtos" desatualizado. Se essa ação NÃO foi na aba
+        # Produtos, nunca deixar essa cópia velha sobrescrever o que o script
+        # gravou depois — sempre usar a versão mais recente do GitHub pra essa
+        # chave. Confirmado 03/08/2026: uma aba assim zerou os produtos ao salvar
+        # uma Entrada de Mercadoria sem relação nenhuma com produtos.
+        if not st.session_state.get("_produtos_tocado"):
+            try:
+                remoto = json.loads(base64.b64decode(r_get.json()["content"]).decode())
+                data["produtos"] = remoto.get("produtos", data.get("produtos", []))
+            except Exception:
+                pass
     else:
         sha_atual = st.session_state.get("sha")
 
@@ -955,14 +970,25 @@ with tab_prod:
                "barras de produtos que já existem. As mudanças chegam sozinhas na planilha "
                "da Bruna em até ~20 minutos — não precisa avisar ninguém.")
 
-    _skus_num = []
+    # a Bruna pré-reserva blocos de SKU (linha com o código já escrito, sem
+    # produto ainda) — o próximo produto novo preenche a vaga de menor número,
+    # não cria um código lá na frente. Mesma regra usada no script de sync.
+    _reservados = []
+    _maior_geral = 0
     for _p in dados["produtos"]:
-        _m = re.match(r"^LB(\d{5})", str(_p.get("sku") or ""))
-        if _m:
-            _skus_num.append(int(_m.group(1)))
-    if _skus_num:
-        st.caption(f"📌 Maior código (SKU) já usado agora: **LB{max(_skus_num):05d}** "
-                   f"— não precisa decorar isso, o próximo é gerado sozinho.")
+        _sku = str(_p.get("sku") or "")
+        _m_puro = re.fullmatch(r"LB(\d{5})", _sku)
+        _m_qq = re.match(r"^LB(\d{5})", _sku)
+        if _m_qq:
+            _maior_geral = max(_maior_geral, int(_m_qq.group(1)))
+        if _m_puro and not (_p.get("titulo") or "").strip():
+            _reservados.append(int(_m_puro.group(1)))
+    if _reservados:
+        st.caption(f"📌 Próximo código (SKU) que vai ser usado: **LB{min(_reservados):05d}** "
+                   f"(vaga já reservada) — não precisa decorar isso, é preenchido sozinho.")
+    elif _maior_geral:
+        st.caption(f"📌 Próximo código (SKU) a ser gerado: **LB{_maior_geral + 1:05d}** "
+                   f"— não precisa decorar isso, é preenchido sozinho.")
 
     with st.expander("➕ Cadastrar produto novo"):
         st.caption("Se for uma cor/tamanho novo de um produto que **já existe**, preencha o "
@@ -1032,6 +1058,7 @@ with tab_prod:
                         "erro":        "",
                         "criado_em":   datetime.now().isoformat(),
                     })
+                    st.session_state["_produtos_tocado"] = True
                     if salvar_dados(dados):
                         st.success("Cadastrado! A Bruna recebe o código do produto (SKU) automaticamente.")
                         st.rerun()
@@ -1054,6 +1081,7 @@ with tab_prod:
                 with c2:
                     if st.button("🗑️", key=f"pdel{p['id']}", use_container_width=True, help="Cancelar cadastro"):
                         dados["produtos"] = [x for x in dados["produtos"] if x["id"] != p["id"]]
+                        st.session_state["_produtos_tocado"] = True
                         if salvar_dados(dados):
                             st.rerun()
 
@@ -1166,9 +1194,11 @@ with tab_prod:
                 mudou += 1
             if mudou == 0:
                 st.info("Nada mudou na tabela.")
-            elif salvar_dados(dados):
-                st.success(f"{mudou} produto(s) atualizado(s)! Vai aparecer na planilha da Bruna em instantes.")
-                st.rerun()
+            else:
+                st.session_state["_produtos_tocado"] = True
+                if salvar_dados(dados):
+                    st.success(f"{mudou} produto(s) atualizado(s)! Vai aparecer na planilha da Bruna em instantes.")
+                    st.rerun()
 
 # ════════════════════════════════════════════════════════════════════════════
 with tab3:
@@ -1390,7 +1420,7 @@ Clique em **➕ Registrar entrada**. Os registros ficam listados abaixo, do mais
         st.markdown("""
 Use para **cadastrar produto novo** ou **completar/corrigir** título, custo, peso, medidas, NCM, origem fiscal, código de barras (EAN) e estoque de produtos que já existem.
 
-**Cadastrar produto novo:** abra "➕ Cadastrar produto novo", preencha pelo menos título, custo, peso e as 3 medidas, e clique em cadastrar. **O código do produto (SKU) é gerado sozinho** — nunca invente um número, nem pergunte pra Bruna qual é o próximo. Se quiser conferir, tem uma linha em cima do formulário mostrando o maior código já usado agora.
+**Cadastrar produto novo:** abra "➕ Cadastrar produto novo", preencha pelo menos título, custo, peso e as 3 medidas, e clique em cadastrar. **O código do produto (SKU) é gerado sozinho** — nunca invente um número, nem pergunte pra Bruna qual é o próximo. Se quiser conferir, tem uma linha em cima do formulário mostrando qual vai ser usado.
 
 **Completar produtos existentes:** use a busca (por nome ou código) ou deixe marcado "Mostrar só o que está faltando/incompleto". Os produtos aparecem numa **tabela, igual planilha do Excel** — edite as células direto (título, variação, custo, peso, medidas, NCM, origem fiscal, EAN, estoque) e clique em **💾 Salvar alterações da tabela** no final pra confirmar tudo de uma vez. O código (SKU) não pode ser editado ali — se estiver errado, fale com a Bruna.
 
