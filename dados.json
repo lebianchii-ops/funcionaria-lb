@@ -516,7 +516,7 @@
       "id": "LB00007",
       "sku": "LB00007",
       "novo": false,
-      "editado_funcionaria": false,
+      "editado_funcionaria": true,
       "erro": "",
       "titulo": "36 Tatuagem Halloween Adesivo Removível Temporária Terror Diversas",
       "variacao": "",
@@ -527,8 +527,8 @@
       "comprimento": 18,
       "largura": 18,
       "altura": 2,
-      "ncm": 95059000,
-      "origem": 2,
+      "ncm": "99999999",
+      "origem": "3",
       "ean": "",
       "mlb": "MLB3960970620",
       "status_ml": "✅ No ML",
@@ -22269,6 +22269,25 @@
       "status_ml": "🔴 Falta criar",
       "peso_fake": true,
       "ean_fake": true
+    },
+    {
+      "id": "TESTE-SYNC-004",
+      "sku": null,
+      "novo": true,
+      "editado_funcionaria": false,
+      "titulo": "TESTE SYNC NCM ORIGEM - PODE APAGAR",
+      "sku_pai": "",
+      "variacao": "",
+      "custo": 3.0,
+      "peso": 3,
+      "comprimento": 3,
+      "largura": 3,
+      "altura": 3,
+      "ean": "",
+      "estoque": 0,
+      "ncm": "12345678",
+      "origem": "1",
+      "erro": ""
     }
   ]
 }
