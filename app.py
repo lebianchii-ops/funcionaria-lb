@@ -1,5 +1,6 @@
 import streamlit as st
 import json
+import re
 import requests
 import base64
 import unicodedata
@@ -954,10 +955,20 @@ with tab_prod:
                "barras de produtos que já existem. As mudanças chegam sozinhas na planilha "
                "da Bruna em até ~20 minutos — não precisa avisar ninguém.")
 
+    _skus_num = []
+    for _p in dados["produtos"]:
+        _m = re.match(r"^LB(\d{5})", str(_p.get("sku") or ""))
+        if _m:
+            _skus_num.append(int(_m.group(1)))
+    if _skus_num:
+        st.caption(f"📌 Maior código (SKU) já usado agora: **LB{max(_skus_num):05d}** "
+                   f"— não precisa decorar isso, o próximo é gerado sozinho.")
+
     with st.expander("➕ Cadastrar produto novo"):
         st.caption("Se for uma cor/tamanho novo de um produto que **já existe**, preencha o "
                    "'código do produto principal' abaixo. Se for um produto **totalmente novo**, "
-                   "deixe esse campo em branco.")
+                   "deixe esse campo em branco. O código (SKU) do produto novo é gerado "
+                   "sozinho — você não precisa (e não deve) inventar um número.")
         with st.form("form_produto_novo", clear_on_submit=True):
             pn_titulo = st.text_input("Título do produto *")
             pn1, pn2 = st.columns(2)
@@ -984,6 +995,14 @@ with tab_prod:
                                         help="Deixe em branco se não tiver — a Bruna gera um provisório")
             with pne2:
                 pn_estoque = st.number_input("Estoque (unidades que chegaram)", min_value=0, step=1)
+            pnf1, pnf2 = st.columns(2)
+            with pnf1:
+                pn_ncm = st.text_input("NCM (opcional)",
+                                        help="Código fiscal — deixe em branco se não souber, a Bruna preenche depois")
+            with pnf2:
+                pn_origem = st.text_input("Origem fiscal (opcional)", value="2",
+                                           help="Normalmente é '2' — só mude se souber que é diferente "
+                                                "(ex: produto importado)")
             if st.form_submit_button("➕ Cadastrar produto", use_container_width=True, type="primary"):
                 if not pn_titulo.strip() or pn_custo <= 0 or pn_peso <= 0 or pn_comp <= 0 or pn_larg <= 0 or pn_alt <= 0:
                     st.warning("Preencha pelo menos: título, custo, peso e as 3 medidas.")
@@ -1008,8 +1027,8 @@ with tab_prod:
                         "altura":      pn_alt,
                         "ean":         pn_ean.strip(),
                         "estoque":     pn_estoque,
-                        "ncm":         "",
-                        "origem":      "",
+                        "ncm":         pn_ncm.strip(),
+                        "origem":      pn_origem.strip(),
                         "erro":        "",
                         "criado_em":   datetime.now().isoformat(),
                     })
@@ -1026,7 +1045,7 @@ with tab_prod:
                 c1, c2 = st.columns([8, 1])
                 with c1:
                     extra = f" · variação de {p['sku_pai']} ({p['variacao']})" if p.get("sku_pai") else ""
-                    st.markdown(f"**{p['titulo']}**{extra}")
+                    st.markdown(f"**⏳ código ainda não gerado** — {p['titulo']}{extra}")
                     st.caption(f"Custo R$ {num_seguro(p.get('custo')):.2f} · {num_seguro(p.get('peso'), int)}g · "
                                f"{num_seguro(p.get('comprimento'), int)}×{num_seguro(p.get('largura'), int)}×"
                                f"{num_seguro(p.get('altura'), int)}cm")
@@ -1066,48 +1085,90 @@ with tab_prod:
     if not existentes and not busca_prod and so_faltando:
         st.success("Nenhum produto com pendência agora! 🎉")
 
-    for p in existentes[:200]:
-        avisos_p = []
-        if p.get("peso_fake"):
-            avisos_p.append("⚠️ peso/medida provisório")
-        if p.get("ean_fake"):
-            avisos_p.append("⚠️ EAN provisório")
-        if num_seguro(p.get("custo")) <= 0:
-            avisos_p.append("⚠️ sem custo")
-        titulo_linha = f"**{p.get('sku')}** — {p.get('titulo','')}"
-        if p.get("variacao"):
-            titulo_linha += f" ({p['variacao']})"
-        if avisos_p:
-            titulo_linha += "  " + " · ".join(avisos_p)
-        with st.expander(titulo_linha):
-            with st.form(f"form_edit_produto_{p['id']}"):
-                fc1, fc2, fc3, fc4, fc5 = st.columns(5)
-                with fc1:
-                    v_custo = st.number_input("Custo (R$)", min_value=0.0, step=0.5, format="%.2f",
-                                               value=num_seguro(p.get("custo")))
-                with fc2:
-                    v_peso = st.number_input("Peso (g)", min_value=0, step=1, value=num_seguro(p.get("peso"), int))
-                with fc3:
-                    v_comp = st.number_input("Comprim. (cm)", min_value=0, step=1, value=num_seguro(p.get("comprimento"), int))
-                with fc4:
-                    v_larg = st.number_input("Largura (cm)", min_value=0, step=1, value=num_seguro(p.get("largura"), int))
-                with fc5:
-                    v_alt = st.number_input("Altura (cm)", min_value=0, step=1, value=num_seguro(p.get("altura"), int))
-                fe1, fe2 = st.columns(2)
-                with fe1:
-                    v_ean = st.text_input("EAN / Código de barras", value=p.get("ean") or "")
-                with fe2:
-                    v_estoque = st.number_input("Estoque", min_value=0, step=1, value=num_seguro(p.get("estoque"), int))
-                if st.form_submit_button("💾 Salvar", type="primary", use_container_width=True):
-                    p.update({
-                        "custo": v_custo, "peso": v_peso, "comprimento": v_comp,
-                        "largura": v_larg, "altura": v_alt, "ean": v_ean.strip(),
-                        "estoque": v_estoque, "editado_funcionaria": True,
-                        "editado_em": datetime.now().isoformat(),
-                    })
-                    if salvar_dados(dados):
-                        st.success("Salvo! Vai aparecer na planilha da Bruna em instantes.")
-                        st.rerun()
+    LIMITE_GRADE = 300
+    if existentes:
+        if len(existentes) > LIMITE_GRADE:
+            st.warning(f"Mostrando só os primeiros {LIMITE_GRADE} de {len(existentes)} — "
+                       f"use a busca acima pra achar um específico.")
+        visiveis = existentes[:LIMITE_GRADE]
+
+        linhas_originais = []
+        for p in visiveis:
+            avisos_p = []
+            if p.get("peso_fake"):
+                avisos_p.append("peso/medida provisório")
+            if p.get("ean_fake"):
+                avisos_p.append("EAN provisório")
+            if num_seguro(p.get("custo")) <= 0:
+                avisos_p.append("sem custo")
+            linhas_originais.append({
+                "SKU":          p.get("sku", ""),
+                "Pendência":    " · ".join(avisos_p),
+                "Título":       p.get("titulo", ""),
+                "Variação":     p.get("variacao", ""),
+                "Custo (R$)":   num_seguro(p.get("custo")),
+                "Peso (g)":     num_seguro(p.get("peso"), int),
+                "Compr. (cm)":  num_seguro(p.get("comprimento"), int),
+                "Larg. (cm)":   num_seguro(p.get("largura"), int),
+                "Alt. (cm)":    num_seguro(p.get("altura"), int),
+                "NCM":          p.get("ncm") or "",
+                "Origem":       p.get("origem") or "",
+                "EAN":          p.get("ean") or "",
+                "Estoque":      num_seguro(p.get("estoque"), int),
+            })
+
+        st.caption("Edite direto na tabela (igual planilha) e clique em Salvar embaixo. "
+                   "O código (SKU) não pode ser mudado por aqui.")
+
+        editado = st.data_editor(
+            linhas_originais,
+            key="grid_produtos",
+            hide_index=True,
+            use_container_width=True,
+            num_rows="fixed",
+            disabled=["SKU", "Pendência"],
+            column_config={
+                "Custo (R$)":  st.column_config.NumberColumn(format="%.2f", min_value=0.0, step=0.5),
+                "Peso (g)":    st.column_config.NumberColumn(min_value=0, step=1),
+                "Compr. (cm)": st.column_config.NumberColumn(min_value=0, step=1),
+                "Larg. (cm)":  st.column_config.NumberColumn(min_value=0, step=1),
+                "Alt. (cm)":   st.column_config.NumberColumn(min_value=0, step=1),
+                "Estoque":     st.column_config.NumberColumn(min_value=0, step=1),
+                "Origem":      st.column_config.TextColumn(
+                    help="Código de origem fiscal — a maioria é '2', mas pode ser diferente "
+                         "(ex: produto importado)"),
+            },
+        )
+
+        if st.button("💾 Salvar alterações da tabela", type="primary", use_container_width=True):
+            mudou = 0
+            for original, novo in zip(linhas_originais, editado):
+                if original == novo:
+                    continue
+                p = next((x for x in dados["produtos"] if x.get("sku") == original["SKU"]), None)
+                if not p:
+                    continue
+                p.update({
+                    "titulo":              (novo.get("Título") or "").strip(),
+                    "variacao":            (novo.get("Variação") or "").strip(),
+                    "custo":               num_seguro(novo.get("Custo (R$)")),
+                    "peso":                num_seguro(novo.get("Peso (g)"), int),
+                    "comprimento":         num_seguro(novo.get("Compr. (cm)"), int),
+                    "largura":             num_seguro(novo.get("Larg. (cm)"), int),
+                    "altura":              num_seguro(novo.get("Alt. (cm)"), int),
+                    "ncm":                 (novo.get("NCM") or "").strip(),
+                    "origem":              (novo.get("Origem") or "").strip(),
+                    "ean":                 (novo.get("EAN") or "").strip(),
+                    "estoque":             num_seguro(novo.get("Estoque"), int),
+                    "editado_funcionaria": True,
+                    "editado_em":          datetime.now().isoformat(),
+                })
+                mudou += 1
+            if mudou == 0:
+                st.info("Nada mudou na tabela.")
+            elif salvar_dados(dados):
+                st.success(f"{mudou} produto(s) atualizado(s)! Vai aparecer na planilha da Bruna em instantes.")
+                st.rerun()
 
 # ════════════════════════════════════════════════════════════════════════════
 with tab3:
@@ -1327,11 +1388,13 @@ Clique em **➕ Registrar entrada**. Os registros ficam listados abaixo, do mais
 
     with st.expander("🧾 Aba Produtos", expanded=True):
         st.markdown("""
-Use para **cadastrar produto novo** ou **completar/corrigir** custo, peso, medidas, código de barras (EAN) e estoque de produtos que já existem.
+Use para **cadastrar produto novo** ou **completar/corrigir** título, custo, peso, medidas, NCM, origem fiscal, código de barras (EAN) e estoque de produtos que já existem.
 
-**Cadastrar produto novo:** abra "➕ Cadastrar produto novo", preencha pelo menos título, custo, peso e as 3 medidas, e clique em cadastrar. O código do produto (SKU) é gerado sozinho — não precisa inventar nem perguntar pra Bruna.
+**Cadastrar produto novo:** abra "➕ Cadastrar produto novo", preencha pelo menos título, custo, peso e as 3 medidas, e clique em cadastrar. **O código do produto (SKU) é gerado sozinho** — nunca invente um número, nem pergunte pra Bruna qual é o próximo. Se quiser conferir, tem uma linha em cima do formulário mostrando o maior código já usado agora.
 
-**Completar um produto existente:** use a busca (por nome ou código) ou deixe marcado "Mostrar só o que está faltando/incompleto" para ver só os que têm pendência (peso/medida provisórios, EAN provisório ou sem custo). Clique no produto para abrir os campos, corrija e clique em **💾 Salvar**.
+**Completar produtos existentes:** use a busca (por nome ou código) ou deixe marcado "Mostrar só o que está faltando/incompleto". Os produtos aparecem numa **tabela, igual planilha do Excel** — edite as células direto (título, variação, custo, peso, medidas, NCM, origem fiscal, EAN, estoque) e clique em **💾 Salvar alterações da tabela** no final pra confirmar tudo de uma vez. O código (SKU) não pode ser editado ali — se estiver errado, fale com a Bruna.
+
+**Origem fiscal:** a maioria dos produtos usa **"2"** — só mude se souber que aquele produto é diferente (ex: importado).
 
 Tudo que você salva aqui **chega sozinho na planilha da Bruna em até ~20 minutos** — não precisa avisar ninguém nem mandar mensagem.
         """)
