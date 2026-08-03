@@ -183,7 +183,7 @@ def html_mini_cal(ano, mes, hoje, datas_tarefas):
                 linhas += "<td></td>"
                 continue
             d = date(ano, mes, dia)
-            td = 'style="padding:3px 2px;white-space:nowrap;text-align:center;position:relative"'
+            td = 'style="padding:3px 0;text-align:center;position:relative;overflow:hidden"'
             if d == hoje:
                 linhas += (f'<td {td}><div style="background:#c0392b;color:#fff;border-radius:50%;'
                            f'width:24px;height:24px;display:inline-flex;align-items:center;'
@@ -199,13 +199,13 @@ def html_mini_cal(ano, mes, hoje, datas_tarefas):
                 linhas += f'<td {td}><span style="font-size:0.78rem;color:#555">{dia}</span></td>'
         linhas += "</tr>"
     cab = "".join(
-        f'<th style="font-size:0.65rem;color:#aaa;font-weight:600;padding:0 4px 6px;white-space:nowrap">{d}</th>'
+        f'<th style="font-size:0.65rem;color:#aaa;font-weight:600;padding:0 0 6px;overflow:hidden">{d}</th>'
         for d in ["D","S","T","Q","Q","S","S"])
     return f"""
     <div style="background:white;border-radius:12px;padding:14px 10px;
-                box-shadow:0 1px 4px rgba(0,0,0,0.08);font-family:sans-serif;text-align:center;overflow:hidden">
+                box-shadow:0 1px 4px rgba(0,0,0,0.08);font-family:sans-serif;text-align:center;overflow:hidden;box-sizing:border-box">
       <div style="font-weight:700;font-size:0.82rem;margin-bottom:10px">{MES_NOME[mes-1].upper()} {ano}</div>
-      <table style="width:100%;border-collapse:collapse">
+      <table style="width:100%;max-width:100%;border-collapse:collapse;table-layout:fixed">
         <tr>{cab}</tr>{linhas}
       </table>
     </div>"""
@@ -537,7 +537,7 @@ st.title("👜 LB Collection — Painel")
 filtro_global = st.session_state.get("filtro_global", FILTRO_CATS[0])
 tab1, tab_fr, tab_an, tab_ent, tab_prod, tab2, tab3, tab4 = st.tabs(
     ["✅ Tarefas", "🧵 Freela", "📋 Anúncios Pendentes", "📦 Entrada de Mercadoria",
-     "🧾 Produtos", "📢 Avisos", "✔️ Concluídos", "❓ Ajuda"]
+     "🧾 Base", "📢 Avisos", "✔️ Concluídos", "❓ Ajuda"]
 )
 
 # pop-up de confirmação de conclusão — um único disparo por marcação de caixinha (evita reabrir sozinho)
@@ -965,7 +965,7 @@ with tab_ent:
 
 # ════════════════════════════════════════════════════════════════════════════
 with tab_prod:
-    st.subheader("🧾 Produtos")
+    st.subheader("🧾 Base")
     st.caption("Cadastre produto novo ou complete/corrija custo, peso, medidas e código de "
                "barras de produtos que já existem. As mudanças chegam sozinhas na planilha "
                "da Bruna em até ~5 minutos — não precisa avisar ninguém.")
@@ -1452,7 +1452,7 @@ with tab4:
 - **🧵 Freela** — lista de tarefas só do freela, separada das tarefas da loja.
 - **📋 Anúncios Pendentes** — lista completa de produtos que ainda precisam ter anúncio criado, em ordem alfabética, cada um com a marca/marketplace (K2 COMÉRCIO, LB COLLECTION ou AMBOS).
 - **📦 Entrada de Mercadoria** — registro de toda mercadoria que chegar (dia, fornecedor, se a nota bate com a quantidade e observação).
-- **🧾 Produtos** — cadastrar produto novo ou completar/corrigir custo, peso, medidas e código de barras de produtos que já existem.
+- **🧾 Base** — cadastrar produto novo ou completar/corrigir custo, peso, medidas e código de barras de produtos que já existem.
 - **📢 Avisos** — mural de mão dupla entre Bruna e funcionária. Leia sempre que entrar.
 - **✔️ Concluídos** — histórico de tudo que já foi marcado como feito: tarefas, freelas e avisos juntos (cada um com uma etiqueta indicando o tipo: 🗹 Tarefa, 🧵 Freela ou 📢 Aviso).
 
@@ -1472,7 +1472,7 @@ Use sempre que uma mercadoria chegar. Preencha:
 Clique em **➕ Registrar entrada**. Os registros ficam listados abaixo, do mais recente para o mais antigo — use **✏️** para corrigir algo ou **🗑️** para apagar.
         """)
 
-    with st.expander("🧾 Aba Produtos", expanded=True):
+    with st.expander("🧾 Aba Base", expanded=True):
         st.markdown("""
 Use para **cadastrar produto novo** ou **completar/corrigir** título, custo, peso, medidas, NCM, origem fiscal, código de barras (EAN) e estoque de produtos que já existem.
 
