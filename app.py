@@ -968,7 +968,7 @@ with tab_prod:
     st.subheader("🧾 Produtos")
     st.caption("Cadastre produto novo ou complete/corrija custo, peso, medidas e código de "
                "barras de produtos que já existem. As mudanças chegam sozinhas na planilha "
-               "da Bruna em até ~20 minutos — não precisa avisar ninguém.")
+               "da Bruna em até ~5 minutos — não precisa avisar ninguém.")
 
     # a Bruna pré-reserva blocos de SKU (linha com o código já escrito, sem
     # produto ainda) — o próximo produto novo preenche a vaga de menor número,
@@ -1426,7 +1426,7 @@ Use para **cadastrar produto novo** ou **completar/corrigir** título, custo, pe
 
 **Origem fiscal:** a maioria dos produtos usa **"2"** — só mude se souber que aquele produto é diferente (ex: importado).
 
-Tudo que você salva aqui **chega sozinho na planilha da Bruna em até ~20 minutos** — não precisa avisar ninguém nem mandar mensagem.
+Tudo que você salva aqui **chega sozinho na planilha da Bruna em até ~5 minutos** — não precisa avisar ninguém nem mandar mensagem.
         """)
 
     with st.expander("🧵 Aba Freela", expanded=True):
