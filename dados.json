@@ -22274,7 +22274,7 @@
       "id": "LB00801",
       "sku": "LB00801",
       "novo": false,
-      "editado_funcionaria": true,
+      "editado_funcionaria": false,
       "erro": "",
       "titulo": "TESTE SYNC EDITOR PRODUTOS - PODE APAGAR",
       "variacao": "",
@@ -22287,30 +22287,34 @@
       "altura": 1,
       "ncm": "",
       "origem": "",
-      "ean": "7898133412233",
+      "ean": "",
       "mlb": "",
       "status_ml": "",
       "peso_fake": false,
-      "ean_fake": true
+      "ean_fake": false
     },
     {
-      "id": "TESTE-SYNC-002",
-      "sku": null,
-      "novo": true,
+      "id": "LB00801A",
+      "sku": "LB00801A",
+      "novo": false,
       "editado_funcionaria": false,
+      "erro": "",
       "titulo": "TESTE SYNC FILHO - PODE APAGAR",
-      "sku_pai": "LB00801",
       "variacao": "Cor Teste",
-      "custo": 2.0,
+      "tipo": "Filho",
+      "estoque": null,
+      "custo": 2,
       "peso": 2,
       "comprimento": 2,
       "largura": 2,
       "altura": 2,
-      "ean": "",
-      "estoque": 0,
       "ncm": "",
       "origem": "",
-      "erro": ""
+      "ean": "7893927963601",
+      "mlb": "",
+      "status_ml": "",
+      "peso_fake": false,
+      "ean_fake": true
     },
     {
       "id": "TESTE-SYNC-003",
@@ -22329,7 +22333,7 @@
       "estoque": 0,
       "ncm": "",
       "origem": "",
-      "erro": ""
+      "erro": "código do produto principal 'LB99999' não encontrado na BASE — confirme com a Bruna"
     }
   ]
 }
