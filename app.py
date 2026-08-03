@@ -211,6 +211,7 @@ dados.setdefault("tarefas", [])
 dados.setdefault("avisos", [])
 dados.setdefault("freelas", [])
 dados.setdefault("entradas", [])
+dados.setdefault("produtos", [])
 
 precisa_seed_anuncios = "anuncios_pendentes" not in dados
 if precisa_seed_anuncios:
@@ -499,9 +500,9 @@ st.title("👜 LB Collection — Painel")
 # valor atual do filtro global — o controle em si fica na coluna do mini-calendário (aba Tarefas),
 # mas o valor vale para todas as abas
 filtro_global = st.session_state.get("filtro_global", FILTRO_CATS[0])
-tab1, tab_fr, tab_an, tab_ent, tab2, tab3, tab4 = st.tabs(
+tab1, tab_fr, tab_an, tab_ent, tab_prod, tab2, tab3, tab4 = st.tabs(
     ["✅ Tarefas", "🧵 Freela", "📋 Anúncios Pendentes", "📦 Entrada de Mercadoria",
-     "📢 Avisos", "✔️ Concluídos", "❓ Ajuda"]
+     "🧾 Produtos", "📢 Avisos", "✔️ Concluídos", "❓ Ajuda"]
 )
 
 # pop-up de confirmação de conclusão — um único disparo por marcação de caixinha (evita reabrir sozinho)
@@ -928,6 +929,165 @@ with tab_ent:
                         st.rerun()
 
 # ════════════════════════════════════════════════════════════════════════════
+with tab_prod:
+    st.subheader("🧾 Produtos")
+    st.caption("Cadastre produto novo ou complete/corrija custo, peso, medidas e código de "
+               "barras de produtos que já existem. As mudanças chegam sozinhas na planilha "
+               "da Bruna em até ~20 minutos — não precisa avisar ninguém.")
+
+    with st.expander("➕ Cadastrar produto novo"):
+        st.caption("Se for uma cor/tamanho novo de um produto que **já existe**, preencha o "
+                   "'código do produto principal' abaixo. Se for um produto **totalmente novo**, "
+                   "deixe esse campo em branco.")
+        with st.form("form_produto_novo", clear_on_submit=True):
+            pn_titulo = st.text_input("Título do produto *")
+            pn1, pn2 = st.columns(2)
+            with pn1:
+                pn_sku_pai = st.text_input("Código do produto principal (opcional)",
+                                            placeholder="ex: LB00123 — só se for variação de algo que já existe")
+            with pn2:
+                pn_variacao = st.text_input("Variação (obrigatório se preencheu o código acima)",
+                                             placeholder="ex: Rosa, P, M, G")
+            pnc1, pnc2, pnc3, pnc4, pnc5 = st.columns(5)
+            with pnc1:
+                pn_custo = st.number_input("Custo (R$) *", min_value=0.0, step=0.5, format="%.2f")
+            with pnc2:
+                pn_peso = st.number_input("Peso (g) *", min_value=0, step=1)
+            with pnc3:
+                pn_comp = st.number_input("Comprim. (cm) *", min_value=0, step=1)
+            with pnc4:
+                pn_larg = st.number_input("Largura (cm) *", min_value=0, step=1)
+            with pnc5:
+                pn_alt = st.number_input("Altura (cm) *", min_value=0, step=1)
+            pne1, pne2 = st.columns(2)
+            with pne1:
+                pn_ean = st.text_input("Código de barras / EAN",
+                                        help="Deixe em branco se não tiver — a Bruna gera um provisório")
+            with pne2:
+                pn_estoque = st.number_input("Estoque (unidades que chegaram)", min_value=0, step=1)
+            if st.form_submit_button("➕ Cadastrar produto", use_container_width=True, type="primary"):
+                if not pn_titulo.strip() or pn_custo <= 0 or pn_peso <= 0 or pn_comp <= 0 or pn_larg <= 0 or pn_alt <= 0:
+                    st.warning("Preencha pelo menos: título, custo, peso e as 3 medidas.")
+                elif pn_sku_pai.strip() and not pn_variacao.strip():
+                    st.warning("Preencheu o código do produto principal — agora preencha a Variação "
+                               "(ex: Rosa, P, M, G) pra identificar essa cor/tamanho.")
+                elif pn_variacao.strip() and not pn_sku_pai.strip():
+                    st.warning("Preencheu a Variação — agora preencha o código do produto principal "
+                               "(o código que já existe, ex: LB00123).")
+                else:
+                    dados["produtos"].append({
+                        "id":          str(uuid.uuid4()),
+                        "sku":         None,
+                        "novo":        True,
+                        "titulo":      pn_titulo.strip(),
+                        "sku_pai":     pn_sku_pai.strip().upper(),
+                        "variacao":    pn_variacao.strip(),
+                        "custo":       pn_custo,
+                        "peso":        pn_peso,
+                        "comprimento": pn_comp,
+                        "largura":     pn_larg,
+                        "altura":      pn_alt,
+                        "ean":         pn_ean.strip(),
+                        "estoque":     pn_estoque,
+                        "ncm":         "",
+                        "origem":      "",
+                        "erro":        "",
+                        "criado_em":   datetime.now().isoformat(),
+                    })
+                    if salvar_dados(dados):
+                        st.success("Cadastrado! A Bruna recebe o código do produto (SKU) automaticamente.")
+                        st.rerun()
+
+    produtos_novos_pendentes = [p for p in dados["produtos"] if p.get("novo") and not p.get("sku")]
+    if produtos_novos_pendentes:
+        st.info(f"⏳ {len(produtos_novos_pendentes)} produto(s) novo(s) aguardando o código (SKU) "
+                f"ser gerado — chega sozinho em instantes.")
+        for p in produtos_novos_pendentes:
+            with st.container(border=True):
+                c1, c2 = st.columns([8, 1])
+                with c1:
+                    extra = f" · variação de {p['sku_pai']} ({p['variacao']})" if p.get("sku_pai") else ""
+                    st.markdown(f"**{p['titulo']}**{extra}")
+                    st.caption(f"Custo R$ {p.get('custo',0):.2f} · {p.get('peso',0)}g · "
+                               f"{p.get('comprimento',0)}×{p.get('largura',0)}×{p.get('altura',0)}cm")
+                    if p.get("erro"):
+                        st.error(f"⚠️ {p['erro']}")
+                with c2:
+                    if st.button("🗑️", key=f"pdel{p['id']}", use_container_width=True, help="Cancelar cadastro"):
+                        dados["produtos"] = [x for x in dados["produtos"] if x["id"] != p["id"]]
+                        if salvar_dados(dados):
+                            st.rerun()
+
+    st.divider()
+
+    col_busca, col_toggle = st.columns([3, 2])
+    with col_busca:
+        busca_prod = st.text_input("🔍 Buscar por código (SKU) ou nome do produto", key="busca_produto")
+    with col_toggle:
+        so_faltando = st.toggle("Mostrar só o que está faltando/incompleto", value=True, key="toggle_faltando")
+
+    existentes = [p for p in dados["produtos"] if p.get("sku")]
+
+    if so_faltando and not busca_prod:
+        existentes = [p for p in existentes if p.get("peso_fake") or p.get("ean_fake") or not p.get("custo")]
+
+    if busca_prod:
+        alvo = chave_alfabetica(busca_prod)
+        existentes = [p for p in existentes
+                      if alvo in chave_alfabetica(p.get("sku", "")) or alvo in chave_alfabetica(p.get("titulo", ""))]
+
+    existentes = sorted(existentes, key=lambda x: chave_alfabetica(x.get("titulo", "")))
+
+    st.caption(f"**{len(existentes)} produto(s)**"
+               + (" — mostrando só os incompletos" if so_faltando and not busca_prod else ""))
+
+    if not existentes and not busca_prod and so_faltando:
+        st.success("Nenhum produto com pendência agora! 🎉")
+
+    for p in existentes[:200]:
+        avisos_p = []
+        if p.get("peso_fake"):
+            avisos_p.append("⚠️ peso/medida provisório")
+        if p.get("ean_fake"):
+            avisos_p.append("⚠️ EAN provisório")
+        if not p.get("custo"):
+            avisos_p.append("⚠️ sem custo")
+        titulo_linha = f"**{p.get('sku')}** — {p.get('titulo','')}"
+        if p.get("variacao"):
+            titulo_linha += f" ({p['variacao']})"
+        if avisos_p:
+            titulo_linha += "  " + " · ".join(avisos_p)
+        with st.expander(titulo_linha):
+            with st.form(f"form_edit_produto_{p['id']}"):
+                fc1, fc2, fc3, fc4, fc5 = st.columns(5)
+                with fc1:
+                    v_custo = st.number_input("Custo (R$)", min_value=0.0, step=0.5, format="%.2f",
+                                               value=float(p.get("custo") or 0))
+                with fc2:
+                    v_peso = st.number_input("Peso (g)", min_value=0, step=1, value=int(p.get("peso") or 0))
+                with fc3:
+                    v_comp = st.number_input("Comprim. (cm)", min_value=0, step=1, value=int(p.get("comprimento") or 0))
+                with fc4:
+                    v_larg = st.number_input("Largura (cm)", min_value=0, step=1, value=int(p.get("largura") or 0))
+                with fc5:
+                    v_alt = st.number_input("Altura (cm)", min_value=0, step=1, value=int(p.get("altura") or 0))
+                fe1, fe2 = st.columns(2)
+                with fe1:
+                    v_ean = st.text_input("EAN / Código de barras", value=p.get("ean") or "")
+                with fe2:
+                    v_estoque = st.number_input("Estoque", min_value=0, step=1, value=int(p.get("estoque") or 0))
+                if st.form_submit_button("💾 Salvar", type="primary", use_container_width=True):
+                    p.update({
+                        "custo": v_custo, "peso": v_peso, "comprimento": v_comp,
+                        "largura": v_larg, "altura": v_alt, "ean": v_ean.strip(),
+                        "estoque": v_estoque, "editado_funcionaria": True,
+                        "editado_em": datetime.now().isoformat(),
+                    })
+                    if salvar_dados(dados):
+                        st.success("Salvo! Vai aparecer na planilha da Bruna em instantes.")
+                        st.rerun()
+
+# ════════════════════════════════════════════════════════════════════════════
 with tab3:
     feitas = aplica_filtro([t for t in dados.get("tarefas", []) if t.get("feita")], filtro_global)
     avisos_concluidos = aplica_filtro([a for a in dados.get("avisos", []) if a.get("concluido")], filtro_global)
@@ -1123,6 +1283,7 @@ with tab4:
 - **🧵 Freela** — lista de tarefas só do freela, separada das tarefas da loja.
 - **📋 Anúncios Pendentes** — lista completa de produtos que ainda precisam ter anúncio criado, em ordem alfabética, cada um com a marca/marketplace (K2 COMÉRCIO, LB COLLECTION ou AMBOS).
 - **📦 Entrada de Mercadoria** — registro de toda mercadoria que chegar (dia, fornecedor, se a nota bate com a quantidade e observação).
+- **🧾 Produtos** — cadastrar produto novo ou completar/corrigir custo, peso, medidas e código de barras de produtos que já existem.
 - **📢 Avisos** — mural de mão dupla entre Bruna e funcionária. Leia sempre que entrar.
 - **✔️ Concluídos** — histórico de tudo que já foi marcado como feito: tarefas, freelas e avisos juntos (cada um com uma etiqueta indicando o tipo: 🗹 Tarefa, 🧵 Freela ou 📢 Aviso).
 
@@ -1140,6 +1301,17 @@ Use sempre que uma mercadoria chegar. Preencha:
 - **Observação** — vira **obrigatória** se você marcar "Não", para explicar o que faltou ou veio errado
 
 Clique em **➕ Registrar entrada**. Os registros ficam listados abaixo, do mais recente para o mais antigo — use **✏️** para corrigir algo ou **🗑️** para apagar.
+        """)
+
+    with st.expander("🧾 Aba Produtos", expanded=True):
+        st.markdown("""
+Use para **cadastrar produto novo** ou **completar/corrigir** custo, peso, medidas, código de barras (EAN) e estoque de produtos que já existem.
+
+**Cadastrar produto novo:** abra "➕ Cadastrar produto novo", preencha pelo menos título, custo, peso e as 3 medidas, e clique em cadastrar. O código do produto (SKU) é gerado sozinho — não precisa inventar nem perguntar pra Bruna.
+
+**Completar um produto existente:** use a busca (por nome ou código) ou deixe marcado "Mostrar só o que está faltando/incompleto" para ver só os que têm pendência (peso/medida provisórios, EAN provisório ou sem custo). Clique no produto para abrir os campos, corrija e clique em **💾 Salvar**.
+
+Tudo que você salva aqui **chega sozinho na planilha da Bruna em até ~20 minutos** — não precisa avisar ninguém nem mandar mensagem.
         """)
 
     with st.expander("🧵 Aba Freela", expanded=True):
