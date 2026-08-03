@@ -116,6 +116,18 @@
       "feita_em": null,
       "criado_em": "2026-08-03T17:27:15.255245",
       "obs_conclusao": ""
+    },
+    {
+      "id": "b4143da6-5cf2-439f-863a-aa92174f84f6",
+      "titulo": "Editar na BASE",
+      "categoria": "LB COLLECTION",
+      "descricao": "Refazer todas as informações do Cavalinho antigo na base aqui no site, não esquecer de salvar, atualizar e confirmar se foi",
+      "data": null,
+      "tipo": "tarefa",
+      "prioridade": "Alta",
+      "feita": false,
+      "feita_em": null,
+      "criado_em": "2026-08-03T20:17:08.466679"
     }
   ],
   "avisos": [],
