@@ -1004,23 +1004,25 @@ with tab_prod:
             with pn2:
                 pn_variacao = st.text_input("Variação (obrigatório se preencheu o código acima)",
                                              placeholder="ex: Rosa, P, M, G")
+            # text_input pros numeros tambem (nao st.number_input) — mesmo motivo
+            # da grade de edicao logo abaixo: number_input perdia valor digitado.
             pnc1, pnc2, pnc3, pnc4, pnc5 = st.columns(5)
             with pnc1:
-                pn_custo = st.number_input("Custo (R$) *", min_value=0.0, step=0.01, format="%.2f")
+                pn_custo_txt = st.text_input("Custo (R$) *", placeholder="ex: 45,90")
             with pnc2:
-                pn_peso = st.number_input("Peso (g) *", min_value=0, step=1)
+                pn_peso_txt = st.text_input("Peso (g) *", placeholder="ex: 300")
             with pnc3:
-                pn_comp = st.number_input("Comprim. (cm) *", min_value=0, step=1)
+                pn_comp_txt = st.text_input("Comprim. (cm) *", placeholder="ex: 20")
             with pnc4:
-                pn_larg = st.number_input("Largura (cm) *", min_value=0, step=1)
+                pn_larg_txt = st.text_input("Largura (cm) *", placeholder="ex: 15")
             with pnc5:
-                pn_alt = st.number_input("Altura (cm) *", min_value=0, step=1)
+                pn_alt_txt = st.text_input("Altura (cm) *", placeholder="ex: 5")
             pne1, pne2 = st.columns(2)
             with pne1:
                 pn_ean = st.text_input("Código de barras / EAN",
                                         help="Deixe em branco se não tiver — a Bruna gera um provisório")
             with pne2:
-                pn_estoque = st.number_input("Estoque (unidades que chegaram)", min_value=0, step=1)
+                pn_estoque_txt = st.text_input("Estoque (unidades que chegaram)", placeholder="ex: 10")
             pnf1, pnf2 = st.columns(2)
             with pnf1:
                 pn_ncm = st.text_input("NCM (opcional)",
@@ -1030,8 +1032,14 @@ with tab_prod:
                                            help="Normalmente é '2' — só mude se souber que é diferente "
                                                 "(ex: produto importado)")
             if st.form_submit_button("➕ Cadastrar produto", use_container_width=True, type="primary"):
+                pn_custo = num_seguro(pn_custo_txt)
+                pn_peso = num_seguro(pn_peso_txt, int)
+                pn_comp = num_seguro(pn_comp_txt, int)
+                pn_larg = num_seguro(pn_larg_txt, int)
+                pn_alt = num_seguro(pn_alt_txt, int)
+                pn_estoque = num_seguro(pn_estoque_txt, int)
                 if not pn_titulo.strip() or pn_custo <= 0 or pn_peso <= 0 or pn_comp <= 0 or pn_larg <= 0 or pn_alt <= 0:
-                    st.warning("Preencha pelo menos: título, custo, peso e as 3 medidas.")
+                    st.warning("Preencha pelo menos: título, custo, peso e as 3 medidas (número maior que zero).")
                 elif pn_sku_pai.strip() and not pn_variacao.strip():
                     st.warning("Preencheu o código do produto principal — agora preencha a Variação "
                                "(ex: Rosa, P, M, G) pra identificar essa cor/tamanho.")
@@ -1113,87 +1121,135 @@ with tab_prod:
     if not existentes and not busca_prod and so_faltando:
         st.success("Nenhum produto com pendência agora! 🎉")
 
-    LIMITE_GRADE = 300
+    # 03/08/2026: aqui era st.data_editor (grade estilo Excel). Trocado por
+    # widgets reais (text_input/number_input) porque a Bruna perdeu edições
+    # de verdade — o data_editor, sendo um componente canvas (não HTML normal),
+    # às vezes descarta os valores digitados antes do clique em Salvar
+    # conseguir lê-los. Widgets reais dentro de um st.form nunca perdem valor:
+    # o formulário só dispara UM rerun no Salvar, e nesse rerun cada widget
+    # devolve exatamente o que estava digitado nele. Mais linhas de código,
+    # mas não existe o risco de "editei tudo e não salvou nada".
+    # LIMITE_GRADE pequeno de propósito (achado real 03/08/2026): com muitas
+    # linhas na tela, os campos numéricos demoram MUITO pra terminar de montar
+    # (testado: 120 linhas -> 631 campos ainda "carregando" depois de 15s) — se
+    # a Bruna/funcionária editar antes disso terminar, a edição se perde
+    # silenciosamente sem erro nenhum (foi exatamente o que aconteceu). Com
+    # poucas linhas tudo monta rápido e fica confiável. Prefira SEMPRE a busca
+    # pra achar um produto específico em vez de aumentar esse número.
+    LIMITE_GRADE = 12
     if existentes:
         if len(existentes) > LIMITE_GRADE:
-            st.warning(f"Mostrando só os primeiros {LIMITE_GRADE} de {len(existentes)} — "
-                       f"use a busca acima pra achar um específico.")
+            st.warning(f"São {len(existentes)} produtos — mostrando só os primeiros {LIMITE_GRADE} "
+                       f"(mostrar muitos de uma vez pode fazer a edição não salvar direito). "
+                       f"Use a busca acima pra achar um específico, ou vá completando aos poucos.")
         visiveis = existentes[:LIMITE_GRADE]
 
-        linhas_originais = []
-        for p in visiveis:
-            avisos_p = []
-            if p.get("peso_fake"):
-                avisos_p.append("peso/medida provisório")
-            if p.get("ean_fake"):
-                avisos_p.append("EAN provisório")
-            if num_seguro(p.get("custo")) <= 0:
-                avisos_p.append("sem custo")
-            linhas_originais.append({
-                "SKU":          p.get("sku", ""),
-                "Pendência":    " · ".join(avisos_p),
-                "Título":       p.get("titulo", ""),
-                "Variação":     p.get("variacao", ""),
-                "Custo (R$)":   num_seguro(p.get("custo")),
-                "Peso (g)":     num_seguro(p.get("peso"), int),
-                "Compr. (cm)":  num_seguro(p.get("comprimento"), int),
-                "Larg. (cm)":   num_seguro(p.get("largura"), int),
-                "Alt. (cm)":    num_seguro(p.get("altura"), int),
-                "NCM":          p.get("ncm") if p.get("ncm") not in (None, "") else "",
-                "Origem":       p.get("origem") if p.get("origem") not in (None, "") else "",
-                "EAN":          p.get("ean") or "",
-                "Estoque":      num_seguro(p.get("estoque"), int),
-            })
+        st.caption("Edite os campos e clique em **💾 Salvar alterações** no final — "
+                   "o código (SKU, em cinza) não pode ser mudado por aqui.")
 
-        st.caption("Edite direto na tabela (igual planilha) e clique em Salvar embaixo. "
-                   "O código (SKU) não pode ser mudado por aqui.")
+        LARGURAS = [0.8, 2.2, 1.1, 1, 0.9, 0.9, 0.9, 0.9, 0.9, 0.7, 1.3, 0.8]
+        ROTULOS  = ["SKU", "Título", "Variação", "Custo (R$)", "Peso (g)",
+                    "Compr. (cm)", "Larg. (cm)", "Alt. (cm)", "NCM", "Origem", "EAN", "Estoque"]
 
-        editado = st.data_editor(
-            linhas_originais,
-            key="grid_produtos",
-            hide_index=True,
-            use_container_width=True,
-            num_rows="fixed",
-            disabled=["SKU", "Pendência"],
-            column_config={
-                "Custo (R$)":  st.column_config.NumberColumn(format="%.2f", min_value=0.0, step=0.01),
-                "Peso (g)":    st.column_config.NumberColumn(min_value=0, step=1),
-                "Compr. (cm)": st.column_config.NumberColumn(min_value=0, step=1),
-                "Larg. (cm)":  st.column_config.NumberColumn(min_value=0, step=1),
-                "Alt. (cm)":   st.column_config.NumberColumn(min_value=0, step=1),
-                "Estoque":     st.column_config.NumberColumn(min_value=0, step=1),
-                "Origem":      st.column_config.TextColumn(
-                    help="Código de origem fiscal — a maioria é '2', mas pode ser diferente "
-                         "(ex: produto importado)"),
-            },
-        )
+        with st.form("form_grade_produtos"):
+            cab = st.columns(LARGURAS)
+            for col, rotulo in zip(cab, ROTULOS):
+                col.markdown(f"**{rotulo}**")
 
-        if st.button("💾 Salvar alterações da tabela", type="primary", use_container_width=True):
+            widgets_por_sku = {}
+            for p in visiveis:
+                sku = p.get("sku")
+                avisos_p = []
+                if p.get("peso_fake"):
+                    avisos_p.append("peso/medida provisório")
+                if p.get("ean_fake"):
+                    avisos_p.append("EAN provisório")
+                if num_seguro(p.get("custo")) <= 0:
+                    avisos_p.append("sem custo")
+
+                c = st.columns(LARGURAS)
+                c[0].caption(sku)
+                w = {}
+                # text_input pra TUDO, inclusive número — achado real 03/08/2026:
+                # st.number_input nesta grade perdia o valor digitado (testado
+                # de várias formas — evento sintético com delay, campo com 0
+                # skeleton pendente — nada resolveu; parece um problema de
+                # quando/como o BaseWeb NumberInput confirma o valor). text_input
+                # nunca falhou no mesmo teste. num_seguro() já trata string
+                # numérica (com vírgula ou ponto) na hora de salvar.
+                w["titulo"] = c[1].text_input("Título", value=p.get("titulo", ""),
+                                               key=f"pt_{sku}", label_visibility="collapsed")
+                if avisos_p:
+                    c[1].caption("⚠️ " + " · ".join(avisos_p))
+                w["variacao"] = c[2].text_input("Variação", value=p.get("variacao", ""),
+                                                 key=f"pv_{sku}", label_visibility="collapsed")
+                w["custo"] = c[3].text_input("Custo", value=f"{num_seguro(p.get('custo')):.2f}",
+                                              key=f"pc_{sku}", label_visibility="collapsed")
+                w["peso"] = c[4].text_input("Peso", value=str(num_seguro(p.get("peso"), int)),
+                                             key=f"pp_{sku}", label_visibility="collapsed")
+                w["comprimento"] = c[5].text_input("Compr.", value=str(num_seguro(p.get("comprimento"), int)),
+                                                    key=f"pcp_{sku}", label_visibility="collapsed")
+                w["largura"] = c[6].text_input("Larg.", value=str(num_seguro(p.get("largura"), int)),
+                                                key=f"pl_{sku}", label_visibility="collapsed")
+                w["altura"] = c[7].text_input("Alt.", value=str(num_seguro(p.get("altura"), int)),
+                                               key=f"pa_{sku}", label_visibility="collapsed")
+                w["ncm"] = c[8].text_input("NCM", value=str(p.get("ncm") or ""),
+                                            key=f"pncm_{sku}", label_visibility="collapsed")
+                w["origem"] = c[9].text_input("Origem", value=str(p.get("origem") or ""),
+                                               key=f"por_{sku}", label_visibility="collapsed",
+                                               help="Normalmente '2' — só mude se souber que é diferente")
+                w["ean"] = c[10].text_input("EAN", value=p.get("ean") or "",
+                                             key=f"pe_{sku}", label_visibility="collapsed")
+                w["estoque"] = c[11].text_input("Estoque", value=str(num_seguro(p.get("estoque"), int)),
+                                                 key=f"pes_{sku}", label_visibility="collapsed")
+                widgets_por_sku[sku] = w
+
+            enviado = st.form_submit_button("💾 Salvar alterações", type="primary", use_container_width=True)
+
+        if enviado:
             mudou = 0
-            for original, novo in zip(linhas_originais, editado):
-                if original == novo:
-                    continue
-                p = next((x for x in dados["produtos"] if x.get("sku") == original["SKU"]), None)
-                if not p:
+            for p in visiveis:
+                sku = p.get("sku")
+                novo = widgets_por_sku[sku]
+                novo_custo       = num_seguro(novo["custo"])
+                novo_peso        = num_seguro(novo["peso"], int)
+                novo_comprimento = num_seguro(novo["comprimento"], int)
+                novo_largura     = num_seguro(novo["largura"], int)
+                novo_altura      = num_seguro(novo["altura"], int)
+                novo_estoque     = num_seguro(novo["estoque"], int)
+                mudou_este = (
+                    novo["titulo"].strip() != (p.get("titulo") or "").strip()
+                    or novo["variacao"].strip() != (p.get("variacao") or "").strip()
+                    or abs(novo_custo - num_seguro(p.get("custo"))) > 0.001
+                    or novo_peso != num_seguro(p.get("peso"), int)
+                    or novo_comprimento != num_seguro(p.get("comprimento"), int)
+                    or novo_largura != num_seguro(p.get("largura"), int)
+                    or novo_altura != num_seguro(p.get("altura"), int)
+                    or novo["ncm"].strip() != str(p.get("ncm") or "").strip()
+                    or novo["origem"].strip() != str(p.get("origem") or "").strip()
+                    or novo["ean"].strip() != (p.get("ean") or "").strip()
+                    or novo_estoque != num_seguro(p.get("estoque"), int)
+                )
+                if not mudou_este:
                     continue
                 p.update({
-                    "titulo":              (novo.get("Título") or "").strip(),
-                    "variacao":            (novo.get("Variação") or "").strip(),
-                    "custo":               num_seguro(novo.get("Custo (R$)")),
-                    "peso":                num_seguro(novo.get("Peso (g)"), int),
-                    "comprimento":         num_seguro(novo.get("Compr. (cm)"), int),
-                    "largura":             num_seguro(novo.get("Larg. (cm)"), int),
-                    "altura":              num_seguro(novo.get("Alt. (cm)"), int),
-                    "ncm":                 (novo.get("NCM") or "").strip(),
-                    "origem":              (novo.get("Origem") or "").strip(),
-                    "ean":                 (novo.get("EAN") or "").strip(),
-                    "estoque":             num_seguro(novo.get("Estoque"), int),
+                    "titulo":              novo["titulo"].strip(),
+                    "variacao":            novo["variacao"].strip(),
+                    "custo":               novo_custo,
+                    "peso":                novo_peso,
+                    "comprimento":         novo_comprimento,
+                    "largura":             novo_largura,
+                    "altura":              novo_altura,
+                    "ncm":                 novo["ncm"].strip(),
+                    "origem":              novo["origem"].strip(),
+                    "ean":                 novo["ean"].strip(),
+                    "estoque":             novo_estoque,
                     "editado_funcionaria": True,
                     "editado_em":          datetime.now().isoformat(),
                 })
                 mudou += 1
             if mudou == 0:
-                st.info("Nada mudou na tabela.")
+                st.info("Nada mudou.")
             else:
                 st.session_state["_produtos_tocado"] = True
                 if salvar_dados(dados):
