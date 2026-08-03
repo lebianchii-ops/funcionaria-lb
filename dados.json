@@ -543,7 +543,7 @@
       "id": "LB00007A",
       "sku": "LB00007A",
       "novo": false,
-      "editado_funcionaria": true,
+      "editado_funcionaria": false,
       "erro": "",
       "titulo": "TESTE COMPLETO - Tatuagem Halloween",
       "variacao": "Preto Editado",
@@ -560,8 +560,7 @@
       "mlb": "MLB3960970620",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
-      "editado_em": "2026-08-03T15:06:04.143958"
+      "ean_fake": false
     },
     {
       "id": "LB00012",
@@ -10526,12 +10525,12 @@
       "id": "LB00440D",
       "sku": "LB00440D",
       "novo": false,
-      "editado_funcionaria": true,
+      "editado_funcionaria": false,
       "erro": "",
       "titulo": "100 Laços Pronto Fácil Mágico 30mm Fita P/ Presente TESTE EDICAO",
       "variacao": "Dourado / Lisa",
       "tipo": "Filho",
-      "estoque": 0,
+      "estoque": null,
       "custo": 88.3,
       "peso": 132,
       "comprimento": 21,
@@ -10543,8 +10542,7 @@
       "mlb": "MLB5982712794",
       "status_ml": "⏸ Pausado",
       "peso_fake": false,
-      "ean_fake": true,
-      "editado_em": "2026-08-03T15:05:06.230171"
+      "ean_fake": true
     },
     {
       "id": "LB00441",
