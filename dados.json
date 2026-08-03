@@ -22278,6 +22278,12 @@
       "status_ml": "🔴 Falta criar",
       "peso_fake": true,
       "ean_fake": true
+    },
+    {
+      "id": "MARCADOR-TESTE-PROTECAO",
+      "sku": "LB99998",
+      "novo": false,
+      "titulo": "MARCADOR TESTE PROTECAO - PODE APAGAR"
     }
   ]
 }
