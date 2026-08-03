@@ -99,9 +99,10 @@
       "data": null,
       "tipo": "tarefa",
       "prioridade": "Alta",
-      "feita": false,
-      "feita_em": null,
-      "criado_em": "2026-08-02T13:04:52.623555"
+      "feita": true,
+      "feita_em": "03/08/26 15:39",
+      "criado_em": "2026-08-02T13:04:52.623555",
+      "obs_conclusao": ""
     }
   ],
   "avisos": [],
@@ -509,5 +510,6 @@
       "obs_conclusao": "",
       "criado_em": "2026-07-31T16:03:27.677123"
     }
-  ]
+  ],
+  "produtos": []
 }
