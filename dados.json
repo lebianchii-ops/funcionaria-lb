@@ -103,6 +103,18 @@
       "feita_em": "03/08/26 15:39",
       "criado_em": "2026-08-02T13:04:52.623555",
       "obs_conclusao": ""
+    },
+    {
+      "id": "8d980b8b-3cdb-4264-8d6b-c054104707cf",
+      "titulo": "Enviar sacola Poly por motoboy",
+      "categoria": "LB COLLECTION",
+      "descricao": "",
+      "data": null,
+      "tipo": "tarefa",
+      "prioridade": "Alta",
+      "feita": false,
+      "feita_em": null,
+      "criado_em": "2026-08-03T17:27:15.255245"
     }
   ],
   "avisos": [],
