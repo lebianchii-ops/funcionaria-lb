@@ -127,7 +127,20 @@
       "prioridade": "Alta",
       "feita": false,
       "feita_em": null,
-      "criado_em": "2026-08-03T20:17:08.466679"
+      "criado_em": "2026-08-03T20:17:08.466679",
+      "obs_conclusao": ""
+    },
+    {
+      "id": "0207867a-56bf-4e16-9b68-1e834758dbc6",
+      "titulo": "Atualizar a lista de produtos/ anúncios pendentes",
+      "categoria": "LB COLLECTION",
+      "descricao": "",
+      "data": null,
+      "tipo": "tarefa",
+      "prioridade": "Média",
+      "feita": false,
+      "feita_em": null,
+      "criado_em": "2026-08-03T22:15:44.985325"
     }
   ],
   "avisos": [],
