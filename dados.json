@@ -67,9 +67,9 @@
     },
     {
       "id": "eab96821-de70-4d84-82d9-d49ddba3a6d4",
-      "titulo": "Preencher na planilha BASE",
+      "titulo": "Preencher na UP o estoque dos novos produtos",
       "categoria": "LB COLLECTION",
-      "descricao": "PESOS e MEDIDAS \n- Fantasia Harry \n- Fantasia Gatinho\n- Fantasia Sereia Capa",
+      "descricao": "",
       "data": null,
       "tipo": "tarefa",
       "prioridade": "Alta",
@@ -155,6 +155,18 @@
       "feita_em": null,
       "criado_em": "2026-08-04T12:00:45.354111",
       "obs_conclusao": ""
+    },
+    {
+      "id": "b26ff81b-0402-4375-beba-a668aa0e0bbd",
+      "titulo": "Estoque Maribem",
+      "categoria": "LB COLLECTION",
+      "descricao": "Confirmar qutas fantasias vieram da compra da Helena",
+      "data": null,
+      "tipo": "tarefa",
+      "prioridade": "Alta",
+      "feita": false,
+      "feita_em": null,
+      "criado_em": "2026-08-04T18:02:44.444730"
     }
   ],
   "avisos": [],
