@@ -142,6 +142,18 @@
       "feita_em": null,
       "criado_em": "2026-08-03T22:15:44.985325",
       "obs_conclusao": ""
+    },
+    {
+      "id": "24fdb215-594e-4da9-b556-89f4ada94a70",
+      "titulo": "FULL LB",
+      "categoria": "LB COLLECTION",
+      "descricao": "",
+      "data": "2026-08-08",
+      "tipo": "evento",
+      "prioridade": "Alta",
+      "feita": false,
+      "feita_em": null,
+      "criado_em": "2026-08-04T12:00:45.354111"
     }
   ],
   "avisos": [],
