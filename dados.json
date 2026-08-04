@@ -163,7 +163,7 @@
       "id": "6be61cf2-cc46-47d3-b973-eb625911343b",
       "titulo": "Montagem dos Carrinhos de Bombeiro",
       "descricao": "Fazer a montagem dos kits e tambem a conferencia do estoque",
-      "prioridade": "Fazer primeiro",
+      "prioridade": "Fazer depois",
       "categoria": "—",
       "feita": false,
       "feita_em": null,
