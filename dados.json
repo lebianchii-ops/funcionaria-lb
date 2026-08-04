@@ -160,6 +160,17 @@
   "avisos": [],
   "freelas": [
     {
+      "id": "ca90a69b-ff2d-4faa-bebe-6719e7200e49",
+      "titulo": "Fantasias KPOP - Modelo Branco e Dourado",
+      "descricao": "Fazer a conferencia do estoque das fantasias NOVAS e separar por tamanho e passar a quantidade",
+      "prioridade": "Fazer depois",
+      "categoria": "K2 COMÉRCIO",
+      "feita": false,
+      "feita_em": null,
+      "obs_conclusao": "",
+      "criado_em": "2026-08-04T15:26:46.535146"
+    },
+    {
       "id": "f326bac4-658a-45c6-acbb-335c7ea293d2",
       "titulo": "Conferencia dos SPINNER BOLA",
       "descricao": "Fazer a conferencia dos controles remotos que estão funcionando e fazer a separação e contagem de cada cor",
