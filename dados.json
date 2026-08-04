@@ -160,6 +160,17 @@
   "avisos": [],
   "freelas": [
     {
+      "id": "6be61cf2-cc46-47d3-b973-eb625911343b",
+      "titulo": "Montagem dos Carrinhos de Bombeiro",
+      "descricao": "Fazer a montagem dos kits e tambem a conferencia do estoque",
+      "prioridade": "Fazer primeiro",
+      "categoria": "—",
+      "feita": false,
+      "feita_em": null,
+      "obs_conclusao": "",
+      "criado_em": "2026-08-04T15:24:32.162751"
+    },
+    {
       "id": "3609f10b-6e3f-4046-a22a-0b7110e57c6f",
       "titulo": "Montar Bonecas - Casa Magica da Gabi",
       "descricao": "Fazer a montagem dos kits da boneca e tambem a conferencia do estoque",
