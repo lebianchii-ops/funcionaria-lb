@@ -3117,7 +3117,7 @@
       "variacao": "",
       "tipo": "Pai",
       "estoque": 150,
-      "custo": 33.75,
+      "custo": 34.02,
       "peso": 170,
       "comprimento": 27,
       "largura": 12,
@@ -3129,7 +3129,7 @@
       "status_ml": "✅ No ML",
       "peso_fake": false,
       "ean_fake": false,
-      "editado_em": "2026-08-04T16:02:35.854834"
+      "editado_em": "2026-08-04T16:16:54.610339"
     },
     {
       "id": "LB00207",
