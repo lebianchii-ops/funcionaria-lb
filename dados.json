@@ -3111,7 +3111,7 @@
       "id": "LB00205",
       "sku": "LB00205",
       "novo": false,
-      "editado_funcionaria": true,
+      "editado_funcionaria": false,
       "erro": "",
       "titulo": "Cavalinho Pelúcia De Balanço 25cm Adorável Fofo Interativo Única",
       "variacao": "",
@@ -3128,8 +3128,7 @@
       "mlb": "MLB3670110805",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": false,
-      "editado_em": "2026-08-04T16:16:54.610339"
+      "ean_fake": false
     },
     {
       "id": "LB00207",
