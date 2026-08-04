@@ -160,6 +160,17 @@
   "avisos": [],
   "freelas": [
     {
+      "id": "3609f10b-6e3f-4046-a22a-0b7110e57c6f",
+      "titulo": "Montar Bonecas - Casa Magica da Gabi",
+      "descricao": "Fazer a montagem dos kits da boneca e tambem a conferencia do estoque",
+      "prioridade": "Fazer depois",
+      "categoria": "AMBOS (K2 e LB)",
+      "feita": false,
+      "feita_em": null,
+      "obs_conclusao": "",
+      "criado_em": "2026-08-04T15:24:08.432522"
+    },
+    {
       "id": "674c19cb-50f6-49a6-a403-109a01d0026a",
       "titulo": "Fazer faixa NOIVA DO ANO",
       "descricao": "TOTAL PRONTO P/ FAZER:\n115 \n\n(descontar conforme forem feitas)",
