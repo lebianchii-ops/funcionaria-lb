@@ -22347,6 +22347,25 @@
       "status_ml": "🔴 Falta criar",
       "peso_fake": true,
       "ean_fake": true
+    },
+    {
+      "id": "7572b807-b39e-43b8-8f4e-6ba7cd4c06d7",
+      "sku": null,
+      "novo": true,
+      "titulo": "Cachorrinho De Pelucia Anda E Late",
+      "sku_pai": "",
+      "variacao": "",
+      "custo": 74.0,
+      "peso": 417,
+      "comprimento": 30,
+      "largura": 15,
+      "altura": 28,
+      "ean": "",
+      "estoque": 0,
+      "ncm": "",
+      "origem": "2",
+      "erro": "",
+      "criado_em": "2026-08-05T16:06:16.784639"
     }
   ]
 }
