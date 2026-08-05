@@ -430,8 +430,8 @@
       "id": "ff3eb5e2-d69c-42b7-aedd-34679f9945a4",
       "titulo": "Fantasia Jessie Toy Story",
       "marca": "LB COLLECTION",
-      "feita": false,
-      "feita_em": null,
+      "feita": true,
+      "feita_em": "05/08/26 14:55",
       "obs_conclusao": "",
       "criado_em": "2026-07-31T16:03:27.675867"
     },
