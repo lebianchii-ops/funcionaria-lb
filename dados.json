@@ -168,6 +168,18 @@
       "feita_em": "05/08/26 14:32",
       "criado_em": "2026-08-04T18:02:44.444730",
       "obs_conclusao": ""
+    },
+    {
+      "id": "4cbaeee4-0810-4d53-9157-b0b9cce3b8d2",
+      "titulo": "Arrumar NCM dos cachorros e Variação",
+      "categoria": "—",
+      "descricao": "",
+      "data": null,
+      "tipo": "tarefa",
+      "prioridade": "Alta",
+      "feita": false,
+      "feita_em": null,
+      "criado_em": "2026-08-05T16:06:54.475200"
     }
   ],
   "avisos": [],
