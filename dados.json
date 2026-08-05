@@ -439,8 +439,8 @@
       "id": "13a17139-16ad-4e90-9bf9-8e2a13903b51",
       "titulo": "Fantasia Sereia Capa",
       "marca": "LB COLLECTION",
-      "feita": false,
-      "feita_em": null,
+      "feita": true,
+      "feita_em": "05/08/26 14:53",
       "obs_conclusao": "",
       "criado_em": "2026-07-31T16:03:27.675870"
     },
