@@ -7,7 +7,7 @@
       "descricao": "",
       "data": null,
       "tipo": "tarefa",
-      "prioridade": "Média",
+      "prioridade": "Alta",
       "feita": false,
       "feita_em": null,
       "criado_em": "2026-07-27T13:35:01.564526",
@@ -164,22 +164,10 @@
       "data": null,
       "tipo": "tarefa",
       "prioridade": "Alta",
-      "feita": false,
-      "feita_em": null,
+      "feita": true,
+      "feita_em": "05/08/26 14:32",
       "criado_em": "2026-08-04T18:02:44.444730",
       "obs_conclusao": ""
-    },
-    {
-      "id": "2f4cbef1-97fe-4983-82d8-bcc52cd2cafb",
-      "titulo": "Dados Fiscais",
-      "categoria": "LB Collection - ML",
-      "descricao": "Conferir pelo menos se as 3 novas fantasias subiram com os dados fiscais certos no ML",
-      "data": null,
-      "tipo": "tarefa",
-      "prioridade": "Alta",
-      "feita": false,
-      "feita_em": null,
-      "criado_em": "2026-08-05T12:23:38.720209"
     }
   ],
   "avisos": [],
