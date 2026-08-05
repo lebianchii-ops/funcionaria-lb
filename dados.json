@@ -421,8 +421,8 @@
       "id": "8d604a47-84f3-4ae2-9fd8-796b6c1ddcbf",
       "titulo": "Fantasia Gatinha",
       "marca": "LB COLLECTION",
-      "feita": true,
-      "feita_em": "05/08/26 14:53",
+      "feita": false,
+      "feita_em": null,
       "obs_conclusao": "",
       "criado_em": "2026-07-31T16:03:27.675863"
     },
