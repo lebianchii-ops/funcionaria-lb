@@ -120,3 +120,66 @@ Ou seja: não era timing, não era quantidade de linhas, não era o `st.form` �
 Ao rodar `streamlit run app.py` localmente (via `.claude/launch.json`) e testar no Browser pane: `computer.left_click`/`computer.type` às vezes não chegam na página de verdade (mesmo sintoma do bug "Chrome coberto" do CLAUDE.md global — `document.activeElement` fica em BODY mesmo depois do clique, e o campo continua vazio). Usar `javascript_tool` para focar (`.focus()`), setar valor (native setter + `dispatchEvent('input')`), `.blur()` (senão o Streamlit mostra "Press Enter to apply" e não comita o valor) e clicar botões via `querySelector(...).click()`. `get_page_text` às vezes omite texto de labels — conferir via `document.querySelectorAll('label')`.
 
 ⏳ **Comando de fechamento de sessão** (mesmo texto padrão dos outros projetos): descreva o que foi feito, regras descobertas, dificuldades — depois salve no CLAUDE.md desta pasta.
+## Como conferir se o app está no ar SEM abrir a URL (05/08/2026)
+
+Sessões do Claude Code na nuvem (claude.ai/code) **não conseguem abrir `funcionaria-lb.streamlit.app`** — a política de rede do ambiente bloqueia o domínio e o proxy devolve `403` no CONNECT (`curl: (56) CONNECT tunnel failed`). **Isso NÃO significa que o app está fora do ar** — não confundir com queda. Diagnóstico do proxy: `curl -sS "$HTTPS_PROXY/__agentproxy/status"` (lista `recentRelayFailures` com o host recusado).
+
+Dá pra verificar tudo que importa pelo próprio repositório, sem abrir o app:
+
+1. **Repo público?** (se virar privado o app quebra na hora — ver seção acima). Via MCP do GitHub: `search_repositories` com `repo:lebianchii-ops/funcionaria-lb` e `minimal_output:false` → campo `visibility`.
+2. **Está salvando?** `git fetch origin main` + `git log origin/main --oneline` — os commits `sync produtos HH:MM` mostram o script de sincronização gravando.
+3. **Dados íntegros?** `git show origin/main:dados.json` e contar as chaves. Referência saudável em 04/08/2026: `produtos: 946`, `anuncios_pendentes: 35`, `tarefas: 13`, `freelas: 8`, `entradas: 1`, e **0** produtos com `erro`, **0** pendentes (`novo`/`editado_funcionaria`), **0** sem `sku`. Produtos em 0 = incidente de zeramento (ver seção crítica acima).
+
+**Correção de documentação:** o `sincronizar_editor_produtos.py` roda **a cada 5 minutos**, não a cada 20 como estava escrito na seção da aba Produtos — confirmado pelos timestamps dos commits (19:00, 19:05, 19:10...).
+
+## Recuperar o Claude no Windows quando ele trava (incidente real 04–05/08/2026)
+
+A Bruna teve o Claude Desktop travado; desinstalou e a reinstalação falhou. Sequência de erros — cada um **consequência** do anterior, não problemas separados:
+
+1. **`Installation failed: AddPackage failed with HRESULT 0x80073CF6`** = `ERROR_PACKAGE_REGISTRATION_FAILED`. A desinstalação anterior não terminou (processo travado segurava o pacote), então o registro MSIX ficou órfão e a reinstalação bate nele. **Correção:** no PowerShell **como usuário normal** (nunca "Executar como administrador" — MSIX instala por usuário e rodar como admin registra na conta errada, causando esse mesmo erro): `Get-Process *claude* | Stop-Process -Force`, `Get-AppxPackage *Claude*|*Anthropic* | Remove-AppxPackage`, **reiniciar o PC** (obrigatório — solta os handles), e só então instalar de `claude.com/download` com duplo clique.
+2. **A limpeza remove o app** — "o Claude não abre" logo depois dela é esperado, não é erro novo.
+3. **O CLI do terminal vai junto** (`claude` → "não é reconhecido"). Reinstalar no PowerShell: `irm https://claude.ai/install.ps1 | iex`. ⚠️ **O instalador é silencioso por vários segundos** — ela achou que "não aconteceu nada" e o comando na verdade só não tinha recebido Enter ainda.
+4. **O instalador não atualiza o PATH da sessão nem sempre registra na do usuário** — depois de instalar, `claude --version` continuava "não reconhecido". O binário fica em `%USERPROFILE%\.local\bin\claude.exe`. Corrigido acrescentando essa pasta ao PATH do usuário via `[Environment]::SetEnvironmentVariable("Path", "$p;$env:USERPROFILE\.local\bin", "User")` + fechar e reabrir o PowerShell.
+
+### 🚨 "Controle Remoto desconectado" NÃO se resolve com "Tentar novamente"
+
+Erro no chat do Desktop/web: *"The bridged Claude Code process stopped responding mid-turn... you may need to run /login"*. É o recurso **Remote Control** (docs: `code.claude.com/docs/en/remote-control`), que espelha uma sessão do CLI **local** na web/celular. Duas regras que explicam por que o botão não adianta:
+
+- **"Local process must keep running"** — se o processo `claude` morre, **a sessão de Remote Control acaba**. Não há o que reconectar; o botão fica batendo em ninguém.
+- **Abrir o `claude` normal NÃO recria a ponte.** Remote Control só liga com `claude remote-control`, `claude --remote-control` (`--rc`) ou `/remote-control` dentro de uma sessão.
+
+**Retomar:** `claude remote-control --continue` (retoma a última sessão de RC daquela pasta com o histórico; exige v2.1.200+). Se não retomar, `claude remote-control` cria uma nova — o chat antigo não some, fica para consulta. **Rodar de dentro da pasta do projeto**, não da pasta pessoal: a doc avisa que o diálogo de confiança nunca é salvo para o home directory.
+
+**Regra geral pra suporte à Bruna nessas horas:** este ambiente é um container Linux na nuvem, **sem nenhum acesso à máquina Windows dela** — não dá pra rodar PowerShell, instalador nem terminal por ela. O que funciona é entregar bloco pronto de copiar/colar, um passo de cada vez, e pedir print quando o texto do erro importar. E vale confirmar comando de instalação na doc oficial antes de mandar (`code.claude.com/docs/en/setup`) em vez de escrever de memória.
+
+### 🚨 "Não é possível abrir este aplicativo" — é o Controle Inteligente (SAC), não instalação (incidente 05/08/2026)
+
+Erro **diferente** do `0x80073CF6`: o app já está instalado, mas o Windows recusa abrir, com o texto *"Você precisará acessar as opções avançadas para Claude e selecionar Reparar"* + link "Saiba mais sobre o controle inteligente de aplicativos". Repetiu 2 dias seguidos mesmo depois da reinstalação completa.
+
+**Diagnóstico (PowerShell, usuário normal) — uma linha, sem `>>`:**
+```powershell
+$p = (Get-ItemProperty 'HKLM:\SYSTEM\CurrentControlSet\Control\CI\Policy' -EA SilentlyContinue).VerifiedAndReputablePolicyState; if ($p -eq 0) { "SAC DESATIVADO" } else { "SAC LIGADO: $p" }; Get-AppxPackage *Claude* | Select-Object Name, Version, Status, InstallLocation | Format-List
+```
+Resultado que fecha o diagnóstico: `SAC LIGADO: 1` + `Status : Modified, NeedsRemediation`.
+
+**Causa:** o Claude Desktop **se atualiza sozinho**, gravando por cima dos próprios arquivos. Em pacote MSIX isso quebra a assinatura → Windows marca `Modified` → o SAC (Smart App Control) bloqueia a abertura. Por isso **reinstalar não resolve**: funciona ~1 dia, até a próxima atualização automática.
+
+**Reparar/re-registrar NÃO segura** — testado: `Add-AppxPackage -Register "$InstallLocation\AppXManifest.xml"` roda sem erro e o bloqueio continua igual.
+
+**Correção real — desligar o SAC.** ⚠️ **Irreversível: só volta a ligar reinstalando o Windows**, e não existe lista de exceções (é tudo ou nada). Defender e SmartScreen continuam ativos normalmente sem ele. Segurança do Windows → Controle de aplicativos e navegador → Controle inteligente de aplicativos → **Desativado**. Confirmação visual de que pegou: a opção "Avaliação" fica cinza.
+
+**⚠️ A ORDEM DOS REINÍCIOS É O QUE MAIS ERRA (dois `0x80073CF6` vieram daqui):**
+1. Desligar o SAC
+2. **Reiniciar** (a mudança do SAC só vale depois disto)
+3. Limpar: `Get-Process *claude* | Stop-Process -Force -EA SilentlyContinue; Get-AppxPackage *Claude* | Remove-AppxPackage`
+4. Conferir que zerou: `"TOTAL: " + (Get-AppxPackage *Claude*).Count` → tem que dar **0**
+5. **Reiniciar de novo** ← *passo esquecido na 1ª tentativa; sem ele a instalação falha com `0x80073CF6`, porque os handles do pacote antigo continuam presos*
+6. Só então instalar (duplo clique, **usuário normal**)
+
+Fim: `Status : Ok`. Aí sim está resolvido de vez.
+
+**x64 ou arm64?** Não chutar no site — ler o `InstallLocation` do diagnóstico: `Claude_1.25927.0.0_x64__...` → botão preto "Download for Windows". (A Bruna é x64.)
+
+### 📌 Regra de comunicação (ela pediu explicitamente, 05/08/2026)
+
+*"preciso que vc explique não sou adivinha"* — ao mandar comando, **nunca** assumir que ela sabe onde rodar. Sempre dizer: como abrir o PowerShell (tecla Windows → digitar `powershell`), que é **usuário normal e não administrador**, como colar (Ctrl+V ou botão direito), apertar Enter, e **o que deve aparecer na tela** quando der certo. Preferir **uma linha só** (juntar com `;`) a bloco multilinha — bloco gera o prompt `>>` e ela fica sem saber que falta apertar Enter de novo.
