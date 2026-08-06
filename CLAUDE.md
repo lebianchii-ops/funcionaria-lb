@@ -183,3 +183,17 @@ Fim: `Status : Ok`. Aí sim está resolvido de vez.
 ### 📌 Regra de comunicação (ela pediu explicitamente, 05/08/2026)
 
 *"preciso que vc explique não sou adivinha"* — ao mandar comando, **nunca** assumir que ela sabe onde rodar. Sempre dizer: como abrir o PowerShell (tecla Windows → digitar `powershell`), que é **usuário normal e não administrador**, como colar (Ctrl+V ou botão direito), apertar Enter, e **o que deve aparecer na tela** quando der certo. Preferir **uma linha só** (juntar com `;`) a bloco multilinha — bloco gera o prompt `>>` e ela fica sem saber que falta apertar Enter de novo.
+
+## Sincronização automática da pasta local (criada 06/08/2026)
+
+**Problema:** o app salva `dados.json` direto no GitHub via API — não passa pela pasta local `C:\Users\brubi\Funcionaria`. Como ninguém dá `git pull` manual, a pasta local pode ficar dias/semanas atrasada sem ninguém perceber (chegou a ficar **392 commits** atrasada). Risco: eu (Claude) mexer em código local desatualizado sem saber.
+
+**Solução — tarefa agendada `LB_Funcionaria_Git_Sync`:** roda `C:\Users\brubi\Funcionaria\sync_git.ps1` (`git pull origin main`) a cada 30min, das 05h às 23h, todo dia. Sem janela visível, roda na bateria, recupera execução perdida. Log em `sync_log.json` (fora do git). Card de status em "Saúde do Sistema" no painel (`ler_funcionaria_sync()` em `Painel LB Collection\atualizar_status.py`).
+
+**Pediu explicitamente essa automação (06/08/2026):** perguntou "não teria como automatizar" quando ofereci a alternativa mais simples (sincronizar só quando abrir sessão aqui) — ela topou a tarefa agendada em vez da alternativa manual-por-sessão.
+
+**Gotcha de PowerShell:** `git pull ... 2>&1 | Out-String` com `$ErrorActionPreference="Stop"` trata a saída normal do git no stderr (tipo "From https://...") como erro terminante — mesmo bug documentado no CLAUDE.md global sobre `2>&1` em comando nativo. Corrigido só capturando sem `2>&1` e mudando `$ErrorActionPreference` pra "Continue" ao redor da chamada do git.
+
+**Gotcha de leitura do log:** `PowerShell Set-Content -Encoding UTF8` grava BOM no JSON — `json.loads()` padrão do Python quebra com BOM. Ler com `encoding="utf-8-sig"`, não `"utf-8"`.
+
+**Gotcha de `schtasks /tr` com aspas:** dentro de uma string PowerShell **single-quoted**, backtick não escapa nada (funciona só em double-quoted) — usar aspas duplas literais dentro da single-quoted string funciona direto, sem escapar (``'... -File "C:\caminho\arquivo.ps1"'``), nunca `` `" ``.
