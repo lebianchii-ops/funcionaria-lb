@@ -2,3 +2,6 @@
 __pycache__/
 *.pyc
 .env
+sync_log.json
+test_stdout_out.txt
+.claude/settings.local.json
