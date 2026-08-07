@@ -9302,7 +9302,7 @@
       "altura": 5,
       "ncm": 95059000,
       "origem": 2,
-      "ean": "7811888211937",
+      "ean": "7902286141855",
       "mlb": "MLB5694809884",
       "status_ml": "⏸ Pausado",
       "peso_fake": false,
@@ -12982,7 +12982,7 @@
       "altura": 5,
       "ncm": 95059000,
       "origem": 2,
-      "ean": "7880001116725",
+      "ean": "7892121131946",
       "mlb": "MLB4411018613",
       "status_ml": "✅ No ML",
       "peso_fake": false,
@@ -15236,7 +15236,7 @@
       "altura": 3,
       "ncm": 95059000,
       "origem": 2,
-      "ean": "",
+      "ean": "7891069602747",
       "mlb": "MLB4625745239",
       "status_ml": "✅ No ML",
       "peso_fake": false,
@@ -15838,7 +15838,7 @@
       "mlb": "MLB4731557357",
       "status_ml": "⏸ Pausado",
       "peso_fake": false,
-      "ean_fake": true
+      "ean_fake": false
     },
     {
       "id": "LB00544",
@@ -16133,7 +16133,7 @@
       "altura": 2,
       "ncm": 95059000,
       "origem": 2,
-      "ean": "6718176426060",
+      "ean": "9001462837167",
       "mlb": "MLB7018724606",
       "status_ml": "✅ No ML",
       "peso_fake": false,
@@ -16156,7 +16156,7 @@
       "altura": 5,
       "ncm": 95030099,
       "origem": 2,
-      "ean": "",
+      "ean": "6025011862618",
       "mlb": "MLB7009193630",
       "status_ml": "✅ No ML",
       "peso_fake": false,
@@ -16298,7 +16298,7 @@
       "mlb": "MLB7063584386",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true
+      "ean_fake": false
     },
     {
       "id": "LB00551",
@@ -16482,7 +16482,7 @@
       "mlb": "MLB7275147302",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true
+      "ean_fake": false
     },
     {
       "id": "LB00557",
