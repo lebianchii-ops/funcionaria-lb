@@ -400,8 +400,8 @@
       "id": "a4d572a3-6eb1-4438-8401-253da9d7fb98",
       "titulo": "Chapéuzinho Vermelho",
       "marca": "LB COLLECTION",
-      "feita": false,
-      "feita_em": null,
+      "feita": true,
+      "feita_em": "07/08/26 11:49",
       "obs_conclusao": "",
       "criado_em": "2026-07-31T16:03:27.675828"
     },
