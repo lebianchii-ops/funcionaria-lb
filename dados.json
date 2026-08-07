@@ -181,6 +181,18 @@
       "feita_em": null,
       "criado_em": "2026-08-05T16:06:54.475200",
       "obs_conclusao": ""
+    },
+    {
+      "id": "8335cff3-6f58-44f2-a31a-626ed783c90a",
+      "titulo": "UP SELLER",
+      "categoria": "AMBOS (K2 e LB)",
+      "descricao": "Ver como é feito o descontar de estoque quando a compra é FLEX",
+      "data": null,
+      "tipo": "tarefa",
+      "prioridade": "Alta",
+      "feita": false,
+      "feita_em": null,
+      "criado_em": "2026-08-07T14:07:30.354080"
     }
   ],
   "avisos": [],
