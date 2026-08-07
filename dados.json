@@ -186,6 +186,17 @@
   "avisos": [],
   "freelas": [
     {
+      "id": "a6996b6a-f6ca-40de-a1fb-a1aa15742e0b",
+      "titulo": "Estoque Roupa LB",
+      "descricao": "",
+      "prioridade": "Fazer depois",
+      "categoria": "LB COLLECTION",
+      "feita": false,
+      "feita_em": null,
+      "obs_conclusao": "",
+      "criado_em": "2026-08-07T14:06:28.174625"
+    },
+    {
       "id": "60766381-7418-4cc6-84b9-4eab6211dd7a",
       "titulo": "CARRINHOS DE BOMBEIRO",
       "descricao": "Montar de contar os kits de carrinho de bombeiro",
