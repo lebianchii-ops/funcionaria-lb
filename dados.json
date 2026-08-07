@@ -364,8 +364,8 @@
       "id": "95107e90-180b-46fd-9d41-8a1f63c59928",
       "titulo": "Caderno inteligente",
       "marca": "LB COLLECTION",
-      "feita": false,
-      "feita_em": null,
+      "feita": true,
+      "feita_em": "07/08/26 12:13",
       "obs_conclusao": "",
       "criado_em": "2026-07-31T16:03:27.675744"
     },
