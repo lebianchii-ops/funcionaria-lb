@@ -259,8 +259,8 @@
       "descricao": "Fazer a montagem dos kits da boneca e tambem a conferencia do estoque",
       "prioridade": "Fazer depois",
       "categoria": "AMBOS (K2 e LB)",
-      "feita": false,
-      "feita_em": null,
+      "feita": true,
+      "feita_em": "07/08/26 17:36",
       "obs_conclusao": "",
       "criado_em": "2026-08-04T15:24:08.432522"
     },
