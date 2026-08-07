@@ -197,3 +197,21 @@ Fim: `Status : Ok`. Aí sim está resolvido de vez.
 **Gotcha de leitura do log:** `PowerShell Set-Content -Encoding UTF8` grava BOM no JSON — `json.loads()` padrão do Python quebra com BOM. Ler com `encoding="utf-8-sig"`, não `"utf-8"`.
 
 **Gotcha de `schtasks /tr` com aspas:** dentro de uma string PowerShell **single-quoted**, backtick não escapa nada (funciona só em double-quoted) — usar aspas duplas literais dentro da single-quoted string funciona direto, sem escapar (``'... -File "C:\caminho\arquivo.ps1"'``), nunca `` `" ``.
+
+## 🚨 O problema do Claude Desktop volta MESMO com o SAC desligado — é o auto-update que corrompe o MSIX (07/08/2026)
+
+Dia 07/08 o "Não é possível abrir este aplicativo" voltou (5+ vezes entre 05–07/08, 2x num mesmo dia). Diagnóstico rodado de novo: **SAC DESATIVADO** (a correção anterior segurou) mas `Status: Modified, NeedsRemediation` de novo, com a versão saltada de 1.25927.0.0 → 1.26832.0.0. **Conclusão: o vilão não era (só) o SAC — é o atualizador automático do Claude Desktop, que grava por cima do próprio pacote MSIX (aparentemente com claude.exe/CoworkVMService ainda rodando) e quebra a assinatura.** Desligar o SAC não previne; só muda quem recusa o pacote.
+
+O que foi testado e NÃO funciona nesse estado: Configurações → Opções avançadas → **Reparar** ("Não foi possível reparar o aplicativo"), **Redefinir**, e re-registrar (`Add-AppxPackage -DisableDevelopmentMode -ForceTargetApplicationShutdown -Register "$loc\AppXManifest.xml"` roda sem erro, Status continua Modified). **Único caminho que funciona continua sendo o ciclo completo:** matar processos (claude*, cowork*) → Remove-AppxPackage → **reiniciar** (sem isso: 0x80073CF6) → instalar de claude.com/download. Termina em `Status: Ok` — até a próxima atualização automática.
+
+**Mitigação diária combinada com a Bruna:** fim do dia, botão direito no ícone do Claude na bandeja → **Sair** (fechar de verdade). A hipótese é que o update com o app aberto é o que corrompe.
+
+**Reportado nos 2 canais oficiais (07/08/2026):**
+- **GitHub: issue anthropics/claude-code#84851** (aberta pela conta lebianchii-ops, etiqueta bug, em inglês, cita as correlatas #83932/#63397/#57221/#76357). Se ela pedir "confere a issue", é essa.
+- **Suporte (support.claude.com):** o robô Fin chutou MDM/Intune (não se aplica — PC pessoal); respondido descartando e pedindo humano; ticket na fila. Fin citou uma política `disableAutoUpdates` — se o humano confirmar uso fora de MDM, é o band-aid ideal.
+
+**Truques que funcionaram nesta sessão:**
+- **Issue do GitHub pré-preenchida por URL:** o form bug_report.yml aceita query params com os ids dos campos (actual, expected, error_output, reproduction, version, working_version, additional, title, template). Montar link com urlencode e mandar pra Bruna clicar — ela só marca checkboxes/dropdowns e clica em Create. Ids lidos de raw.githubusercontent.com/anthropics/claude-code/main/.github/ISSUE_TEMPLATE/bug_report.yml.
+- **add_repo de outro dono NÃO funciona:** anexar anthropics/claude-code numa sessão com repo da lebianchii-ops falha ("cross-tier adds are not supported") — o caminho é o link pré-preenchido.
+- **Widget do suporte:** se o chat fechar, support.claude.com → balãozinho → aba Mensagens (conversa fica salva). Resposta do humano chega por e-mail e dá pra responder pelo Gmail.
+- **Credencial de escrita da sessão pode expirar em sessão longa:** push e API passam a devolver 403 (leitura segue ok); add_repo de novo não renova. Sem conserto de dentro da sessão — fallback: a Bruna cola a seção pelo editor web do GitHub (link direto: github.com/OWNER/REPO/edit/main/ARQUIVO).
