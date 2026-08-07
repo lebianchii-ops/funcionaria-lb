@@ -186,6 +186,17 @@
   "avisos": [],
   "freelas": [
     {
+      "id": "60766381-7418-4cc6-84b9-4eab6211dd7a",
+      "titulo": "CARRINHOS DE BOMBEIRO",
+      "descricao": "Montar de contar os kits de carrinho de bombeiro",
+      "prioridade": "Fazer depois",
+      "categoria": "K2 COMÉRCIO",
+      "feita": false,
+      "feita_em": null,
+      "obs_conclusao": "",
+      "criado_em": "2026-08-07T02:16:23.387293"
+    },
+    {
       "id": "ca90a69b-ff2d-4faa-bebe-6719e7200e49",
       "titulo": "Fantasias KPOP - Modelo Branco e Dourado",
       "descricao": "Fazer a conferencia do estoque das fantasias NOVAS e separar por tamanho e passar a quantidade",
