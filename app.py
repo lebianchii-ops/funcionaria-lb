@@ -540,6 +540,56 @@ tab1, tab_fr, tab_an, tab_ent, tab_prod, tab2, tab3, tab4 = st.tabs(
      "🧾 Base", "📢 Avisos", "✔️ Concluídos", "❓ Ajuda"]
 )
 
+# mantém a mesma aba selecionada ao atualizar a página (F5) — guarda o índice na URL
+# (?aba=N) e usa isso pra clicar na aba certa de novo assim que a página carrega.
+# 100% client-side (history.replaceState, nunca dispara rerun do Streamlit) — por isso
+# funciona mesmo st.tabs() não tendo nenhum jeito nativo de lembrar a seleção.
+st.html("""
+<script>
+(function() {
+  function getTabs() {
+    return Array.from(window.parent.document.querySelectorAll('[data-baseweb="tab"]'));
+  }
+  function abaDaURL() {
+    var n = parseInt(new URLSearchParams(window.parent.location.search).get('aba'), 10);
+    return isNaN(n) ? null : n;
+  }
+  function setAbaNaURL(n) {
+    var url = new URL(window.parent.location.href);
+    url.searchParams.set('aba', n);
+    window.parent.history.replaceState(null, '', url);
+  }
+  // clica na aba certa 1x assim que a página carrega de verdade (F5) — tenta por até 4s
+  // porque a barra de abas pode levar um instante pra aparecer no DOM
+  if (!window.parent.__abaSyncInit) {
+    window.parent.__abaSyncInit = true;
+    var alvo = abaDaURL();
+    if (alvo !== null) {
+      (function tentar(n) {
+        var tabs = getTabs();
+        if (tabs.length > alvo) {
+          if (tabs[alvo].getAttribute('aria-selected') !== 'true') tabs[alvo].click();
+        } else if (n < 40) {
+          setTimeout(function() { tentar(n + 1); }, 100);
+        }
+      })(0);
+    }
+  }
+  // toda vez que a Bruna clica numa aba, grava o índice na URL — delegação no document
+  // (sobrevive a reruns do Streamlit trocando os elementos das abas por baixo do pano)
+  if (!window.parent.__abaSyncListener) {
+    window.parent.__abaSyncListener = true;
+    window.parent.document.addEventListener('click', function(e) {
+      var tab = e.target.closest('[data-baseweb="tab"]');
+      if (!tab) return;
+      var idx = getTabs().indexOf(tab);
+      if (idx >= 0) setAbaNaURL(idx);
+    }, true);
+  }
+})();
+</script>
+""", unsafe_allow_javascript=True)
+
 # pop-up de confirmação de conclusão — um único disparo por marcação de caixinha (evita reabrir sozinho)
 _pendente = st.session_state.get("confirmar_pendente")
 if _pendente:
