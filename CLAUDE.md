@@ -259,3 +259,15 @@ O que foi testado e NÃO funciona nesse estado: Configurações → Opções ava
 - **add_repo de outro dono NÃO funciona:** anexar anthropics/claude-code numa sessão com repo da lebianchii-ops falha ("cross-tier adds are not supported") — o caminho é o link pré-preenchido.
 - **Widget do suporte:** se o chat fechar, support.claude.com → balãozinho → aba Mensagens (conversa fica salva). Resposta do humano chega por e-mail e dá pra responder pelo Gmail.
 - **Credencial de escrita da sessão pode expirar em sessão longa:** push e API passam a devolver 403 (leitura segue ok); add_repo de novo não renova. Sem conserto de dentro da sessão — fallback: a Bruna cola a seção pelo editor web do GitHub (link direto: github.com/OWNER/REPO/edit/main/ARQUIVO).
+
+## 🚨 Auditoria real da ponte Editor de Produtos ↔ BASE.xlsx (08/08/2026) — 3 bugs achados e corrigidos no mesmo dia
+
+A Bruna cadastrou produtos pelo app, não viram na BASE, e perguntou se eu tinha certeza de ter coberto tudo. Resposta honesta: não tinha — fui auditar de verdade e achei 3 problemas reais, todos no `sincronizar_editor_produtos.py`/`base_lock.py`/`formatar_base.py` (pasta `Site ML`) e no `app.py` desta pasta. Detalhes técnicos completos de cada um estão nos commits do repositório `site-ml` (08/08/2026) e deste repositório — resumo aqui:
+
+1. **Trava não detectava Excel aberto em modo nuvem** (`base_lock.py`) — só checava o arquivo `~$BASE.xlsx`, que o Excel não cria quando abre via OneDrive-nuvem (AutoSave ligado). O script quebrava em silêncio, sem gravar nada no heartbeat — de fora parecia que estava tudo rodando. Corrigido: teste real de abrir o arquivo, não só o marcador.
+2. **Virar Pai agregador apagava EAN real sem avisar** (`formatar_base.py`) — a regra "Pai com variação fica com EAN em branco" disparava até em produtos que já vendiam sozinhos com EAN próprio, apagando o valor sem guardar em lugar nenhum. Corrigido: guarda em `ean_removido_de_pai.json` antes de apagar, e avisa na hora.
+3. **Risco de SKU duplicado em corrida com o Task Scheduler (409 Conflict)** — a sincronização roda a cada 1min; se ela e o app salvam `dados.json` quase ao mesmo tempo, o GitHub recusa a 2ª gravação. Sem retry, o item aplicado na BASE.xlsx ficava marcado "ainda não feito" e a rodada seguinte tentaria criar a MESMA linha de novo. Corrigido nos dois lados (`app.py` e `sincronizar_editor_produtos.py`): tenta de novo com SHA fresco antes de desistir.
+
+**Rede de segurança nova:** `sincronizar_editor_produtos.py` agora manda um aviso automático no WhatsApp (grupo claudinho) se ficar travado 5 rodadas seguidas (~5min) — não precisa mais a Bruna checar manualmente. Reforça a cada 30 falhas se continuar travado; nunca manda spam a cada falha isolada.
+
+**Honestidade sobre o limite disto:** não dá pra garantir que não existe MAIS nenhum problema — só dá pra tornar mais difícil de quebrar em silêncio (retry automático) e garantir que, se quebrar mesmo assim, ela fica sabendo sozinha (alarme). Se "cadastrei e não foi pra base" acontecer de novo mesmo com essas 3 correções, é sinal de um 4º problema ainda não mapeado — vale investigar a fundo de novo, não assumir que é a mesma causa.
