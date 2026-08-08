@@ -192,7 +192,8 @@
       "prioridade": "Alta",
       "feita": false,
       "feita_em": null,
-      "criado_em": "2026-08-07T14:07:30.354080"
+      "criado_em": "2026-08-07T14:07:30.354080",
+      "obs_conclusao": ""
     }
   ],
   "avisos": [],
@@ -214,8 +215,8 @@
       "descricao": "Montar de contar os kits de carrinho de bombeiro",
       "prioridade": "Fazer depois",
       "categoria": "K2 COMÉRCIO",
-      "feita": false,
-      "feita_em": null,
+      "feita": true,
+      "feita_em": "07/08/26 17:47",
       "obs_conclusao": "",
       "criado_em": "2026-08-07T02:16:23.387293"
     },
@@ -225,8 +226,8 @@
       "descricao": "Fazer a conferencia do estoque das fantasias NOVAS e separar por tamanho e passar a quantidade",
       "prioridade": "Fazer depois",
       "categoria": "K2 COMÉRCIO",
-      "feita": false,
-      "feita_em": null,
+      "feita": true,
+      "feita_em": "07/08/26 17:36",
       "obs_conclusao": "",
       "criado_em": "2026-08-04T15:26:46.535146"
     },
@@ -247,8 +248,8 @@
       "descricao": "Fazer a montagem dos kits e tambem a conferencia do estoque",
       "prioridade": "Fazer depois",
       "categoria": "K2 COMÉRCIO",
-      "feita": false,
-      "feita_em": null,
+      "feita": true,
+      "feita_em": "07/08/26 17:36",
       "obs_conclusao": "",
       "criado_em": "2026-08-04T15:24:32.162751"
     },
@@ -258,8 +259,8 @@
       "descricao": "Fazer a montagem dos kits da boneca e tambem a conferencia do estoque",
       "prioridade": "Fazer depois",
       "categoria": "AMBOS (K2 e LB)",
-      "feita": false,
-      "feita_em": null,
+      "feita": true,
+      "feita_em": "07/08/26 17:36",
       "obs_conclusao": "",
       "criado_em": "2026-08-04T15:24:08.432522"
     },
@@ -9302,7 +9303,7 @@
       "altura": 5,
       "ncm": 95059000,
       "origem": 2,
-      "ean": "7811888211937",
+      "ean": "7902286141855",
       "mlb": "MLB5694809884",
       "status_ml": "⏸ Pausado",
       "peso_fake": false,
@@ -12982,7 +12983,7 @@
       "altura": 5,
       "ncm": 95059000,
       "origem": 2,
-      "ean": "7880001116725",
+      "ean": "7892121131946",
       "mlb": "MLB4411018613",
       "status_ml": "✅ No ML",
       "peso_fake": false,
@@ -15236,7 +15237,7 @@
       "altura": 3,
       "ncm": 95059000,
       "origem": 2,
-      "ean": "",
+      "ean": "7891069602747",
       "mlb": "MLB4625745239",
       "status_ml": "✅ No ML",
       "peso_fake": false,
@@ -15838,7 +15839,7 @@
       "mlb": "MLB4731557357",
       "status_ml": "⏸ Pausado",
       "peso_fake": false,
-      "ean_fake": true
+      "ean_fake": false
     },
     {
       "id": "LB00544",
@@ -16133,7 +16134,7 @@
       "altura": 2,
       "ncm": 95059000,
       "origem": 2,
-      "ean": "6718176426060",
+      "ean": "9001462837167",
       "mlb": "MLB7018724606",
       "status_ml": "✅ No ML",
       "peso_fake": false,
@@ -16156,7 +16157,7 @@
       "altura": 5,
       "ncm": 95030099,
       "origem": 2,
-      "ean": "",
+      "ean": "7900473844060",
       "mlb": "MLB7009193630",
       "status_ml": "✅ No ML",
       "peso_fake": false,
@@ -16179,7 +16180,7 @@
       "altura": 5,
       "ncm": "95030099",
       "origem": "2",
-      "ean": "6025011862618",
+      "ean": "7900473844060",
       "mlb": "MLB4982845719",
       "status_ml": "✅ No ML",
       "peso_fake": false,
@@ -16202,7 +16203,7 @@
       "altura": 5,
       "ncm": "95030099",
       "origem": "2",
-      "ean": "6025011862618",
+      "ean": "7900473844060",
       "mlb": "MLB4982693031",
       "status_ml": "✅ No ML",
       "peso_fake": false,
@@ -16225,7 +16226,7 @@
       "altura": 5,
       "ncm": "95030099",
       "origem": "2",
-      "ean": "6025011862618",
+      "ean": "7900473844060",
       "mlb": "MLB4982932799",
       "status_ml": "✅ No ML",
       "peso_fake": false,
@@ -16248,7 +16249,7 @@
       "altura": 5,
       "ncm": "95030099",
       "origem": "2",
-      "ean": "6025011862618",
+      "ean": "7900473844060",
       "mlb": "MLB4982693065",
       "status_ml": "✅ No ML",
       "peso_fake": false,
@@ -16298,7 +16299,7 @@
       "mlb": "MLB7063584386",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true
+      "ean_fake": false
     },
     {
       "id": "LB00551",
@@ -16482,7 +16483,7 @@
       "mlb": "MLB7275147302",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true
+      "ean_fake": false
     },
     {
       "id": "LB00557",
@@ -22394,6 +22395,44 @@
       "status_ml": "🔴 Falta criar",
       "peso_fake": true,
       "ean_fake": true
+    },
+    {
+      "id": "c9da7a2f-7da6-4f28-a92b-dab688b5d62a",
+      "sku": null,
+      "novo": true,
+      "titulo": "Copo Team Bride Dourado 8 UN",
+      "sku_pai": "",
+      "variacao": "",
+      "custo": 3.89,
+      "peso": 100,
+      "comprimento": 10,
+      "largura": 10,
+      "altura": 10,
+      "ean": "",
+      "estoque": 5,
+      "ncm": "",
+      "origem": "2",
+      "erro": "",
+      "criado_em": "2026-08-08T16:58:46.198490"
+    },
+    {
+      "id": "36527672-ed56-4748-8bfd-8391bfff209d",
+      "sku": null,
+      "novo": true,
+      "titulo": "Copo Team Bride Rose 8 UN",
+      "sku_pai": "",
+      "variacao": "",
+      "custo": 3.89,
+      "peso": 100,
+      "comprimento": 10,
+      "largura": 10,
+      "altura": 10,
+      "ean": "",
+      "estoque": 5,
+      "ncm": "",
+      "origem": "2",
+      "erro": "",
+      "criado_em": "2026-08-08T17:00:03.390272"
     }
   ]
 }
