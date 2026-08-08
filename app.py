@@ -1007,6 +1007,12 @@ with tab_prod:
             with pn2:
                 pn_variacao = st.text_input("Variação (obrigatório se preencheu o código acima)",
                                              placeholder="ex: Rosa, P, M, G")
+            pn_variacoes_novas = st.text_input(
+                "OU: cores/tamanhos deste produto NOVO, todos de uma vez (separados por vírgula)",
+                placeholder="ex: Rosé, Azul, Verde — só se o produto principal também ainda não existe",
+                help="Use isso quando nem o produto principal existe ainda. Cadastra o produto principal + "
+                     "todas essas variações juntos, sem precisar esperar entre um e outro. Não preencha "
+                     "junto com os dois campos acima — são dois jeitos diferentes.")
             # text_input pros numeros tambem (nao st.number_input) — mesmo motivo
             # da grade de edicao logo abaixo: number_input perdia valor digitado.
             pnc1, pnc2, pnc3, pnc4, pnc5 = st.columns(5)
@@ -1041,22 +1047,25 @@ with tab_prod:
                 pn_larg = num_seguro(pn_larg_txt, int)
                 pn_alt = num_seguro(pn_alt_txt, int)
                 pn_estoque = num_seguro(pn_estoque_txt, int)
+                cores_novas = ([c.strip() for c in pn_variacoes_novas.split(",") if c.strip()]
+                               if pn_variacoes_novas.strip() else [])
                 if not pn_titulo.strip() or pn_custo <= 0 or pn_peso <= 0 or pn_comp <= 0 or pn_larg <= 0 or pn_alt <= 0:
                     st.warning("Preencha pelo menos: título, custo, peso e as 3 medidas (número maior que zero).")
+                elif cores_novas and (pn_sku_pai.strip() or pn_variacao.strip()):
+                    st.warning("Não preencha 'cores/tamanhos deste produto NOVO' junto com 'código do produto "
+                               "principal' ou 'Variação' — são dois jeitos diferentes, use só um.")
                 elif pn_sku_pai.strip() and not pn_variacao.strip():
                     st.warning("Preencheu o código do produto principal — agora preencha a Variação "
                                "(ex: Rosa, P, M, G) pra identificar essa cor/tamanho.")
                 elif pn_variacao.strip() and not pn_sku_pai.strip():
                     st.warning("Preencheu a Variação — agora preencha o código do produto principal "
                                "(o código que já existe, ex: LB00123).")
+                elif len(cores_novas) > 20:
+                    st.warning(f"São {len(cores_novas)} cores/tamanhos de uma vez — confere se não colou "
+                               f"algo errado. Se for mesmo isso, cadastre em 2 leva.")
                 else:
-                    dados["produtos"].append({
-                        "id":          str(uuid.uuid4()),
-                        "sku":         None,
-                        "novo":        True,
+                    campos_comuns = {
                         "titulo":      pn_titulo.strip(),
-                        "sku_pai":     pn_sku_pai.strip().upper(),
-                        "variacao":    pn_variacao.strip(),
                         "custo":       pn_custo,
                         "peso":        pn_peso,
                         "comprimento": pn_comp,
@@ -1068,11 +1077,41 @@ with tab_prod:
                         "origem":      pn_origem.strip(),
                         "erro":        "",
                         "criado_em":   datetime.now().isoformat(),
-                    })
-                    st.session_state["_produtos_tocado"] = True
-                    if salvar_dados(dados):
-                        st.success("Cadastrado! A Bruna recebe o código do produto (SKU) automaticamente.")
-                        st.rerun()
+                    }
+                    if cores_novas:
+                        # produto principal + variações, tudo novo, cadastrados juntos: o
+                        # produto principal ainda não tem SKU (nem existe na BASE), então as
+                        # variações não podem apontar pra ele por "sku_pai" (a regra é nunca
+                        # inventar/adivinhar um SKU pai — ver sincronizar_editor_produtos.py,
+                        # Site ML). Em vez disso, apontam pelo "id" do produto principal desta
+                        # mesma leva (sku_pai_grupo_novo) — o script de sincronização resolve
+                        # os dois juntos, na mesma passada, na ordem em que aparecem aqui.
+                        grupo_id = str(uuid.uuid4())
+                        dados["produtos"].append({
+                            "id": grupo_id, "sku": None, "novo": True,
+                            "sku_pai": "", "variacao": "", **campos_comuns,
+                        })
+                        for cor in cores_novas:
+                            dados["produtos"].append({
+                                "id": str(uuid.uuid4()), "sku": None, "novo": True,
+                                "sku_pai": "", "sku_pai_grupo_novo": grupo_id,
+                                "variacao": cor, **campos_comuns,
+                            })
+                        st.session_state["_produtos_tocado"] = True
+                        if salvar_dados(dados):
+                            st.success(f"Cadastrado! Produto principal + {len(cores_novas)} variação(ões) "
+                                       f"({', '.join(cores_novas)}). Os códigos saem sozinhos em instantes.")
+                            st.rerun()
+                    else:
+                        dados["produtos"].append({
+                            "id": str(uuid.uuid4()), "sku": None, "novo": True,
+                            "sku_pai": pn_sku_pai.strip().upper(), "variacao": pn_variacao.strip(),
+                            **campos_comuns,
+                        })
+                        st.session_state["_produtos_tocado"] = True
+                        if salvar_dados(dados):
+                            st.success("Cadastrado! A Bruna recebe o código do produto (SKU) automaticamente.")
+                            st.rerun()
 
     produtos_novos_pendentes = [p for p in dados["produtos"] if p.get("novo") and not p.get("sku")]
     if produtos_novos_pendentes:
@@ -1082,7 +1121,12 @@ with tab_prod:
             with st.container(border=True):
                 c1, c2 = st.columns([8, 1])
                 with c1:
-                    extra = f" · variação de {p['sku_pai']} ({p['variacao']})" if p.get("sku_pai") else ""
+                    if p.get("sku_pai"):
+                        extra = f" · variação de {p['sku_pai']} ({p['variacao']})"
+                    elif p.get("sku_pai_grupo_novo"):
+                        extra = f" · variação ({p['variacao']}) de um produto novo cadastrado junto"
+                    else:
+                        extra = ""
                     st.markdown(f"**⏳ código ainda não gerado** — {p['titulo']}{extra}")
                     st.caption(f"Custo R$ {num_seguro(p.get('custo')):.2f} · {num_seguro(p.get('peso'), int)}g · "
                                f"{num_seguro(p.get('comprimento'), int)}×{num_seguro(p.get('largura'), int)}×"
