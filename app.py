@@ -4,6 +4,7 @@ import re
 import requests
 import base64
 import unicodedata
+import time
 from datetime import datetime, date, timedelta
 import uuid
 import calendar
@@ -130,46 +131,57 @@ def carregar_dados():
         return data
     return {"tarefas": [], "avisos": []}
 
-def salvar_dados(data):
+def salvar_dados(data, tentativas=4):
+    """Salva dados.json no GitHub. Tenta de novo com SHA fresco em cada 409 —
+    achado 08/08/2026: o sincronizar_editor_produtos.py roda a cada 1min e pode
+    salvar quase ao mesmo tempo que a Bruna/funcionária clica em salvar aqui.
+    Antes, um 409 nessa hora mostrava um erro vermelho pedindo pra tentar de
+    novo manualmente — fácil de não perceber e achar que salvou quando não
+    salvou. Agora o app mesmo tenta de novo sozinho antes de desistir."""
     headers = {"Authorization": f"token {get_token()}"}
     url = f"https://api.github.com/repos/{REPO}/contents/{DATA_FILE}"
 
-    # busca SHA atual antes de salvar — evita conflito entre usuários simultâneos
-    r_get = requests.get(url, headers=headers)
-    if r_get.status_code == 200:
-        sha_atual = r_get.json()["sha"]
-        st.session_state["sha"] = sha_atual
+    for tentativa in range(1, tentativas + 1):
+        # busca SHA atual antes de salvar — evita conflito entre usuários simultâneos
+        r_get = requests.get(url, headers=headers)
+        if r_get.status_code == 200:
+            sha_atual = r_get.json()["sha"]
+            st.session_state["sha"] = sha_atual
 
-        # "produtos" é escrito por ESTE app E pelo sincronizar_editor_produtos.py
-        # (script automático, roda a cada ~20min) — uma aba aberta há muito tempo
-        # (ex: alguém deixou a aba Tarefas aberta desde antes de o script rodar)
-        # tem em memória um "produtos" desatualizado. Se essa ação NÃO foi na aba
-        # Produtos, nunca deixar essa cópia velha sobrescrever o que o script
-        # gravou depois — sempre usar a versão mais recente do GitHub pra essa
-        # chave. Confirmado 03/08/2026: uma aba assim zerou os produtos ao salvar
-        # uma Entrada de Mercadoria sem relação nenhuma com produtos.
-        if not st.session_state.get("_produtos_tocado"):
-            try:
-                remoto = json.loads(base64.b64decode(r_get.json()["content"]).decode())
-                data["produtos"] = remoto.get("produtos", data.get("produtos", []))
-            except Exception:
-                pass
-    else:
-        sha_atual = st.session_state.get("sha")
+            # "produtos" é escrito por ESTE app E pelo sincronizar_editor_produtos.py
+            # (script automático, roda a cada ~1min) — uma aba aberta há muito tempo
+            # (ex: alguém deixou a aba Tarefas aberta desde antes de o script rodar)
+            # tem em memória um "produtos" desatualizado. Se essa ação NÃO foi na aba
+            # Produtos, nunca deixar essa cópia velha sobrescrever o que o script
+            # gravou depois — sempre usar a versão mais recente do GitHub pra essa
+            # chave. Confirmado 03/08/2026: uma aba assim zerou os produtos ao salvar
+            # uma Entrada de Mercadoria sem relação nenhuma com produtos.
+            if not st.session_state.get("_produtos_tocado"):
+                try:
+                    remoto = json.loads(base64.b64decode(r_get.json()["content"]).decode())
+                    data["produtos"] = remoto.get("produtos", data.get("produtos", []))
+                except Exception:
+                    pass
+        else:
+            sha_atual = st.session_state.get("sha")
 
-    content = base64.b64encode(
-        json.dumps(data, ensure_ascii=False, indent=2).encode()
-    ).decode()
-    payload = {
-        "message": f"update {datetime.now().strftime('%d/%m %H:%M')}",
-        "content": content,
-        "sha": sha_atual,
-    }
-    r = requests.put(url, headers=headers, json=payload)
-    if r.status_code in [200, 201]:
-        st.session_state["sha"] = r.json()["content"]["sha"]
-        return True
-    st.error(f"❌ Erro ao salvar (código {r.status_code}). Clique em 🔄 Atualizar dados e tente novamente.")
+        content = base64.b64encode(
+            json.dumps(data, ensure_ascii=False, indent=2).encode()
+        ).decode()
+        payload = {
+            "message": f"update {datetime.now().strftime('%d/%m %H:%M')}",
+            "content": content,
+            "sha": sha_atual,
+        }
+        r = requests.put(url, headers=headers, json=payload)
+        if r.status_code in [200, 201]:
+            st.session_state["sha"] = r.json()["content"]["sha"]
+            return True
+        if r.status_code == 409 and tentativa < tentativas:
+            time.sleep(1.5)
+            continue
+        st.error(f"❌ Erro ao salvar (código {r.status_code}). Clique em 🔄 Atualizar dados e tente novamente.")
+        return False
     return False
 
 def html_mini_cal(ano, mes, hoje, datas_tarefas):
