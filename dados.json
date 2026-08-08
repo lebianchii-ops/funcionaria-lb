@@ -23341,6 +23341,25 @@
       "peso_fake": true,
       "ean_fake": true,
       "custo_fake": false
+    },
+    {
+      "id": "3aa9df3d-a275-4793-a32e-49238e58c280",
+      "sku": null,
+      "novo": true,
+      "titulo": "Prato Team Bride Rose 8 UN",
+      "sku_pai": "",
+      "variacao": "",
+      "custo": 4.5,
+      "peso": 100,
+      "comprimento": 10,
+      "largura": 10,
+      "altura": 10,
+      "ean": "",
+      "estoque": 5,
+      "ncm": "",
+      "origem": "2",
+      "erro": "",
+      "criado_em": "2026-08-08T17:03:49.708624"
     }
   ]
 }
