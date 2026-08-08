@@ -75,7 +75,7 @@ Marcar a caixinha de uma tarefa/freela como feita abre um `st.dialog` pedindo co
 - Dado fica em `dados["produtos"]` — lista de itens com `id`, `sku` (`None` até o script de sincronização atribuir), `novo`/`editado_funcionaria` (flags que o script consome e limpa), `erro` (mensagem visível se algo não pôde ser aplicado), mais os campos da BASE (`titulo`, `variacao`, `custo`, `peso`, `comprimento`, `largura`, `altura`, `ean`, `estoque`, `ncm`, `origem`, `tipo`, `mlb`, `status_ml`, `peso_fake`, `ean_fake`, `custo_fake`).
 - **Produto novo:** ela preenche o formulário; se for variação de algo que já existe, informa o **`sku_pai`** (nunca inventa o SKU — quem atribui é o script de sincronização, que também valida que o `sku_pai` existe antes de criar a variação).
 - **Produto existente:** busca por SKU/título (com o mesmo `chave_alfabetica()` já usado nas outras abas) ou vê a lista "Só o que está faltando" (peso/EAN provisórios ou sem custo).
-- **A ponte pra BASE.xlsx é externa a este app:** `sincronizar_editor_produtos.py` (na pasta `Site ML`) roda a cada 20min via Task Scheduler (`LB_Sync_Editor_Produtos`), aplica os pendentes na BASE.xlsx e sobe de volta o snapshot completo (limpando `novo`/`editado_funcionaria`, preenchendo `sku` e `erro`). Detalhes técnicos completos — incluindo o bug de `openpyxl read_only=True` catastroficamente lento — estão no `Site ML\CLAUDE.md`, seção "Editor de Produtos da Funcionária".
+- **A ponte pra BASE.xlsx é externa a este app:** `sincronizar_editor_produtos.py` (na pasta `Site ML`) roda a cada 1min via Task Scheduler (`LB_Sync_Editor_Produtos`, reduzido de 5min pra 1min em 08/08/2026 — script leva ~10s por rodada quando não tem nada pendente, sobra folga enorme mesmo rodando a cada minuto), aplica os pendentes na BASE.xlsx e sobe de volta o snapshot completo (limpando `novo`/`editado_funcionaria`, preenchendo `sku` e `erro`). Detalhes técnicos completos — incluindo o bug de `openpyxl read_only=True` catastroficamente lento — estão no `Site ML\CLAUDE.md`, seção "Editor de Produtos da Funcionária".
 - Este app **nunca fala direto com a BASE.xlsx** — só lê/escreve `dados.json`. Toda a lógica de atribuir SKU, validar `sku_pai`, aplicar na planilha e gerar EAN provisório mora no script de sincronização, não aqui.
 
 **🐛 Crash real em produção (03/08/2026, achado pela Bruna minutos depois do deploy):** `float(p.get("custo") or 0)` quebrava a aba inteira com `ValueError` quando alguma célula de custo/peso/medida na BASE está como **texto** (ex: vírgula decimal "10,50" em vez de número, ou outro formato não numérico) — a BASE é editada por gente à mão, então isso acontece. Corrigido com o helper `num_seguro(valor, cast)` (trata string com vírgula/ponto, vazio, `None`, sem nunca lançar exceção) aplicado em TODOS os campos numéricos da aba Produtos (formulário de edição, legenda dos pendentes, filtro "sem custo"). **Regra pra qualquer campo novo que leia número de `dados.json`/BASE:** nunca usar `float(...)`/`int(...)` direto em dado que pode ter vindo de uma planilha editada à mão — sempre passar por `num_seguro()`.
@@ -143,7 +143,21 @@ Dá pra verificar tudo que importa pelo próprio repositório, sem abrir o app:
 2. **Está salvando?** `git fetch origin main` + `git log origin/main --oneline` — os commits `sync produtos HH:MM` mostram o script de sincronização gravando.
 3. **Dados íntegros?** `git show origin/main:dados.json` e contar as chaves. Referência saudável em 04/08/2026: `produtos: 946`, `anuncios_pendentes: 35`, `tarefas: 13`, `freelas: 8`, `entradas: 1`, e **0** produtos com `erro`, **0** pendentes (`novo`/`editado_funcionaria`), **0** sem `sku`. Produtos em 0 = incidente de zeramento (ver seção crítica acima).
 
-**Correção de documentação:** o `sincronizar_editor_produtos.py` roda **a cada 5 minutos**, não a cada 20 como estava escrito na seção da aba Produtos — confirmado pelos timestamps dos commits (19:00, 19:05, 19:10...).
+**Correção de documentação:** o `sincronizar_editor_produtos.py` roda **a cada 5 minutos**, não a cada 20 como estava escrito na seção da aba Produtos — confirmado pelos timestamps dos commits (19:00, 19:05, 19:10...). **Atualizado 08/08/2026: reduzido pra a cada 1 minuto** (a Bruna achou 5min devagar pra ver o SKU aparecer depois de cadastrar) — ver seção abaixo.
+
+## Intervalo do `LB_Sync_Editor_Produtos` reduzido de 5min pra 1min (08/08/2026)
+
+A Bruna perguntou se não estava demorando muito pra sincronizar/criar o SKU. Medi o tempo real do script (`sincronizar_editor_produtos.py`) rodando manualmente: **~10 segundos** quando não tem nada pendente da funcionária (só remonta e sobe o snapshot da BASE) — com pendência real (aplicar produto novo + `formatar_base.py`) deve ficar um pouco mais, mas folgado dentro de 1 minuto. A task já tem `MultipleInstances: IgnoreNew` (nunca sobrepõe rodadas) e `ExecutionTimeLimit: PT10M`, então reduzir o intervalo é seguro.
+
+**Comando usado (mesmo padrão do incidente de 06/08 abaixo — sempre copiar o `Repetition` de um trigger `-Once` auxiliar pro trigger `-Daily`, nunca atribuir direto):**
+```powershell
+$action = (Get-ScheduledTask -TaskName "LB_Sync_Editor_Produtos").Actions[0]
+$helper = New-ScheduledTaskTrigger -Once -At "05:00" -RepetitionInterval (New-TimeSpan -Minutes 1) -RepetitionDuration (New-TimeSpan -Hours 18)
+$trigger = New-ScheduledTaskTrigger -Daily -At "05:00"
+$trigger.Repetition = $helper.Repetition
+Set-ScheduledTask -TaskName "LB_Sync_Editor_Produtos" -Action $action -Trigger $trigger
+```
+Conferido depois: `DaysInterval` presente (1) e `Triggers[0].Repetition.Interval` = `PT1M`. Pior caso de espera pra funcionária ver o SKU: caiu de ~5min pra ~1min.
 
 ## Recuperar o Claude no Windows quando ele trava (incidente real 04–05/08/2026)
 
