@@ -17767,11 +17767,11 @@
       "altura": 10,
       "ncm": "",
       "origem": "2",
-      "ean": "7908071847568",
+      "ean": "7895541972434",
       "mlb": "MLB7366212002",
       "status_ml": "✅ No ML",
       "peso_fake": true,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
