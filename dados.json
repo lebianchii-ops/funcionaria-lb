@@ -22414,6 +22414,25 @@
       "origem": "2",
       "erro": "",
       "criado_em": "2026-08-08T16:58:46.198490"
+    },
+    {
+      "id": "36527672-ed56-4748-8bfd-8391bfff209d",
+      "sku": null,
+      "novo": true,
+      "titulo": "Copo Team Bride Rose 8 UN",
+      "sku_pai": "",
+      "variacao": "",
+      "custo": 3.89,
+      "peso": 100,
+      "comprimento": 10,
+      "largura": 10,
+      "altura": 10,
+      "ean": "",
+      "estoque": 5,
+      "ncm": "",
+      "origem": "2",
+      "erro": "",
+      "criado_em": "2026-08-08T17:00:03.390272"
     }
   ]
 }
