@@ -72,7 +72,7 @@ Marcar a caixinha de uma tarefa/freela como feita abre um `st.dialog` pedindo co
 
 8ª aba — cadastro/correção de produtos da BASE.xlsx (Site ML) sem a funcionária precisar de conta do Windows nem acesso ao OneDrive. Motivo: a trava nativa Excel/OneDrive (ver `Site ML\CLAUDE.md`, seção "BASE.xlsx — onde mora de verdade") exige conta Microsoft, o que era trabalhoso de configurar.
 
-- Dado fica em `dados["produtos"]` — lista de itens com `id`, `sku` (`None` até o script de sincronização atribuir), `novo`/`editado_funcionaria` (flags que o script consome e limpa), `erro` (mensagem visível se algo não pôde ser aplicado), mais os campos da BASE (`titulo`, `variacao`, `custo`, `peso`, `comprimento`, `largura`, `altura`, `ean`, `estoque`, `ncm`, `origem`, `tipo`, `mlb`, `status_ml`, `peso_fake`, `ean_fake`).
+- Dado fica em `dados["produtos"]` — lista de itens com `id`, `sku` (`None` até o script de sincronização atribuir), `novo`/`editado_funcionaria` (flags que o script consome e limpa), `erro` (mensagem visível se algo não pôde ser aplicado), mais os campos da BASE (`titulo`, `variacao`, `custo`, `peso`, `comprimento`, `largura`, `altura`, `ean`, `estoque`, `ncm`, `origem`, `tipo`, `mlb`, `status_ml`, `peso_fake`, `ean_fake`, `custo_fake`).
 - **Produto novo:** ela preenche o formulário; se for variação de algo que já existe, informa o **`sku_pai`** (nunca inventa o SKU — quem atribui é o script de sincronização, que também valida que o `sku_pai` existe antes de criar a variação).
 - **Produto existente:** busca por SKU/título (com o mesmo `chave_alfabetica()` já usado nas outras abas) ou vê a lista "Só o que está faltando" (peso/EAN provisórios ou sem custo).
 - **A ponte pra BASE.xlsx é externa a este app:** `sincronizar_editor_produtos.py` (na pasta `Site ML`) roda a cada 20min via Task Scheduler (`LB_Sync_Editor_Produtos`), aplica os pendentes na BASE.xlsx e sobe de volta o snapshot completo (limpando `novo`/`editado_funcionaria`, preenchendo `sku` e `erro`). Detalhes técnicos completos — incluindo o bug de `openpyxl read_only=True` catastroficamente lento — estão no `Site ML\CLAUDE.md`, seção "Editor de Produtos da Funcionária".
@@ -86,6 +86,11 @@ Marcar a caixinha de uma tarefa/freela como feita abre um `st.dialog` pedindo co
 - Adicionado texto "📌 Maior código (SKU) já usado agora: LBxxxxx" no topo da aba — ela relatou confusão de "os SKUs ficam vazios, como eu saberia qual é o próximo?". O SKU continua sendo **gerado pelo script de sincronização**, nunca por ela — esse texto é só informativo/visual, não é ela quem decide o número.
 - `sincronizar_editor_produtos.py` (Site ML) precisou de `aplicar_edicao()`/`criar_linha_nova()` atualizados pra também escrever `titulo`/`variacao`/`ncm`/`origem` na BASE — antes só custo/peso/medidas/EAN/estoque eram aplicados, os campos novos ficavam presos no `dados.json` sem nunca chegar na planilha.
 - **SKU reservado é preenchido em ORDEM, não pulado:** a Bruna pré-reserva blocos de SKU (linha com o código já escrito, sem produto ainda — ex: LB00563 até LB00800 esperando cadastro). Achado 03/08/2026: ela apontou "o último SKU é LB00562, por que o app fala LB00800?" — o app estava contando as linhas reservadas vazias como "já usadas". Corrigido nos dois lados: `achar_reserva_livre()` no `sincronizar_editor_produtos.py` (Site ML) preenche a vaga de MENOR número disponível em vez de criar um código novo lá na frente, e o `app.py` mostra "Próximo código que vai ser usado" refletindo isso (não "maior já usado").
+
+**Revisão 08/08/2026 — tarja de dado fake + custo fake rastreado:**
+- Formulário "➕ Cadastrar produto novo" ganhou uma tarja (`st.warning`) abaixo da explicação de variação, ensinando o padrão de dado fictício pra quando a funcionária ainda não sabe o valor real: **Custo = 0,1 · Peso = 100 · Comprimento/Largura/Altura = 10/10/10**. Peso/medidas fake já existiam como convenção (sentinels do `formatar_base.py`, Site ML); custo fake (0,1) é convenção **nova**, criada porque o campo Custo é obrigatório no formulário dela e ela precisava de um jeito de "pular" sem travar o cadastro.
+- `custo_fake` agora é rastreado igual `peso_fake`/`ean_fake`: o `formatar_base.py` (Site ML) reconhece célula de Custo = 0,1 (não auto-preenche, só reconhece o que ela digitou), marca vermelho+negrito na BASE, grava em `custo_fake.json`, e o `sincronizar_editor_produtos.py` expõe isso no snapshot. Aqui no app: grade de produtos mostra "custo provisório (0,1)" e o item entra no filtro "só o que está faltando". Detalhes técnicos completos (incluindo teste feito em cópia isolada da BASE) em `Site ML\CLAUDE.md`, seção "Custo provisório (fake)".
+- ⚠️ **Pendência:** scripts de precificação/margem no Site ML ainda não sabem ler `custo_fake.json` — um SKU com custo=0,1 pode ser tratado como "custo real preenchido" por eles até isso ser resolvido. Não confiar em preço/margem calculado pra SKU novo da funcionária sem checar `custo_fake.json` primeiro.
 
 ## 🚨 CRÍTICO — produtos foi ZERADO por uma aba antiga em outra parte do app (incidente real 03/08/2026)
 
@@ -195,5 +200,22 @@ Fim: `Status : Ok`. Aí sim está resolvido de vez.
 **Gotcha de PowerShell:** `git pull ... 2>&1 | Out-String` com `$ErrorActionPreference="Stop"` trata a saída normal do git no stderr (tipo "From https://...") como erro terminante — mesmo bug documentado no CLAUDE.md global sobre `2>&1` em comando nativo. Corrigido só capturando sem `2>&1` e mudando `$ErrorActionPreference` pra "Continue" ao redor da chamada do git.
 
 **Gotcha de leitura do log:** `PowerShell Set-Content -Encoding UTF8` grava BOM no JSON — `json.loads()` padrão do Python quebra com BOM. Ler com `encoding="utf-8-sig"`, não `"utf-8"`.
+
+## 🚨 CRÍTICO — `LB_Sync_Editor_Produtos` ficou 2 dias sem rodar por gatilho "uma vez" em vez de diário (incidente real 06/08/2026)
+
+**O que aconteceu:** a funcionária cadastrou produtos na aba 🧾 Produtos e nada chegou na BASE.xlsx. Causa: a tarefa agendada `LB_Sync_Editor_Produtos` tinha sido criada com gatilho **"Somente uma vez"** (04/08, 05:00) + repetição de 5 em 5 min por 18h — sem trigger diário por cima. Rodou normalmente até 04/08 23:00 e **nunca mais disparou** (`Hora da próxima execução: N/A`). É o mesmo bug já documentado no CLAUDE.md global sobre `New-ScheduledTaskTrigger -Once`/`-Daily` + `RepetitionInterval` — mas faltava aplicar em TODAS as tasks de sync, não só nas de exemplo.
+
+**Diagnóstico rápido pra qualquer task que "parou silenciosamente":** `schtasks /query /tn "NOME" /fo LIST /v` → se `Tipo de Agendamento` for "Somente uma vez" (mesmo com repetição configurada) e `Hora da próxima execução` for `N/A`, é isso — ela só repete dentro da janela do dia em que foi criada e nunca mais.
+
+**Correção que funciona (testada 06/08/2026 — `-Daily` combinado direto com `-RepetitionInterval` dá erro de parameter set):**
+```powershell
+$helper = New-ScheduledTaskTrigger -Once -At "05:00" -RepetitionInterval (New-TimeSpan -Minutes 5) -RepetitionDuration (New-TimeSpan -Hours 18)
+$trigger = New-ScheduledTaskTrigger -Daily -At "05:00"
+$trigger.Repetition = $helper.Repetition   # atribuição direta em campo de trigger -Daily já criado FALHA silenciosa (mesma regra do CLAUDE.md global) — só funciona copiando o objeto Repetition inteiro de um trigger -Once auxiliar
+Set-ScheduledTask -TaskName "LB_Sync_Editor_Produtos" -Action $action -Trigger $trigger
+```
+Conferir com `(Get-ScheduledTask -TaskName "X").Triggers[0] | Select StartBoundary,DaysInterval` (tem que ter `DaysInterval`) **e** `.Repetition` (tem que ter `Interval`/`Duration` preenchidos).
+
+**Regra pra qualquer task nova de sync (não só esta):** depois de criar, sempre conferir os dois campos acima — `DaysInterval` presente E `Repetition.Interval` presente. Um `schtasks /create /tr "..." /sc daily /ri 5 /du 18:00` direto pelo `schtasks.exe` via PowerShell **quebra com caminho com espaço** mesmo com variável entre aspas (o native exe re-quebra os args) — usar sempre o módulo `ScheduledTasks` (`New-ScheduledTaskTrigger`/`Set-ScheduledTask`), nunca `schtasks.exe` puro pra isso.
 
 **Gotcha de `schtasks /tr` com aspas:** dentro de uma string PowerShell **single-quoted**, backtick não escapa nada (funciona só em double-quoted) — usar aspas duplas literais dentro da single-quoted string funciona direto, sem escapar (``'... -File "C:\caminho\arquivo.ps1"'``), nunca `` `" ``.
