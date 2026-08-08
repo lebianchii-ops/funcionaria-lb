@@ -17771,7 +17771,7 @@
       "mlb": "—",
       "status_ml": "🔴 Falta criar",
       "peso_fake": true,
-      "ean_fake": false,
+      "ean_fake": true,
       "custo_fake": false
     },
     {
@@ -23341,6 +23341,25 @@
       "peso_fake": true,
       "ean_fake": true,
       "custo_fake": false
+    },
+    {
+      "id": "4117e825-ef45-429d-af65-2c7e55d2be78",
+      "sku": null,
+      "novo": true,
+      "sku_pai": "",
+      "variacao": "",
+      "titulo": "Kit Copo + Prato Team Bride Rose",
+      "custo": 8.39,
+      "peso": 100,
+      "comprimento": 10,
+      "largura": 10,
+      "altura": 10,
+      "ean": "",
+      "estoque": 0,
+      "ncm": "",
+      "origem": "2",
+      "erro": "",
+      "criado_em": "2026-08-08T17:37:59.609459"
     }
   ]
 }
