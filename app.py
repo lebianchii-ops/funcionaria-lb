@@ -995,6 +995,9 @@ with tab_prod:
                    "'código do produto principal' abaixo. Se for um produto **totalmente novo**, "
                    "deixe esse campo em branco. O código (SKU) do produto novo é gerado "
                    "sozinho — você não precisa (e não deve) inventar um número.")
+        st.warning("⚠️ **Se ainda não sabe o custo ou as medidas reais desse produto**, preencha com "
+                   "dados fictícios (fake) — a Bruna corrige depois pro valor real: "
+                   "Custo = **0,1** · Peso = **100** · Comprim./Larg./Alt. = **10 / 10 / 10**.")
         with st.form("form_produto_novo", clear_on_submit=True):
             pn_titulo = st.text_input("Título do produto *")
             pn1, pn2 = st.columns(2)
@@ -1106,7 +1109,9 @@ with tab_prod:
     existentes = [p for p in dados["produtos"] if p.get("sku") and (p.get("titulo") or "").strip()]
 
     if so_faltando and not busca_prod:
-        existentes = [p for p in existentes if p.get("peso_fake") or p.get("ean_fake") or num_seguro(p.get("custo")) <= 0]
+        existentes = [p for p in existentes
+                      if p.get("peso_fake") or p.get("ean_fake") or p.get("custo_fake")
+                      or num_seguro(p.get("custo")) <= 0]
 
     if busca_prod:
         alvo = chave_alfabetica(busca_prod)
@@ -1166,6 +1171,8 @@ with tab_prod:
                     avisos_p.append("EAN provisório")
                 if num_seguro(p.get("custo")) <= 0:
                     avisos_p.append("sem custo")
+                elif p.get("custo_fake"):
+                    avisos_p.append("custo provisório (0,1)")
 
                 c = st.columns(LARGURAS)
                 c[0].caption(sku)
