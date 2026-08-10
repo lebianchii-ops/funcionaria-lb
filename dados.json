@@ -196,7 +196,16 @@
       "obs_conclusao": ""
     }
   ],
-  "avisos": [],
+  "avisos": [
+    {
+      "id": "311e3d03-ba9f-4cc6-8ba6-0307de9e0adc",
+      "texto": "Suporte de banheira - CORREÇÃO DE DETALHES DAS FOTOS. O suporte não tem a almofada na cabeça e são apenas 3 suporte (cabeça e braços)",
+      "autor": "Funcionária",
+      "categoria": "LB COLLECTION",
+      "data": "10/08/2026 17:08",
+      "respostas": []
+    }
+  ],
   "freelas": [
     {
       "id": "a6996b6a-f6ca-40de-a1fb-a1aa15742e0b",
