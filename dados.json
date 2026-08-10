@@ -194,6 +194,18 @@
       "feita_em": null,
       "criado_em": "2026-08-07T14:07:30.354080",
       "obs_conclusao": ""
+    },
+    {
+      "id": "05a6190e-585a-4f90-bd60-5612b88e4b5a",
+      "titulo": "Prato e Copo TEAM BRIDE",
+      "categoria": "LB COLLECTION",
+      "descricao": "- Colocar peso e medida na base de todos os novos produtos BASE\n- Fazer uma imagem do KIT CONTÉM e MEDIDAS de todos os produtos",
+      "data": null,
+      "tipo": "tarefa",
+      "prioridade": "Alta",
+      "feita": false,
+      "feita_em": null,
+      "criado_em": "2026-08-10T17:13:52.591151"
     }
   ],
   "avisos": [
@@ -203,7 +215,9 @@
       "autor": "Funcionária",
       "categoria": "LB COLLECTION",
       "data": "10/08/2026 17:08",
-      "respostas": []
+      "respostas": [],
+      "concluido": false,
+      "concluido_em": null
     }
   ],
   "freelas": [
