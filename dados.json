@@ -17773,10 +17773,10 @@
       "ncm": "",
       "origem": "2",
       "ean": "7899827731494",
-      "mlb": "—",
-      "status_ml": "🔴 Falta criar",
+      "mlb": "MLB5039315279",
+      "status_ml": "✅ No ML",
       "peso_fake": true,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
