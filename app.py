@@ -1052,6 +1052,20 @@ with tab_prod:
         st.caption(f"📌 Próximo código (SKU) a ser gerado: **LB{_maior_geral + 1:05d}** "
                    f"— não precisa decorar isso, é preenchido sozinho.")
 
+    # flash de sucesso do cadastro: a mensagem precisa sobreviver ao st.rerun()
+    # (antes o st.success vinha logo antes do rerun e sumia na hora — parecia
+    # que nada tinha acontecido). A limpeza dos campos também é feita AQUI,
+    # antes dos widgets instanciarem (mexer no state depois dá exceção).
+    _PN_KEYS = ["pn_titulo", "pn_sku_pai", "pn_variacao", "pn_vars_novas",
+                "pn_custo", "pn_peso", "pn_comp", "pn_larg", "pn_alt",
+                "pn_ean", "pn_estoque", "pn_ncm", "pn_origem"]
+    if st.session_state.pop("limpar_form_produto", False):
+        for _k in _PN_KEYS:
+            st.session_state.pop(_k, None)
+    _flash_ok = st.session_state.pop("flash_produto_ok", None)
+    if _flash_ok:
+        st.success(f"✅ **CADASTRADO!** {_flash_ok}")
+
     with st.expander("➕ Cadastrar produto novo"):
         st.caption("Se for uma cor/tamanho novo de um produto que **já existe**, preencha o "
                    "'código do produto principal' abaixo. Se for um produto **totalmente novo**, "
@@ -1060,17 +1074,23 @@ with tab_prod:
         st.warning("⚠️ **Se ainda não sabe o custo ou as medidas reais desse produto**, preencha com "
                    "dados fictícios (fake) — a Bruna corrige depois pro valor real: "
                    "Custo = **0,1** · Peso = **100** · Comprim./Larg./Alt. = **10 / 10 / 10**.")
-        with st.form("form_produto_novo", clear_on_submit=True):
-            pn_titulo = st.text_input("Título do produto *")
+        # SEM clear_on_submit: ele limpava o formulário em QUALQUER clique,
+        # inclusive quando a validação recusava o cadastro — a funcionária
+        # perdia tudo que digitou e ainda parecia que tinha salvo (bug real
+        # 11/08/2026: a fantasia de astronauta sumiu assim). Agora os campos
+        # só limpam depois de salvar de verdade (via limpar_form_produto).
+        with st.form("form_produto_novo"):
+            pn_titulo = st.text_input("Título do produto *", key="pn_titulo")
             pn1, pn2 = st.columns(2)
             with pn1:
-                pn_sku_pai = st.text_input("Código do produto principal (opcional)",
+                pn_sku_pai = st.text_input("Código do produto principal (opcional)", key="pn_sku_pai",
                                             placeholder="ex: LB00123 — só se for variação de algo que já existe")
             with pn2:
-                pn_variacao = st.text_input("Variação (obrigatório se preencheu o código acima)",
+                pn_variacao = st.text_input("Variação (obrigatório se preencheu o código acima)", key="pn_variacao",
                                              placeholder="ex: Rosa, P, M, G")
             pn_variacoes_novas = st.text_input(
                 "OU: cores/tamanhos deste produto NOVO, todos de uma vez (separados por vírgula)",
+                key="pn_vars_novas",
                 placeholder="ex: Rosé, Azul, Verde — só se o produto principal também ainda não existe",
                 help="Use isso quando nem o produto principal existe ainda. Cadastra o produto principal + "
                      "todas essas variações juntos, sem precisar esperar entre um e outro. Não preencha "
@@ -1079,27 +1099,27 @@ with tab_prod:
             # da grade de edicao logo abaixo: number_input perdia valor digitado.
             pnc1, pnc2, pnc3, pnc4, pnc5 = st.columns(5)
             with pnc1:
-                pn_custo_txt = st.text_input("Custo (R$) *", placeholder="ex: 45,90")
+                pn_custo_txt = st.text_input("Custo (R$) *", key="pn_custo", placeholder="ex: 45,90")
             with pnc2:
-                pn_peso_txt = st.text_input("Peso (g) *", placeholder="ex: 300")
+                pn_peso_txt = st.text_input("Peso (g) *", key="pn_peso", placeholder="ex: 300")
             with pnc3:
-                pn_comp_txt = st.text_input("Comprim. (cm) *", placeholder="ex: 20")
+                pn_comp_txt = st.text_input("Comprim. (cm) *", key="pn_comp", placeholder="ex: 20")
             with pnc4:
-                pn_larg_txt = st.text_input("Largura (cm) *", placeholder="ex: 15")
+                pn_larg_txt = st.text_input("Largura (cm) *", key="pn_larg", placeholder="ex: 15")
             with pnc5:
-                pn_alt_txt = st.text_input("Altura (cm) *", placeholder="ex: 5")
+                pn_alt_txt = st.text_input("Altura (cm) *", key="pn_alt", placeholder="ex: 5")
             pne1, pne2 = st.columns(2)
             with pne1:
-                pn_ean = st.text_input("Código de barras / EAN",
+                pn_ean = st.text_input("Código de barras / EAN", key="pn_ean",
                                         help="Deixe em branco se não tiver — a Bruna gera um provisório")
             with pne2:
-                pn_estoque_txt = st.text_input("Estoque (unidades que chegaram)", placeholder="ex: 10")
+                pn_estoque_txt = st.text_input("Estoque (unidades que chegaram)", key="pn_estoque", placeholder="ex: 10")
             pnf1, pnf2 = st.columns(2)
             with pnf1:
-                pn_ncm = st.text_input("NCM (opcional)",
+                pn_ncm = st.text_input("NCM (opcional)", key="pn_ncm",
                                         help="Código fiscal — deixe em branco se não souber, a Bruna preenche depois")
             with pnf2:
-                pn_origem = st.text_input("Origem fiscal (opcional)", value="2",
+                pn_origem = st.text_input("Origem fiscal (opcional)", value="2", key="pn_origem",
                                            help="Normalmente é '2' — só mude se souber que é diferente "
                                                 "(ex: produto importado)")
             if st.form_submit_button("➕ Cadastrar produto", use_container_width=True, type="primary"):
@@ -1111,20 +1131,27 @@ with tab_prod:
                 pn_estoque = num_seguro(pn_estoque_txt, int)
                 cores_novas = ([c.strip() for c in pn_variacoes_novas.split(",") if c.strip()]
                                if pn_variacoes_novas.strip() else [])
+                # Recusa = st.error BEM visível e o formulário MANTÉM o que foi
+                # digitado (antes: tarja amarela pequena + formulário se apagava
+                # sozinho — parecia que tinha cadastrado quando não tinha).
                 if not pn_titulo.strip() or pn_custo <= 0 or pn_peso <= 0 or pn_comp <= 0 or pn_larg <= 0 or pn_alt <= 0:
-                    st.warning("Preencha pelo menos: título, custo, peso e as 3 medidas (número maior que zero).")
+                    st.error("❌ **NÃO FOI CADASTRADO!** Preencha pelo menos: título, custo, peso e as "
+                             "3 medidas (número maior que zero). Se não souber ainda, use os fictícios: "
+                             "custo 0,1 · peso 100 · medidas 10/10/10. O que você já digitou continua aí — "
+                             "complete e clique de novo.")
                 elif cores_novas and (pn_sku_pai.strip() or pn_variacao.strip()):
-                    st.warning("Não preencha 'cores/tamanhos deste produto NOVO' junto com 'código do produto "
-                               "principal' ou 'Variação' — são dois jeitos diferentes, use só um.")
+                    st.error("❌ **NÃO FOI CADASTRADO!** Não preencha 'cores/tamanhos deste produto NOVO' "
+                             "junto com 'código do produto principal' ou 'Variação' — são dois jeitos "
+                             "diferentes, use só um. Apague um dos dois e clique de novo.")
                 elif pn_sku_pai.strip() and not pn_variacao.strip():
-                    st.warning("Preencheu o código do produto principal — agora preencha a Variação "
-                               "(ex: Rosa, P, M, G) pra identificar essa cor/tamanho.")
+                    st.error("❌ **NÃO FOI CADASTRADO!** Preencheu o código do produto principal — agora "
+                             "preencha a Variação (ex: Rosa, P, M, G) e clique de novo.")
                 elif pn_variacao.strip() and not pn_sku_pai.strip():
-                    st.warning("Preencheu a Variação — agora preencha o código do produto principal "
-                               "(o código que já existe, ex: LB00123).")
+                    st.error("❌ **NÃO FOI CADASTRADO!** Preencheu a Variação — agora preencha o código do "
+                             "produto principal (o código que já existe, ex: LB00123) e clique de novo.")
                 elif len(cores_novas) > 20:
-                    st.warning(f"São {len(cores_novas)} cores/tamanhos de uma vez — confere se não colou "
-                               f"algo errado. Se for mesmo isso, cadastre em 2 leva.")
+                    st.error(f"❌ **NÃO FOI CADASTRADO!** São {len(cores_novas)} cores/tamanhos de uma vez — "
+                             f"confere se não colou algo errado. Se for mesmo isso, cadastre em 2 levas.")
                 else:
                     campos_comuns = {
                         "titulo":      pn_titulo.strip(),
@@ -1161,8 +1188,10 @@ with tab_prod:
                             })
                         st.session_state["_produtos_tocado"] = True
                         if salvar_dados(dados):
-                            st.success(f"Cadastrado! Produto principal + {len(cores_novas)} variação(ões) "
-                                       f"({', '.join(cores_novas)}). Os códigos saem sozinhos em instantes.")
+                            st.session_state["flash_produto_ok"] = (
+                                f"Produto principal + {len(cores_novas)} variação(ões) "
+                                f"({', '.join(cores_novas)}). Os códigos saem sozinhos em ~1 minuto.")
+                            st.session_state["limpar_form_produto"] = True
                             st.rerun()
                     else:
                         dados["produtos"].append({
@@ -1172,7 +1201,10 @@ with tab_prod:
                         })
                         st.session_state["_produtos_tocado"] = True
                         if salvar_dados(dados):
-                            st.success("Cadastrado! A Bruna recebe o código do produto (SKU) automaticamente.")
+                            st.session_state["flash_produto_ok"] = (
+                                f"\"{pn_titulo.strip()}\" — o código (SKU) sai sozinho em ~1 minuto "
+                                f"(aparece no cartão ⏳ logo abaixo).")
+                            st.session_state["limpar_form_produto"] = True
                             st.rerun()
 
     produtos_novos_pendentes = [p for p in dados["produtos"] if p.get("novo") and not p.get("sku")]
