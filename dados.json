@@ -333,6 +333,15 @@
   ],
   "entradas": [
     {
+      "id": "dfe8245d-acd5-48ce-bcdc-fc37e119b606",
+      "data": "2026-08-11",
+      "fornecedor": "Eletronicos",
+      "categoria": "K2 COMÉRCIO",
+      "nota_bate": "Sim",
+      "observacao": "10 - Oculos IA\n10 - Cinta lipo\n8 - Camera carro\n4 - Aquecedor de torneira",
+      "criado_em": "2026-08-11T17:35:37.327150"
+    },
+    {
       "id": "8ecabb38-6d90-4e17-8f76-6b76bdf880a9",
       "data": "2026-08-03",
       "fornecedor": "Weslei Thiago De Lima - Me",
