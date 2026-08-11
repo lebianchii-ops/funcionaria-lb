@@ -23514,30 +23514,6 @@
       "peso_fake": true,
       "ean_fake": true,
       "custo_fake": false
-    },
-    {
-      "id": "LB00328",
-      "sku": "LB00328",
-      "novo": false,
-      "editado_funcionaria": false,
-      "erro": "",
-      "titulo": "Fantasia Joaninha Heroína Menina Macacão Bolinhas",
-      "variacao": "",
-      "tipo": "Pai",
-      "estoque": 0,
-      "custo": 39.99,
-      "peso": 160,
-      "comprimento": 25,
-      "largura": 19,
-      "altura": 2,
-      "ncm": 95059000,
-      "origem": 2,
-      "ean": "7890295951148",
-      "mlb": "MLB4228384743",
-      "status_ml": "✅ No ML",
-      "peso_fake": false,
-      "ean_fake": true,
-      "custo_fake": false
     }
   ]
 }
