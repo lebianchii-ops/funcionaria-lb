@@ -17988,11 +17988,11 @@
       "novo": false,
       "editado_funcionaria": false,
       "erro": "",
-      "titulo": "",
+      "titulo": "ZZZ TESTE APAGAR",
       "variacao": "",
-      "tipo": "",
+      "tipo": "Pai",
       "estoque": null,
-      "custo": null,
+      "custo": 0.1,
       "peso": 100,
       "comprimento": 10,
       "largura": 10,
@@ -18004,7 +18004,7 @@
       "status_ml": "🔴 Falta criar",
       "peso_fake": true,
       "ean_fake": true,
-      "custo_fake": false
+      "custo_fake": true
     },
     {
       "id": "LB00571",
@@ -23525,25 +23525,6 @@
       "peso_fake": true,
       "ean_fake": true,
       "custo_fake": false
-    },
-    {
-      "id": "21fc4b77-8574-48ec-a322-f7fcec77e025",
-      "sku": null,
-      "novo": true,
-      "sku_pai": "",
-      "variacao": "",
-      "titulo": "ZZZ TESTE APAGAR",
-      "custo": 0.1,
-      "peso": 100,
-      "comprimento": 10,
-      "largura": 10,
-      "altura": 10,
-      "ean": "",
-      "estoque": 0,
-      "ncm": "",
-      "origem": "2",
-      "erro": "",
-      "criado_em": "2026-08-11T17:01:10.993229"
     }
   ]
 }
