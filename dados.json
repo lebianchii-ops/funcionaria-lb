@@ -17866,14 +17866,14 @@
       "id": "LB00565",
       "sku": "LB00565",
       "novo": false,
-      "editado_funcionaria": false,
+      "editado_funcionaria": true,
       "erro": "",
       "titulo": "Copo Team Bride Dourado Kit 8 Unidades",
       "variacao": "",
       "tipo": "Pai",
       "estoque": 5,
       "custo": 3.89,
-      "peso": 45,
+      "peso": 46,
       "comprimento": 13,
       "largura": 7,
       "altura": 7,
@@ -17884,7 +17884,8 @@
       "status_ml": "✅ No ML",
       "peso_fake": false,
       "ean_fake": false,
-      "custo_fake": false
+      "custo_fake": false,
+      "editado_em": "2026-08-11T17:15:44.552472"
     },
     {
       "id": "LB00566",
