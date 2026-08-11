@@ -132,6 +132,12 @@ Ao rodar `streamlit run app.py` localmente (via `.claude/launch.json`) e testar 
 
 **A mesma técnica funciona no app JÁ PUBLICADO, não só local (confirmado 08/08/2026):** pra testar uma feature nova de ponta a ponta em produção (`funcionaria-lb.streamlit.app`), o app real fica dentro de um iframe (mesmo padrão do CLAUDE.md global sobre Streamlit Cloud) — navegar direto pra `.../~/+/` em vez da URL normal. De lá, o mesmo padrão native-setter + `dispatchEvent` + `.blur()` preenche formulário de verdade e o clique via `querySelector(...).click()` funciona pra submeter. **Cuidado:** isso grava no `dados.json` de PRODUÇÃO (repo público, mesmo que a funcionária usa) — só testar assim com um item claramente marcado (ex: título "ZZZ TESTE APAGAR") e limpar depois dos dois lados (BASE.xlsx via backup automático do `sincronizar_editor_produtos.py` + remover o item do `dados.json` no GitHub via Contents API).
 
+## 🚨 Cadastro de produto sumia em silêncio — `clear_on_submit=True` (incidente real 11/08/2026, fantasia de astronauta)
+
+O formulário "➕ Cadastrar produto novo" tinha `clear_on_submit=True`: QUALQUER clique no botão apagava tudo digitado, **inclusive quando a validação recusava o cadastro** (campo obrigatório vazio/zero, ou par Variação+código principal pela metade). Combinado com o aviso pequeno (st.warning) e o st.success que sumia no `st.rerun()`, dava a impressão de que salvou quando não salvou — a fantasia de astronauta da Bruna se perdeu assim, sem deixar rastro nenhum no dados.json. **Regra: nunca usar `clear_on_submit=True` em formulário com validação que pode recusar.** Padrão atual: widgets com `key`, limpeza só após salvar de verdade (flag `limpar_form_produto` lida ANTES dos widgets instanciarem), recusa em `st.error` "❌ NÃO FOI CADASTRADO!" mantendo o digitado, sucesso via flash em `session_state` que sobrevive ao rerun. Testado de ponta a ponta em produção 11/08/2026 (item ZZZ TESTE APAGAR → SKU LB00570 gerado → limpo dos dois lados).
+
+**Bug irmão corrigido no mesmo dia (`sincronizar_editor_produtos.py`, Site ML):** item cuja linha era apagada da BASE.xlsx ficava preso pra sempre no dados.json ("fantasma", erro re-tentado a cada minuto — casos LB00566A/567A/568A e LB00328). Agora linha apagada da BASE = item some do app na rodada seguinte.
+
 ⏳ **Comando de fechamento de sessão** (mesmo texto padrão dos outros projetos): descreva o que foi feito, regras descobertas, dificuldades — depois salve no CLAUDE.md desta pasta.
 ## Como conferir se o app está no ar SEM abrir a URL (05/08/2026)
 
