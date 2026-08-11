@@ -1279,6 +1279,12 @@ with tab_prod:
     # silenciosamente sem erro nenhum (foi exatamente o que aconteceu). Com
     # poucas linhas tudo monta rápido e fica confiável. Prefira SEMPRE a busca
     # pra achar um produto específico em vez de aumentar esse número.
+    # flash de sucesso da grade — mesmo motivo do formulário de cadastro:
+    # st.success seguido de st.rerun() sumia na hora, parecia que não salvou.
+    _flash_grade = st.session_state.pop("flash_grade_ok", None)
+    if _flash_grade:
+        st.success(f"✅ **SALVO!** {_flash_grade}")
+
     LIMITE_GRADE = 12
     if existentes:
         if len(existentes) > LIMITE_GRADE:
@@ -1398,7 +1404,8 @@ with tab_prod:
             else:
                 st.session_state["_produtos_tocado"] = True
                 if salvar_dados(dados):
-                    st.success(f"{mudou} produto(s) atualizado(s)! Vai aparecer na planilha da Bruna em instantes.")
+                    st.session_state["flash_grade_ok"] = (
+                        f"{mudou} produto(s) atualizado(s) — chega na planilha da Bruna em ~1 minuto.")
                     st.rerun()
 
 # ════════════════════════════════════════════════════════════════════════════
