@@ -138,6 +138,12 @@ O formulário "➕ Cadastrar produto novo" tinha `clear_on_submit=True`: QUALQUE
 
 **Bug irmão corrigido no mesmo dia (`sincronizar_editor_produtos.py`, Site ML):** item cuja linha era apagada da BASE.xlsx ficava preso pra sempre no dados.json ("fantasma", erro re-tentado a cada minuto — casos LB00566A/567A/568A e LB00328). Agora linha apagada da BASE = item some do app na rodada seguinte.
 
+## Variação nova entra ABAIXO do pai na BASE (corrigido 11/08/2026)
+
+`criar_linha_nova()` do `sincronizar_editor_produtos.py` (Site ML) usava `ws.max_row + 1` para Filho — a variação ia pro **fim da planilha** (caso real: LB00570A/B/C/D caíram nas linhas 981-984 com o pai LB00570 na 725). A Bruna: *"o filho tem que estar abaixo do pai, não faz o menor sentido essa bagunça em uma planilha que lutamos tanto pra organizar"*. Agora `linha_apos_familia()` acha o fim do bloco do pai (pai ou última irmã) e `ws.insert_rows()` empurra o resto pra baixo; `formatar_base.py` reaplica as cores depois. As 4 linhas já fora de lugar foram movidas pro lugar certo (backup em `Site ML\backups_base\`). Testado de ponta a ponta pelo app real: variação criada via formulário caiu na linha imediatamente abaixo do pai.
+
+**Auditoria útil:** existem ~24 variações "órfãs" na BASE (LB00082A, LB00211A-D, LB00254A-D, LB00460A-D, LB00510A-D, LB00520A-D etc.) cujo pai não está na aba BASE — elas estão agrupadas entre si, não são bagunça; o pai provavelmente foi pra Inativos. Não confundir com variação fora de lugar.
+
 ⏳ **Comando de fechamento de sessão** (mesmo texto padrão dos outros projetos): descreva o que foi feito, regras descobertas, dificuldades — depois salve no CLAUDE.md desta pasta.
 ## Como conferir se o app está no ar SEM abrir a URL (05/08/2026)
 
