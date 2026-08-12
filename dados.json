@@ -343,6 +343,15 @@
   ],
   "entradas": [
     {
+      "id": "3fc8bef5-a714-42da-87e8-bc163c860394",
+      "data": "2026-08-12",
+      "fornecedor": "Valencia Comercial",
+      "categoria": "K2 COMÉRCIO",
+      "nota_bate": "Sim",
+      "observacao": "Tinta de make facial - 54 UNI, NCM 33049990. Peso 0,62g, Medidas C 14cm, L 8cm, A 3cm      *CUSTO* 11,95 uni\nSangue Artificial Bisnaga - 27 UNI, NCM 95059000. Peso 0,54g, Medidas C 14cm, L 8cm, A 3cm       *CUSTO* 5,90 uni\nSangue Artificial Spray - 27 UNI, NCM 95059000. Peso 0,89g, Medidas C 11cm, L 3,5cm, A 3,5cm     *CUSTO* 7,50 uni",
+      "criado_em": "2026-08-12T18:10:00.440895"
+    },
+    {
       "id": "dfe8245d-acd5-48ce-bcdc-fc37e119b606",
       "data": "2026-08-11",
       "fornecedor": "Eletronicos",
