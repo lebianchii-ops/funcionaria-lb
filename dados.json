@@ -203,7 +203,9 @@
       "autor": "Funcionária",
       "categoria": "AMBOS (K2 e LB)",
       "data": "13/08/2026 14:51",
-      "respostas": []
+      "respostas": [],
+      "concluido": false,
+      "concluido_em": null
     },
     {
       "id": "642bec23-bd12-462c-800b-735d8f2a8b88",
@@ -350,6 +352,15 @@
     }
   ],
   "entradas": [
+    {
+      "id": "587bdb51-9acc-4123-8eab-6b9d5ef61557",
+      "data": "2026-08-13",
+      "fornecedor": "Helena",
+      "categoria": "LB COLLECTION",
+      "nota_bate": "Sim",
+      "observacao": "Caderno desenho - 44\nMaui - 8\nPirulito - 11\nVestido Concha - 11\nPolicial Feminina - 13",
+      "criado_em": "2026-08-13T17:54:16.393182"
+    },
     {
       "id": "3fc8bef5-a714-42da-87e8-bc163c860394",
       "data": "2026-08-12",
