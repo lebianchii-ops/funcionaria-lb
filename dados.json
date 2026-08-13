@@ -230,6 +230,17 @@
   ],
   "freelas": [
     {
+      "id": "404b6d2b-bfae-4002-97f0-4b8eeae5d3fe",
+      "titulo": "Fazer Kit Harry Potter",
+      "descricao": "Casaco + Acessórios",
+      "prioridade": "Fazer depois",
+      "categoria": "LB COLLECTION",
+      "feita": false,
+      "feita_em": null,
+      "obs_conclusao": "",
+      "criado_em": "2026-08-13T18:35:45.668634"
+    },
+    {
       "id": "1ba3d0d0-2555-4c2c-849d-14e77c53a338",
       "titulo": "Kit Balão Halloween",
       "descricao": "Só depois que eu decidir como serão os kits iremos iniciar",
