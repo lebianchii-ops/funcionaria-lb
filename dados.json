@@ -198,6 +198,14 @@
   ],
   "avisos": [
     {
+      "id": "70340095-8636-4061-ac79-e58f394d6994",
+      "texto": "Tarefas \"Ver como é feito o descontar de estoque quando a compra é FLEX\" Não tenho o acesso liberado para poder entrar na parte que dá para ver isso",
+      "autor": "Funcionária",
+      "categoria": "AMBOS (K2 e LB)",
+      "data": "13/08/2026 14:51",
+      "respostas": []
+    },
+    {
       "id": "642bec23-bd12-462c-800b-735d8f2a8b88",
       "texto": "SKU na upseller ta 504 foto correta, mas o mlb do anuncio puxado pela upseller quando joga no mercado livre aparece o anuncio da 516",
       "autor": "Funcionária",
