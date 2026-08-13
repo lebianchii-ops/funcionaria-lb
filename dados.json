@@ -194,6 +194,18 @@
       "feita_em": null,
       "criado_em": "2026-08-07T14:07:30.354080",
       "obs_conclusao": ""
+    },
+    {
+      "id": "5418b5e3-2c2a-4d08-b80c-02d36e493da4",
+      "titulo": "Devoluções TK TK",
+      "categoria": "LB COLLECTION",
+      "descricao": "Vc tem recebido as devoluções do TK TK, pq eu vi que estamos tendo algumas",
+      "data": null,
+      "tipo": "tarefa",
+      "prioridade": "Alta",
+      "feita": false,
+      "feita_em": null,
+      "criado_em": "2026-08-13T22:25:26.146210"
     }
   ],
   "avisos": [
