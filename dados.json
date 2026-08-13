@@ -230,6 +230,17 @@
   ],
   "freelas": [
     {
+      "id": "1ba3d0d0-2555-4c2c-849d-14e77c53a338",
+      "titulo": "Kit Balão Halloween",
+      "descricao": "Só depois que eu decidir como serão os kits iremos iniciar",
+      "prioridade": "Fazer depois",
+      "categoria": "LB COLLECTION",
+      "feita": false,
+      "feita_em": null,
+      "obs_conclusao": "",
+      "criado_em": "2026-08-13T18:34:46.990523"
+    },
+    {
       "id": "69d7f37f-ef13-42ec-9265-abaf67df7972",
       "titulo": "KIT BRIDE",
       "descricao": "109 > 70 un.\n194 > 10 un. \n224 > 10 un. \n110 > 5 un.",
