@@ -353,6 +353,15 @@
   ],
   "entradas": [
     {
+      "id": "79b8ca59-2a18-495b-8443-2b4c12bb97aa",
+      "data": "2026-08-13",
+      "fornecedor": "Helena",
+      "categoria": "K2 COMÉRCIO",
+      "nota_bate": "Sim",
+      "observacao": "Bolsa De Ferramenta - 20  uni\nMosqueteiro - 16 uni\nAcessorio Hallowenn 4pç - 2 pacote c/12 . Peso 31g, C 15cm, L 14cm, A 2cm\nCortina - 1 pacote c/10\nMascara - 2  uni\nSaia Halloween Roxa - 20 uni . Peso 49g , C 37cm , L 25cm , A 1cm\nToalha de mesa Halloween - 2 pacote c/12 . Peso 114g , C 28cm , L 21cm , A 3cm\nTiara Noiva Hallowen - 2 pacote c/10\nChapeu Bruxa - 2 pacote 1 roxo, 1 laraja \nFantasia Vestido Bruxinha Laranja - 30\nFantasia Vestido Morcego - 30",
+      "criado_em": "2026-08-13T18:28:36.879630"
+    },
+    {
       "id": "587bdb51-9acc-4123-8eab-6b9d5ef61557",
       "data": "2026-08-13",
       "fornecedor": "Helena",
