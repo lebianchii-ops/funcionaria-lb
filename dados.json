@@ -230,37 +230,15 @@
   ],
   "freelas": [
     {
-      "id": "404b6d2b-bfae-4002-97f0-4b8eeae5d3fe",
-      "titulo": "Fazer Kit Harry Potter",
-      "descricao": "Casaco + Acessórios",
-      "prioridade": "Fazer depois",
-      "categoria": "LB COLLECTION",
-      "feita": false,
-      "feita_em": null,
-      "obs_conclusao": "",
-      "criado_em": "2026-08-13T18:35:45.668634"
-    },
-    {
-      "id": "1ba3d0d0-2555-4c2c-849d-14e77c53a338",
-      "titulo": "Kit Balão Halloween",
-      "descricao": "Só depois que eu decidir como serão os kits iremos iniciar",
-      "prioridade": "Fazer depois",
-      "categoria": "LB COLLECTION",
-      "feita": false,
-      "feita_em": null,
-      "obs_conclusao": "",
-      "criado_em": "2026-08-13T18:34:46.990523"
-    },
-    {
-      "id": "69d7f37f-ef13-42ec-9265-abaf67df7972",
-      "titulo": "KIT BRIDE",
-      "descricao": "109 > 70 un.\n194 > 10 un. \n224 > 10 un. \n110 > 5 un.",
+      "id": "1370cad1-8cf4-4d2a-baa2-bb822ca35f58",
+      "titulo": "Copos",
+      "descricao": "16 KIT GAME\n20 KIT 150ml\n16 KIT 250ml\n18 KIT CH\n20 TAÇA MARTINI\nTODAS AS 00 ALCOOL",
       "prioridade": "Fazer primeiro",
-      "categoria": "LB COLLECTION",
+      "categoria": "—",
       "feita": false,
       "feita_em": null,
       "obs_conclusao": "",
-      "criado_em": "2026-08-13T18:34:09.063044"
+      "criado_em": "2026-08-13T18:42:41.212226"
     },
     {
       "id": "f6c06f63-8e00-435c-ab7a-8ddd8642bca6",
@@ -385,6 +363,15 @@
     }
   ],
   "entradas": [
+    {
+      "id": "79b8ca59-2a18-495b-8443-2b4c12bb97aa",
+      "data": "2026-08-13",
+      "fornecedor": "Helena",
+      "categoria": "K2 COMÉRCIO",
+      "nota_bate": "Sim",
+      "observacao": "Bolsa De Ferramenta - 20  uni\nMosqueteiro - 16 uni\nAcessorio Hallowenn 4pç - 2 pacote c/12 . Peso 31g, C 15cm, L 14cm, A 2cm\nCortina - 1 pacote c/10\nMascara - 2  uni\nSaia Halloween Roxa - 20 uni . Peso 49g , C 37cm , L 25cm , A 1cm\nToalha de mesa Halloween - 2 pacote c/12 . Peso 114g , C 28cm , L 21cm , A 3cm\nTiara Noiva Hallowen - 2 pacote c/10\nChapeu Bruxa - 2 pacote 1 roxo, 1 laraja \nFantasia Vestido Bruxinha Laranja - 30\nFantasia Vestido Morcego - 30",
+      "criado_em": "2026-08-13T18:28:36.879630"
+    },
     {
       "id": "587bdb51-9acc-4123-8eab-6b9d5ef61557",
       "data": "2026-08-13",
