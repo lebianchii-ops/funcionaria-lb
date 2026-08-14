@@ -130,6 +130,46 @@ em produção — **nunca abrir duas sessões/abas do app ao mesmo tempo** ao te
 bloco de migração de disparo único. Se possível, testar a lógica de migração isolada
 (script separado simulando o `dados` em memória) antes de rodar contra o app de verdade.
 
+**Segundo achado do mesmo incidente — deletar item "novo" pode falhar em silêncio se o
+script de sincronização já trocou o `id` dele por um SKU:** o botão 🗑️ da lista "aguardando
+código" filtra por `p["id"]`, que é um uuid enquanto o produto está `novo=True`/`sku=None`.
+Se o `sincronizar_editor_produtos.py` (roda a cada 1min) já processou esse item ANTES do
+clique — trocando `id` pro SKU real (`mesclar_produtos_finais()`) — o filtro da sessão do
+navegador (que ainda tem o uuid antigo em memória) não bate com nada no servidor, e o
+`salvar_dados()` (com `_produtos_tocado=True`) sobrescreve o servidor com a lista local
+"filtrada" que não removeu nada de verdade — o item sobrevive, agora com SKU de verdade.
+Aconteceu com um 2º item de teste (`ZZZ TESTE APAGAR 2` → ganhou `LB00633` antes do
+delete), limpo manualmente do mesmo jeito (linha da BASE.xlsx + entrada do dados.json).
+**Regra pra excluir "aguardando código" com segurança:** se o item pode ter sido
+processado nos últimos ~1min, recarregar a página antes de excluir — ou conferir depois
+que o SKU realmente sumiu (não confiar só no botão ter sumido da tela).
+
+## Aba "📋 Anúncios Pendentes" REMOVIDA — vira filtro dentro de Base (14/08/2026, revisão no mesmo dia)
+
+Ainda no mesmo dia da mudança acima, a Bruna decidiu ir além: "pode tirar a aba de
+anúncios pendentes, e mexemos só pela base, mas deixe na base pra filtrar todos os
+pendentes quando necessário, e faça e indique a contagem de quantos pais pendentes
+temos". A aba dedicada saiu de vez — tudo agora vive dentro de 🧾 Base:
+
+- **`tab_an` removida** de `st.tabs()` e todo o corpo apagado. `_produtos_tocado`,
+  `popup_confirmar_sem_anuncio` e o dispatcher de `confirmar_sem_anuncio` continuam
+  (usados de dentro de Base agora).
+- **Dois helpers novos** (`eh_pendente_anuncio(p)`, `eh_pai(p)`) perto de
+  `chave_alfabetica()`: produto pendente = sem MLB (`""` ou `"—"`) e não marcado
+  `sem_anuncio_ml`; produto "Pai" = tipo=="Pai" (já sincronizado) ou, se ainda `novo`
+  sem SKU, não aponta pra nenhum `sku_pai`/`sku_pai_grupo_novo` (senão é variação/Filho).
+- **Contagem no topo da aba Base** (`st.info`), logo abaixo do subheader: conta só os
+  "Pai" pendentes (não conta cada variação separada — senão infla o número).
+- **3º toggle na barra de busca** ("Mostrar só sem anúncio no ML"), ao lado do já
+  existente "Mostrar só o que está faltando/incompleto" — os dois se combinam com E
+  quando ligados juntos, filtrando a mesma grade editável (não duplica UI).
+- **Botão 🚫 (marcar sem_anuncio_ml) só na lista "aguardando código"** (não usa
+  `st.form`, então aceita botão de ação por linha) — a grade principal continua sem essa
+  ação por linha porque é `st.form`-based (Streamlit não permite `st.button` solto
+  dentro de formulário). Item que já tem SKU e está sem anúncio só é visto pelo filtro,
+  sem atalho de marcar "sem anúncio" — se precisar disso no futuro, criar de outro jeito
+  (a grade não comporta ação por linha).
+
 ## Aba "🧾 Produtos" (adicionada 03/08/2026)
 
 8ª aba — cadastro/correção de produtos da BASE.xlsx (Site ML) sem a funcionária precisar de conta do Windows nem acesso ao OneDrive. Motivo: a trava nativa Excel/OneDrive (ver `Site ML\CLAUDE.md`, seção "BASE.xlsx — onde mora de verdade") exige conta Microsoft, o que era trabalhoso de configurar.

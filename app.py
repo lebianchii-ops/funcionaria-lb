@@ -71,6 +71,23 @@ def chave_alfabetica(texto):
     sem_acento = unicodedata.normalize("NFKD", texto or "").encode("ascii", "ignore").decode()
     return sem_acento.lower()
 
+def eh_pendente_anuncio(p):
+    # produto sem anúncio (MLB) vinculado no Mercado Livre. A célula vazia na BASE
+    # grava "—" literal, não string vazia — tratar os dois como "sem MLB".
+    if p.get("sem_anuncio_ml"):
+        return False
+    if not p.get("sku"):
+        return True  # ainda aguardando código = com certeza sem MLB
+    return (p.get("mlb") or "").strip() in ("", "—")
+
+def eh_pai(p):
+    # "Pai" = produto principal (não é variação de outro). Produto já sincronizado
+    # usa a coluna Tipo da BASE; produto "novo" (ainda sem SKU) é Pai se não aponta
+    # pra nenhum sku_pai/grupo — senão é Filho (variação).
+    if p.get("sku"):
+        return (p.get("tipo") or "Pai") == "Pai"
+    return not (p.get("sku_pai") or "").strip() and not p.get("sku_pai_grupo_novo")
+
 def fmt_data(d_str):
     try:
         return date.fromisoformat(d_str).strftime("%d/%m/%y")
@@ -532,8 +549,8 @@ st.title("👜 LB Collection — Painel")
 # valor atual do filtro global — o controle em si fica na coluna do mini-calendário (aba Tarefas),
 # mas o valor vale para todas as abas
 filtro_global = st.session_state.get("filtro_global", FILTRO_CATS[0])
-tab1, tab_fr, tab_an, tab_ent, tab_prod, tab2, tab3, tab4 = st.tabs(
-    ["✅ Tarefas", "🧵 Freela", "📋 Anúncios Pendentes", "📦 Entrada de Mercadoria",
+tab1, tab_fr, tab_ent, tab_prod, tab2, tab3, tab4 = st.tabs(
+    ["✅ Tarefas", "🧵 Freela", "📦 Entrada de Mercadoria",
      "🧾 Base", "📢 Avisos", "✔️ Concluídos", "❓ Ajuda"]
 )
 
@@ -888,78 +905,6 @@ with tab_fr:
     render_col_freela(c_fd, FR_PRIOS[1])
 
 # ════════════════════════════════════════════════════════════════════════════
-with tab_an:
-    st.subheader("📋 Anúncios Pendentes")
-    st.caption("Produtos da Base que ainda não têm anúncio vinculado no Mercado Livre "
-               "(sem código MLB). Pra criar rápido um produto novo aqui, preencha só o "
-               "título — os dados fiscais/medidas ficam provisórios até a Bruna corrigir.")
-
-    # ── captura rápida: só título ────────────────────────────────────────────
-    with st.form("form_anuncio_pendente_rapido", clear_on_submit=True):
-        an_tit = st.text_input("Título *", placeholder="Nome do produto/anúncio")
-        if st.form_submit_button("➕ Adicionar produto (rápido)", use_container_width=True, type="primary"):
-            if not an_tit.strip():
-                st.warning("Por favor, preencha o título.")
-            else:
-                dados["produtos"].append({
-                    "id": str(uuid.uuid4()), "sku": None, "novo": True,
-                    "sku_pai": "", "variacao": "",
-                    "titulo": an_tit.strip(),
-                    "custo": 0.1, "custo_fake": True,
-                    "peso": 100, "peso_fake": True,
-                    "comprimento": 10, "largura": 10, "altura": 10,
-                    "ean": "", "estoque": 0, "ncm": "", "origem": "2",
-                    "erro": "", "criado_em": datetime.now().isoformat(),
-                })
-                st.session_state["_produtos_tocado"] = True
-                if salvar_dados(dados):
-                    st.success(f"✅ \"{an_tit.strip()}\" adicionado — vá em 🧾 Base pra "
-                               f"completar custo/medidas reais quando souber.")
-                    st.rerun()
-
-    st.divider()
-
-    pendentes_an = [p for p in dados["produtos"]
-                    if (p.get("mlb") or "").strip() in ("", "—") and not p.get("sem_anuncio_ml")
-                    and (p.get("titulo") or "").strip()]
-    pendentes_an = sorted(pendentes_an, key=lambda x: chave_alfabetica(x.get("titulo", "")))
-
-    st.caption(f"**{len(pendentes_an)} pendente(s)**")
-
-    if not pendentes_an:
-        st.info("Nenhum produto pendente de anúncio.")
-    else:
-        for p in pendentes_an:
-            with st.container(border=True):
-                row = st.columns([7, 2, 1], vertical_alignment="center")
-                with row[0]:
-                    sku_txt = p.get("sku") or "⏳ aguardando código"
-                    st.markdown(f"**{p.get('titulo','')}**")
-                    avisos_p = []
-                    if p.get("peso_fake"):
-                        avisos_p.append("peso/medida provisório")
-                    if p.get("ean_fake"):
-                        avisos_p.append("EAN provisório")
-                    if p.get("custo_fake"):
-                        avisos_p.append("custo provisório")
-                    linha_info = sku_txt
-                    if avisos_p:
-                        linha_info += "  ·  ⚠️ " + " · ".join(avisos_p)
-                    st.caption(linha_info)
-                with row[1]:
-                    if st.button("✏️ Editar na Base", key=f"anip_edit_{p['id']}",
-                                 use_container_width=True):
-                        st.session_state["busca_produto"] = p.get("sku") or p.get("titulo", "")
-                        st.session_state["toggle_faltando"] = False
-                        st.rerun()
-                with row[2]:
-                    if st.button("🚫", key=f"anip_semml_{p['id']}",
-                                 use_container_width=True,
-                                 help="Marcar que este produto não vai ter anúncio no ML"):
-                        st.session_state["confirmar_sem_anuncio"] = p["id"]
-                        st.rerun()
-
-# ════════════════════════════════════════════════════════════════════════════
 with tab_ent:
     st.subheader("📦 Entrada de Mercadoria")
     st.caption("Registre toda mercadoria que chegar: dia, fornecedor e se a nota bate com a quantidade recebida.")
@@ -1032,6 +977,11 @@ with tab_prod:
     st.caption("Cadastre produto novo ou complete/corrija custo, peso, medidas e código de "
                "barras de produtos que já existem. As mudanças chegam sozinhas na planilha "
                "da Bruna em até ~5 minutos — não precisa avisar ninguém.")
+
+    _pais_pendentes = [p for p in dados["produtos"]
+                       if eh_pai(p) and eh_pendente_anuncio(p) and (p.get("titulo") or "").strip()]
+    st.info(f"📋 **{len(_pais_pendentes)} produto(s) principal(is) pendente(s) de anúncio no ML** "
+            f"(sem código MLB) — use o filtro \"sem anúncio no ML\" abaixo pra ver a lista.")
 
     # a Bruna pré-reserva blocos de SKU (linha com o código já escrito, sem
     # produto ainda) — o próximo produto novo preenche a vaga de menor número,
@@ -1214,7 +1164,7 @@ with tab_prod:
                 f"ser gerado — chega sozinho em instantes.")
         for p in produtos_novos_pendentes:
             with st.container(border=True):
-                c1, c2 = st.columns([8, 1])
+                c1, c2, c3 = st.columns([7, 1, 1])
                 with c1:
                     if p.get("sku_pai"):
                         extra = f" · variação de {p['sku_pai']} ({p['variacao']})"
@@ -1229,6 +1179,12 @@ with tab_prod:
                     if p.get("erro"):
                         st.error(f"⚠️ {p['erro']}")
                 with c2:
+                    if not p.get("sku_pai") and not p.get("sku_pai_grupo_novo"):
+                        if st.button("🚫", key=f"psemml{p['id']}", use_container_width=True,
+                                     help="Marcar que este produto não vai ter anúncio no ML"):
+                            st.session_state["confirmar_sem_anuncio"] = p["id"]
+                            st.rerun()
+                with c3:
                     if st.button("🗑️", key=f"pdel{p['id']}", use_container_width=True, help="Cancelar cadastro"):
                         dados["produtos"] = [x for x in dados["produtos"] if x["id"] != p["id"]]
                         st.session_state["_produtos_tocado"] = True
@@ -1237,11 +1193,13 @@ with tab_prod:
 
     st.divider()
 
-    col_busca, col_toggle = st.columns([3, 2])
+    col_busca, col_toggle, col_toggle2 = st.columns([3, 2, 2])
     with col_busca:
         busca_prod = st.text_input("🔍 Buscar por código (SKU) ou nome do produto", key="busca_produto")
     with col_toggle:
         so_faltando = st.toggle("Mostrar só o que está faltando/incompleto", value=True, key="toggle_faltando")
+    with col_toggle2:
+        so_pendente_anuncio = st.toggle("Mostrar só sem anúncio no ML", value=False, key="toggle_pendente_anuncio")
 
     # linhas-modelo sem produto ainda (SKU reservado, sem título) nao aparecem
     # aqui - nao sao produtos reais pra ela completar, sao slots vazios da BASE
@@ -1252,6 +1210,9 @@ with tab_prod:
                       if p.get("peso_fake") or p.get("ean_fake") or p.get("custo_fake")
                       or num_seguro(p.get("custo")) <= 0]
 
+    if so_pendente_anuncio and not busca_prod:
+        existentes = [p for p in existentes if eh_pendente_anuncio(p)]
+
     if busca_prod:
         alvo = chave_alfabetica(busca_prod)
         existentes = [p for p in existentes
@@ -1259,10 +1220,15 @@ with tab_prod:
 
     existentes = sorted(existentes, key=lambda x: chave_alfabetica(x.get("titulo", "")))
 
+    _rotulo_filtro = []
+    if so_faltando and not busca_prod:
+        _rotulo_filtro.append("incompletos")
+    if so_pendente_anuncio and not busca_prod:
+        _rotulo_filtro.append("sem anúncio no ML")
     st.caption(f"**{len(existentes)} produto(s)**"
-               + (" — mostrando só os incompletos" if so_faltando and not busca_prod else ""))
+               + (" — mostrando só " + " + ".join(_rotulo_filtro) if _rotulo_filtro else ""))
 
-    if not existentes and not busca_prod and so_faltando:
+    if not existentes and not busca_prod and (so_faltando or so_pendente_anuncio):
         st.success("Nenhum produto com pendência agora! 🎉")
 
     # 03/08/2026: aqui era st.data_editor (grade estilo Excel). Trocado por
