@@ -22628,6 +22628,25 @@
       "peso_fake": true,
       "ean_fake": true,
       "custo_fake": false
+    },
+    {
+      "id": "f0ab03a6-022b-4020-96a8-6da3541986fd",
+      "sku": null,
+      "novo": true,
+      "sku_pai": "",
+      "variacao": "",
+      "titulo": "ZZZ TESTE APAGAR 2",
+      "custo": 0.1,
+      "peso": 100,
+      "comprimento": 10,
+      "largura": 10,
+      "altura": 10,
+      "ean": "",
+      "estoque": 0,
+      "ncm": "",
+      "origem": "2",
+      "erro": "",
+      "criado_em": "2026-08-14T18:54:45.269349"
     }
   ],
   "_migracao_anuncios_pendentes_feita": true
