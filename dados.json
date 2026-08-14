@@ -218,7 +218,8 @@
       "prioridade": "Alta",
       "feita": false,
       "feita_em": null,
-      "criado_em": "2026-08-14T11:54:08.212682"
+      "criado_em": "2026-08-14T11:54:08.212682",
+      "obs_conclusao": ""
     }
   ],
   "avisos": [
@@ -700,8 +701,8 @@
       "id": "3e0686b7-38bc-4c06-a698-06639530aa2a",
       "titulo": "Rede Banheira BB",
       "marca": "LB COLLECTION",
-      "feita": false,
-      "feita_em": null,
+      "feita": true,
+      "feita_em": "14/08/26 18:37",
       "obs_conclusao": "",
       "criado_em": "2026-07-31T16:03:27.677055"
     },
