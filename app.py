@@ -45,22 +45,6 @@ NOTA_OPCOES = ["Sim", "Não"]
 FR_PRIOS  = ["Fazer primeiro", "Fazer depois"]
 FR_COR    = {"Fazer primeiro": "#e74c3c", "Fazer depois": "#27ae60"}
 FR_EMOJI  = {"Fazer primeiro": "🔴",      "Fazer depois": "🟢"}
-# anúncios pendentes — marca/marketplace restrito a 3 opções (sem as 10 combinações por marketplace)
-MARCA_OPCOES = ["K2 COMÉRCIO", "LB COLLECTION", "AMBOS (K2 e LB)"]
-SEED_ANUNCIOS_PENDENTES = [
-    "Apontador e Branquinho Bichinhos", "Asa Led Menos", "Bíquini sereia",
-    "Brinquedo Família Urso", "Brinquedo sanfonado", "Caderno astronauta pqno",
-    "Caderno dino pqno", "Caderno inteligente", "Caixa porta jóias", "Carrinho lego",
-    "Cartão bloqueador aproximação", "Chapéuzinho Vermelho", "Colar Maui",
-    "Coroa Princesa Led", "Enfermeira/ Médica", "Faixa P/ Personalizar Color",
-    "Fantasia Gatinha", "Fantasia Jessie Toy Story", "Fantasia Sereia Capa",
-    "Festão Carnaval", "Kit Carrinhos", "Leque Madeira", "Necessaire Personalizada",
-    "Óculos carnaval gatinho", "Óculos Festa Led", "Pijama Pintar", "Pinto Petisco Bride",
-    "Porta Copos Piscina Rosa Glitter", "Presépio Luz e Som", "Rede Banheira BB",
-    "Saco holográfico brinde", "Stick Casinha e Capivara", "Tiara noiva chic",
-    "Tiara véu", "Varinha Princesa",
-]
-
 # ─── helpers ────────────────────────────────────────────────────────────────
 
 def num_seguro(v, cast=float):
@@ -101,7 +85,7 @@ def aplica_filtro(lista, filtro):
         return lista
     return [x for x in lista if x.get("categoria", "—") == filtro]
 
-_CHAVE_CHECKBOX = {"tarefa": "ck", "freela": "fck", "anuncio": "ack"}
+_CHAVE_CHECKBOX = {"tarefa": "ck", "freela": "fck"}
 
 def _marcar_pendente_conclusao(tipo, item_id):
     # callback do checkbox — roda antes do rerun, então pode resetar a própria caixinha com segurança
@@ -260,20 +244,7 @@ dados.setdefault("freelas", [])
 dados.setdefault("entradas", [])
 dados.setdefault("produtos", [])
 
-precisa_seed_anuncios = "anuncios_pendentes" not in dados
-if precisa_seed_anuncios:
-    dados["anuncios_pendentes"] = [
-        {
-            "id":            str(uuid.uuid4()),
-            "titulo":        titulo,
-            "marca":         "LB COLLECTION",
-            "feita":         False,
-            "feita_em":      None,
-            "obs_conclusao": "",
-            "criado_em":     datetime.now().isoformat(),
-        }
-        for titulo in SEED_ANUNCIOS_PENDENTES
-    ]
+dados.setdefault("anuncios_pendentes", [])
 
 CATS_MIGRACAO = {
     "ML - LB Collection":    "LB Collection - ML",
@@ -323,16 +294,40 @@ for n in dados.get("anuncios_pendentes", []):
     n.setdefault("feita", False)
     n.setdefault("feita_em", None)
     n.setdefault("obs_conclusao", "")
-    n.setdefault("marca", "LB COLLECTION")
-    if n["marca"] not in MARCA_OPCOES:
-        n["marca"] = "LB COLLECTION"
 
 if precisa_migrar and not st.session_state.get("migrado_cats"):
     st.session_state["migrado_cats"] = True
     salvar_dados(dados)
 
-if precisa_seed_anuncios and not st.session_state.get("seed_anuncios_feito"):
-    st.session_state["seed_anuncios_feito"] = True
+# migração única (14/08/2026): "Anúncios Pendentes" deixou de ser coleção própria e virou
+# um filtro sobre dados["produtos"] (produto sem MLB vinculado) — ver CLAUDE.md. Os itens
+# ABERTOS que ainda estavam em anuncios_pendentes viram produtos novos (mesmo mecanismo de
+# "novo": True, sku: None, com os valores fake já convencionados). Os já FEITOS não são
+# migrados — continuam intocados só pra história em ✔️ Concluídos (etiqueta 📢).
+precisa_migrar_anuncios = (
+    any(not n.get("feita") for n in dados.get("anuncios_pendentes", []))
+    and not dados.get("_migracao_anuncios_pendentes_feita")
+)
+if precisa_migrar_anuncios:
+    for n in dados["anuncios_pendentes"]:
+        if n.get("feita"):
+            continue
+        dados["produtos"].append({
+            "id": str(uuid.uuid4()), "sku": None, "novo": True,
+            "sku_pai": "", "variacao": "",
+            "titulo": n.get("titulo", "").strip(),
+            "custo": 0.1, "custo_fake": True,
+            "peso": 100, "peso_fake": True,
+            "comprimento": 10, "largura": 10, "altura": 10,
+            "ean": "", "estoque": 0, "ncm": "", "origem": "2",
+            "erro": "", "criado_em": datetime.now().isoformat(),
+        })
+    dados["anuncios_pendentes"] = [n for n in dados["anuncios_pendentes"] if n.get("feita")]
+    dados["_migracao_anuncios_pendentes_feita"] = True
+
+if precisa_migrar_anuncios and not st.session_state.get("migrado_anuncios_produtos"):
+    st.session_state["migrado_anuncios_produtos"] = True
+    st.session_state["_produtos_tocado"] = True  # crítico — senão salvar_dados() descarta os produtos migrados
     salvar_dados(dados)
 
 # ── dialog nova tarefa (definido uma vez, no nível do script) ─────────────
@@ -370,7 +365,7 @@ def popup_nova_tarefa(data_inicial, prioridade_inicial="Baixa", tipo="evento"):
         if salvar_dados(dados):
             st.rerun()
 
-_COLECAO_POR_TIPO = {"tarefa": "tarefas", "freela": "freelas", "anuncio": "anuncios_pendentes"}
+_COLECAO_POR_TIPO = {"tarefa": "tarefas", "freela": "freelas"}
 
 @st.dialog("Confirmar conclusão")
 def popup_confirmar_conclusao(item_id, tipo):
@@ -510,37 +505,27 @@ def popup_editar_freela(freela_id):
             if salvar_dados(dados):
                 st.rerun()
 
-@st.dialog("Editar Anúncio Pendente")
-def popup_editar_anuncio(anuncio_id):
-    n = next((x for x in dados["anuncios_pendentes"] if x["id"] == anuncio_id), None)
-    if not n:
-        st.error("Item não encontrado.")
+@st.dialog("Marcar sem anúncio no ML")
+def popup_confirmar_sem_anuncio(produto_id):
+    p = next((x for x in dados["produtos"] if x["id"] == produto_id), None)
+    if not p:
+        st.error("Produto não encontrado.")
         return
-    nv_t = st.text_input("Título", value=n["titulo"])
-    nv_m = st.selectbox("Marca / Marketplace", MARCA_OPCOES,
-                        index=MARCA_OPCOES.index(n.get("marca", "LB COLLECTION")))
-    obs_conc = st.text_area("Observação de conclusão (opcional)",
-                             value=n.get("obs_conclusao", ""), height=70,
-                             key=f"nobsedit{anuncio_id}")
-    st.write("")
-    c_sv, c_ok, c_del = st.columns(3)
-    with c_sv:
-        if st.button("💾 Salvar", use_container_width=True, type="primary", key=f"nsv{anuncio_id}"):
-            n.update({"titulo": nv_t.strip(), "marca": nv_m})
+    st.write(f"**{p.get('titulo','')}** não vai ganhar anúncio no Mercado Livre "
+             f"(ex: só vende em outro marketplace)? Ele sai da lista de pendentes.")
+    motivo = st.text_input("Motivo (opcional)", key=f"semml_motivo_{produto_id}")
+    c1, c2 = st.columns(2)
+    with c1:
+        if st.button("✅ Confirmar", use_container_width=True, type="primary",
+                      key=f"semml_ok_{produto_id}"):
+            p["sem_anuncio_ml"] = True
+            p["sem_anuncio_ml_motivo"] = motivo.strip()
+            st.session_state["_produtos_tocado"] = True
             if salvar_dados(dados):
                 st.rerun()
-    with c_ok:
-        if st.button("✅ Marcar feito", use_container_width=True, key=f"nok{anuncio_id}"):
-            n["feita"]         = True
-            n["feita_em"]      = datetime.now().strftime("%d/%m/%y %H:%M")
-            n["obs_conclusao"] = obs_conc.strip()
-            if salvar_dados(dados):
-                st.rerun()
-    with c_del:
-        if st.button("🗑️ Excluir", use_container_width=True, key=f"ndl{anuncio_id}"):
-            dados["anuncios_pendentes"] = [x for x in dados["anuncios_pendentes"] if x["id"] != anuncio_id]
-            if salvar_dados(dados):
-                st.rerun()
+    with c2:
+        if st.button("✕ Cancelar", use_container_width=True, key=f"semml_no_{produto_id}"):
+            st.rerun()
 
 # ── cabeçalho ────────────────────────────────────────────────────────────────
 st.title("👜 LB Collection — Painel")
@@ -607,6 +592,10 @@ _pendente = st.session_state.get("confirmar_pendente")
 if _pendente:
     st.session_state["confirmar_pendente"] = None
     popup_confirmar_conclusao(_pendente[1], _pendente[0])
+
+_sem_anuncio_id = st.session_state.pop("confirmar_sem_anuncio", None)
+if _sem_anuncio_id:
+    popup_confirmar_sem_anuncio(_sem_anuncio_id)
 
 # ════════════════════════════════════════════════════════════════════════════
 with tab1:
@@ -901,62 +890,74 @@ with tab_fr:
 # ════════════════════════════════════════════════════════════════════════════
 with tab_an:
     st.subheader("📋 Anúncios Pendentes")
-    st.caption("Lista completa de anúncios ainda por criar, em ordem alfabética. "
-               "Marque a caixinha quando o anúncio for criado — ele sai daqui e vai para a aba ✔️ Concluídos.")
+    st.caption("Produtos da Base que ainda não têm anúncio vinculado no Mercado Livre "
+               "(sem código MLB). Pra criar rápido um produto novo aqui, preencha só o "
+               "título — os dados fiscais/medidas ficam provisórios até a Bruna corrigir.")
 
-    with st.form("form_anuncio_pendente", clear_on_submit=True):
-        ac1, ac2 = st.columns([3, 2])
-        with ac1:
-            an_tit = st.text_input("Título *", placeholder="Nome do produto/anúncio")
-        with ac2:
-            an_marca = st.selectbox("Marca / Marketplace", MARCA_OPCOES, index=1)
-        if st.form_submit_button("➕ Adicionar anúncio pendente", use_container_width=True, type="primary"):
+    # ── captura rápida: só título ────────────────────────────────────────────
+    with st.form("form_anuncio_pendente_rapido", clear_on_submit=True):
+        an_tit = st.text_input("Título *", placeholder="Nome do produto/anúncio")
+        if st.form_submit_button("➕ Adicionar produto (rápido)", use_container_width=True, type="primary"):
             if not an_tit.strip():
                 st.warning("Por favor, preencha o título.")
             else:
-                dados["anuncios_pendentes"].append({
-                    "id":            str(uuid.uuid4()),
-                    "titulo":        an_tit.strip(),
-                    "marca":         an_marca,
-                    "feita":         False,
-                    "feita_em":      None,
-                    "obs_conclusao": "",
-                    "criado_em":     datetime.now().isoformat(),
+                dados["produtos"].append({
+                    "id": str(uuid.uuid4()), "sku": None, "novo": True,
+                    "sku_pai": "", "variacao": "",
+                    "titulo": an_tit.strip(),
+                    "custo": 0.1, "custo_fake": True,
+                    "peso": 100, "peso_fake": True,
+                    "comprimento": 10, "largura": 10, "altura": 10,
+                    "ean": "", "estoque": 0, "ncm": "", "origem": "2",
+                    "erro": "", "criado_em": datetime.now().isoformat(),
                 })
+                st.session_state["_produtos_tocado"] = True
                 if salvar_dados(dados):
+                    st.success(f"✅ \"{an_tit.strip()}\" adicionado — vá em 🧾 Base pra "
+                               f"completar custo/medidas reais quando souber.")
                     st.rerun()
 
     st.divider()
 
-    filtro_marca = st.selectbox("🔍 Filtrar por marca", ["Todas"] + MARCA_OPCOES, key="filtro_marca_anuncio")
+    pendentes_an = [p for p in dados["produtos"]
+                    if (p.get("mlb") or "").strip() in ("", "—") and not p.get("sem_anuncio_ml")
+                    and (p.get("titulo") or "").strip()]
+    pendentes_an = sorted(pendentes_an, key=lambda x: chave_alfabetica(x.get("titulo", "")))
 
-    anuncios_abertos = sorted(
-        [n for n in dados["anuncios_pendentes"] if not n.get("feita")],
-        key=lambda x: chave_alfabetica(x.get("titulo", ""))
-    )
-    if filtro_marca != "Todas":
-        anuncios_abertos = [n for n in anuncios_abertos if n.get("marca") == filtro_marca]
+    st.caption(f"**{len(pendentes_an)} pendente(s)**")
 
-    st.caption(f"**{len(anuncios_abertos)} pendente(s)**")
-
-    if not anuncios_abertos:
-        st.info("Nenhum anúncio pendente.")
+    if not pendentes_an:
+        st.info("Nenhum produto pendente de anúncio.")
     else:
-        for n in anuncios_abertos:
+        for p in pendentes_an:
             with st.container(border=True):
-                row = st.columns([8, 1, 1], vertical_alignment="center")
+                row = st.columns([7, 2, 1], vertical_alignment="center")
                 with row[0]:
-                    st.checkbox(f"**{n['titulo']}**", value=False, key=f"ack{n['id']}",
-                                on_change=_marcar_pendente_conclusao, args=("anuncio", n["id"]))
-                    st.caption(n.get("marca", "LB COLLECTION"))
+                    sku_txt = p.get("sku") or "⏳ aguardando código"
+                    st.markdown(f"**{p.get('titulo','')}**")
+                    avisos_p = []
+                    if p.get("peso_fake"):
+                        avisos_p.append("peso/medida provisório")
+                    if p.get("ean_fake"):
+                        avisos_p.append("EAN provisório")
+                    if p.get("custo_fake"):
+                        avisos_p.append("custo provisório")
+                    linha_info = sku_txt
+                    if avisos_p:
+                        linha_info += "  ·  ⚠️ " + " · ".join(avisos_p)
+                    st.caption(linha_info)
                 with row[1]:
-                    if st.button("✏️", key=f"ae{n['id']}", use_container_width=True, help="Editar"):
-                        popup_editar_anuncio(n["id"])
+                    if st.button("✏️ Editar na Base", key=f"anip_edit_{p['id']}",
+                                 use_container_width=True):
+                        st.session_state["busca_produto"] = p.get("sku") or p.get("titulo", "")
+                        st.session_state["toggle_faltando"] = False
+                        st.rerun()
                 with row[2]:
-                    if st.button("🗑️", key=f"ad{n['id']}", use_container_width=True, help="Excluir"):
-                        dados["anuncios_pendentes"] = [x for x in dados["anuncios_pendentes"] if x["id"] != n["id"]]
-                        if salvar_dados(dados):
-                            st.rerun()
+                    if st.button("🚫", key=f"anip_semml_{p['id']}",
+                                 use_container_width=True,
+                                 help="Marcar que este produto não vai ter anúncio no ML"):
+                        st.session_state["confirmar_sem_anuncio"] = p["id"]
+                        st.rerun()
 
 # ════════════════════════════════════════════════════════════════════════════
 with tab_ent:

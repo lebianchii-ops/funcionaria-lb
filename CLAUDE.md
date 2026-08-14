@@ -68,6 +68,68 @@ Marcar a caixinha de uma tarefa/freela como feita abre um `st.dialog` pedindo co
 
 **Bug corrigido:** `sorted(..., key=lambda x: x["titulo"].lower())` deixa palavras acentuadas (ex: "Óculos") no fim da lista em vez de perto do "O" — `.lower()` não remove acento, e o código-ponto de "ó" é maior que o de "z". Corrigido com `chave_alfabetica()` (usa `unicodedata.normalize("NFKD", ...).encode("ascii","ignore")` pra tirar o acento só na hora de ordenar, mantendo o texto original na tela). Vale pra qualquer ordenação alfabética futura no projeto.
 
+## Aba "📋 Anúncios Pendentes" virou filtro sobre Produtos, campo marca removido (14/08/2026)
+
+Pedido da Bruna: "ao invés dele ficar naquela aba sozinha o ideal seria já deixarmos na
+BASE" — não queria mais duas coleções separadas (`anuncios_pendentes` e `produtos`)
+representando o mesmo universo de coisas a cadastrar/anunciar. Também confirmou que não
+precisa mais do campo `marca` (K2 COMÉRCIO vs LB COLLECTION) — "todos são meus da LB, K2
+é a empresa do meu irmão".
+
+**Antes:** `dados["anuncios_pendentes"]` era coleção própria com CRUD completo (form de
+criar título+marca, popup de editar, checkbox+popup de concluir via
+`_COLECAO_POR_TIPO`/`_CHAVE_CHECKBOX`), sem relação de dado com `dados["produtos"]`.
+
+**Depois:** "anúncio pendente" = produto de `dados["produtos"]` sem `mlb` preenchido
+(campo que já vinha do snapshot da BASE.xlsx mas nunca era lido por este app antes) e sem
+a flag manual `sem_anuncio_ml`. A aba virou VIEW/FILTRO — sem CRUD/coleção própria.
+Editar um "pendente" agora é editar o produto de verdade (botão que preenche a busca da
+grade de Produtos, `st.session_state["busca_produto"]`).
+
+- **Captura rápida preservada:** mini-form só com título continua existindo — cria um
+  produto novo com os valores fake já convencionados (custo=0,1 · peso=100 ·
+  medidas=10/10/10 · NCM em branco · origem "2"), sem forçar preenchimento na hora.
+- **`marca`/`MARCA_OPCOES` removidos de vez.** Itens antigos com `marca` no dados.json
+  (histórico de concluídos) não foram limpos, só não são mais lidos.
+- **Migração única (flag `dados["_migracao_anuncios_pendentes_feita"]`, gravada no
+  dados.json — não em `session_state`, pois a migração não é idempotente):** item ABERTO
+  de `anuncios_pendentes` virou produto novo (`novo=True`, `sku=None`, valores fake),
+  preservando o título. Itens `feita=True` NÃO foram migrados — continuam em
+  `anuncios_pendentes` intocados, só pra continuar em ✔️ Concluídos com etiqueta 📢.
+- **`_COLECAO_POR_TIPO`/`_CHAVE_CHECKBOX` perderam a entrada `"anuncio"`** — sem checkbox
+  de "concluir" (não fazia sentido pra produto sem anúncio). Campo manual novo
+  `sem_anuncio_ml` (+ `sem_anuncio_ml_motivo`) via popup próprio
+  (`popup_confirmar_sem_anuncio`) resolve o caso de "nunca vai ter anúncio no ML".
+- **`_produtos_tocado` ganhou 3 pontos novos** (migração, captura rápida, popup
+  sem_anuncio_ml) além dos 3 originais — regra continua a mesma da seção "🚨 CRÍTICO —
+  produtos foi ZERADO...".
+
+### 🚨 Incidente real no deploy — migração rodou 2x e duplicou 30 produtos na BASE real (14/08/2026)
+
+Ao testar a migração acima **localmente** (`streamlit run app.py`), descobri um detalhe
+crítico tarde demais: o app local fala com o **mesmo `dados.json` de produção** no
+GitHub — não existe cópia de teste separada. Abri duas sessões de navegador quase ao
+mesmo tempo (uma inicial + um F5 rápido) e as duas rodaram o bloco de migração ANTES de
+qualquer uma conseguir salvar a flag `_migracao_anuncios_pendentes_feita` — as duas
+buscaram o `dados.json` sem a flag, as duas criaram os 30 produtos, as duas salvaram.
+Resultado: **30 produtos reais viraram 60 linhas na BASE.xlsx** (SKUs LB00570-LB00600 e
+LB00601-LB00630, cada par com título/custo/peso idênticos), porque o
+`sincronizar_editor_produtos.py` (roda a cada 1min) aplicou as duas levas antes de eu
+perceber.
+
+**Corrigido no mesmo dia:** as 30 linhas duplicadas (LB00601-LB00630) foram removidas da
+BASE.xlsx (backup automático salvo antes em `Site ML\backups_base\` — padrão
+`BASE_antes_remover_duplicatas_<timestamp>.xlsx`) e do `dados.json` (push direto via
+Contents API com SHA fresco, mesma técnica de `salvar_dados()`). `formatar_base.py`
+rodado depois pra reaplicar as cores — confirmou 30 SKUs com custo provisório, batendo
+com os 30 que ficaram.
+
+**Regra pra qualquer teste futuro que envolva migração/seed de dado em massa neste
+projeto:** o `streamlit run app.py` local (mesmo via `.claude/launch.json`) grava direto
+em produção — **nunca abrir duas sessões/abas do app ao mesmo tempo** ao testar qualquer
+bloco de migração de disparo único. Se possível, testar a lógica de migração isolada
+(script separado simulando o `dados` em memória) antes de rodar contra o app de verdade.
+
 ## Aba "🧾 Produtos" (adicionada 03/08/2026)
 
 8ª aba — cadastro/correção de produtos da BASE.xlsx (Site ML) sem a funcionária precisar de conta do Windows nem acesso ao OneDrive. Motivo: a trava nativa Excel/OneDrive (ver `Site ML\CLAUDE.md`, seção "BASE.xlsx — onde mora de verdade") exige conta Microsoft, o que era trabalhoso de configurar.
