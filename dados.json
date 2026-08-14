@@ -205,7 +205,20 @@
       "prioridade": "Alta",
       "feita": false,
       "feita_em": null,
-      "criado_em": "2026-08-13T22:25:26.146210"
+      "criado_em": "2026-08-13T22:25:26.146210",
+      "obs_conclusao": ""
+    },
+    {
+      "id": "cf7a88ac-1801-4d09-a69d-9a1da4b27f5c",
+      "titulo": "FULL URGENTE",
+      "categoria": "LB Collection - ML",
+      "descricao": "Lana, teve muita diferença de envio de produtos no ultimo full, dá uma olhada nisso que nós temos que recorrer",
+      "data": null,
+      "tipo": "tarefa",
+      "prioridade": "Alta",
+      "feita": false,
+      "feita_em": null,
+      "criado_em": "2026-08-14T11:54:08.212682"
     }
   ],
   "avisos": [
