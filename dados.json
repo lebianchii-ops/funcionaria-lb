@@ -16419,7 +16419,7 @@
       "novo": false,
       "editado_funcionaria": false,
       "erro": "",
-      "titulo": "Kit Fantasia Chapéu Boina Mario + Luigi (R$15 UN)",
+      "titulo": "Kit Bonés Fantasia Vermelho e Verde Para Cosplay Festa",
       "variacao": "",
       "tipo": "Pai",
       "estoque": 12,
@@ -16431,10 +16431,10 @@
       "ncm": 95059000,
       "origem": 2,
       "ean": "7908370451220",
-      "mlb": "—",
-      "status_ml": "🔴 Falta criar",
+      "mlb": "MLB7425786832",
+      "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
