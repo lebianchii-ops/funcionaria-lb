@@ -246,6 +246,18 @@
       "feita_em": "18/08/26 13:10",
       "criado_em": "2026-08-18T11:22:53.890046",
       "obs_conclusao": ""
+    },
+    {
+      "id": "4bcbe5e6-f484-406e-8b9e-b08743e0117f",
+      "titulo": "ADVERTÊNCIA ML",
+      "categoria": "LB Collection - ML",
+      "descricao": "Lana, parece que estamos tomando advertências da qual eu não tinha ideia e vi por esse link, dá uma olhada por favor:\n\n\nhttps://vendedores.mercadolivre.com.br/account-risk",
+      "data": null,
+      "tipo": "tarefa",
+      "prioridade": "Alta",
+      "feita": false,
+      "feita_em": null,
+      "criado_em": "2026-08-18T23:42:19.845095"
     }
   ],
   "avisos": [
