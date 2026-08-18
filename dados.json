@@ -231,7 +231,20 @@
       "prioridade": "Alta",
       "feita": false,
       "feita_em": null,
-      "criado_em": "2026-08-16T20:12:52.162570"
+      "criado_em": "2026-08-16T20:12:52.162570",
+      "obs_conclusao": ""
+    },
+    {
+      "id": "371a0095-e191-4bb8-b878-2c77c5adb4c5",
+      "titulo": "AVISO",
+      "categoria": "LB COLLECTION",
+      "descricao": "Como está dando o problema na etiqueta da fantasia do kpop dourada vamos tira-la, mas podemos fazer alguma marcação na peça para não perder o controle de qual tamanho é oq mandamos",
+      "data": null,
+      "tipo": "tarefa",
+      "prioridade": "Alta",
+      "feita": false,
+      "feita_em": null,
+      "criado_em": "2026-08-18T11:22:53.890046"
     }
   ],
   "avisos": [
