@@ -18501,7 +18501,7 @@
       "status_ml": "🔴 Falta criar",
       "peso_fake": true,
       "ean_fake": true,
-      "custo_fake": true
+      "custo_fake": false
     },
     {
       "id": "LB00635",
@@ -18525,7 +18525,7 @@
       "status_ml": "🔴 Falta criar",
       "peso_fake": true,
       "ean_fake": true,
-      "custo_fake": true
+      "custo_fake": false
     },
     {
       "id": "LB00636",
@@ -18549,7 +18549,7 @@
       "status_ml": "🔴 Falta criar",
       "peso_fake": true,
       "ean_fake": true,
-      "custo_fake": true
+      "custo_fake": false
     },
     {
       "id": "LB00637",
@@ -18573,7 +18573,7 @@
       "status_ml": "🔴 Falta criar",
       "peso_fake": true,
       "ean_fake": true,
-      "custo_fake": true
+      "custo_fake": false
     },
     {
       "id": "LB00638",
@@ -18597,7 +18597,7 @@
       "status_ml": "🔴 Falta criar",
       "peso_fake": true,
       "ean_fake": true,
-      "custo_fake": true
+      "custo_fake": false
     },
     {
       "id": "LB00639",
@@ -18621,7 +18621,7 @@
       "status_ml": "🔴 Falta criar",
       "peso_fake": true,
       "ean_fake": true,
-      "custo_fake": true
+      "custo_fake": false
     },
     {
       "id": "LB00640",
@@ -18645,7 +18645,7 @@
       "status_ml": "🔴 Falta criar",
       "peso_fake": true,
       "ean_fake": true,
-      "custo_fake": true
+      "custo_fake": false
     },
     {
       "id": "LB00641",
@@ -18669,7 +18669,7 @@
       "status_ml": "🔴 Falta criar",
       "peso_fake": true,
       "ean_fake": true,
-      "custo_fake": true
+      "custo_fake": false
     },
     {
       "id": "LB00642",
