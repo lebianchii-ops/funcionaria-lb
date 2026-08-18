@@ -132,9 +132,9 @@
     },
     {
       "id": "0207867a-56bf-4e16-9b68-1e834758dbc6",
-      "titulo": "Atualizar a lista de produtos/ anúncios pendentes",
+      "titulo": "ANÚNCIOS PENDENTES",
       "categoria": "LB COLLECTION",
-      "descricao": "",
+      "descricao": "1. Preencher a planinha de links\n2. Preencher a base com os produtos pendentes que faltam",
       "data": null,
       "tipo": "tarefa",
       "prioridade": "Alta",
