@@ -407,8 +407,8 @@
       "titulo": "Limpar 20 Guarda Chuvas Ferrari",
       "descricao": "",
       "prioridade": "Fazer primeiro",
-      "feita": false,
-      "feita_em": null,
+      "feita": true,
+      "feita_em": "18/08/26 18:28",
       "criado_em": "2026-07-27T16:21:31.917353",
       "categoria": "AMBOS (K2 e LB)",
       "obs_conclusao": ""
