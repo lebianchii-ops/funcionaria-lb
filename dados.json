@@ -203,8 +203,8 @@
       "data": null,
       "tipo": "tarefa",
       "prioridade": "Alta",
-      "feita": false,
-      "feita_em": null,
+      "feita": true,
+      "feita_em": "19/08/26 15:54",
       "criado_em": "2026-08-13T22:25:26.146210",
       "obs_conclusao": ""
     },
@@ -226,7 +226,7 @@
       "titulo": "FULL LB",
       "categoria": "LB Collection - ML",
       "descricao": "",
-      "data": "2026-08-22",
+      "data": "2026-08-24",
       "tipo": "evento",
       "prioridade": "Alta",
       "feita": false,
@@ -258,19 +258,6 @@
       "feita": false,
       "feita_em": null,
       "criado_em": "2026-08-18T23:42:19.845095",
-      "obs_conclusao": ""
-    },
-    {
-      "id": "c149340a-f8c1-470b-b314-248237d34ecb",
-      "titulo": "SUPER URGENTE FULL",
-      "categoria": "LB Collection - VD",
-      "descricao": "LB00346\nLB00094B\n\nprodutos parados/destivados do full EM REVISÃ0",
-      "data": null,
-      "tipo": "tarefa",
-      "prioridade": "Alta",
-      "feita": false,
-      "feita_em": null,
-      "criado_em": "2026-08-19T14:30:20.619980",
       "obs_conclusao": ""
     }
   ],
