@@ -18759,7 +18759,7 @@
       "novo": false,
       "editado_funcionaria": false,
       "erro": "",
-      "titulo": "Fantasia Chucky Halloween Infantil Feminina ",
+      "titulo": "Fantasia Infantil Menina Terror Vestido Azul Colorido",
       "variacao": "",
       "tipo": "",
       "estoque": 15,
@@ -18771,10 +18771,10 @@
       "ncm": "",
       "origem": 2,
       "ean": "7903168445382",
-      "mlb": "—",
-      "status_ml": "🔴 Falta criar",
+      "mlb": "MLB5094722869",
+      "status_ml": "✅ No ML",
       "peso_fake": true,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -18795,10 +18795,10 @@
       "ncm": "",
       "origem": 2,
       "ean": "7898228176736",
-      "mlb": "—",
-      "status_ml": "🔴 Falta criar",
+      "mlb": "MLB5094736203",
+      "status_ml": "✅ No ML",
       "peso_fake": true,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
