@@ -257,7 +257,8 @@
       "prioridade": "Alta",
       "feita": false,
       "feita_em": null,
-      "criado_em": "2026-08-18T23:42:19.845095"
+      "criado_em": "2026-08-18T23:42:19.845095",
+      "obs_conclusao": ""
     }
   ],
   "avisos": [
@@ -427,6 +428,15 @@
     }
   ],
   "entradas": [
+    {
+      "id": "1a47f3db-f3b9-4f7c-9ae3-58dc997dd675",
+      "data": "2026-08-19",
+      "fornecedor": "Helena",
+      "categoria": "LB COLLECTION",
+      "nota_bate": "Sim",
+      "observacao": "16 - FANTASIA PIRATA MANGA LONGA \n15 - FANTASIA PINTOR\n15 - FANTASIA CIENTISTA \n15 - FANTASIA DOUTOR \n15 - FANTASIA CLEOPATRA ADULTO \n15 - FANTASIA FARAÓ ADULTO\n14 - FANTASIA FARAÓ INFANTIL \n20 - FANTASIA CHUCK MENINO \n10 - FANTASIA CHUCK MENINA\n10 -  SEREIA FRENTE UNIICA \n120 - CELOPATRA INFANTIL\n120 K -POP JAQUETA",
+      "criado_em": "2026-08-19T13:42:41.656029"
+    },
     {
       "id": "79b8ca59-2a18-495b-8443-2b4c12bb97aa",
       "data": "2026-08-13",
