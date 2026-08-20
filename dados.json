@@ -272,6 +272,18 @@
       "feita_em": null,
       "criado_em": "2026-08-19T16:09:39.150474",
       "obs_conclusao": ""
+    },
+    {
+      "id": "5cc3860c-aa3c-4fc3-99cd-1b7e1881ff7e",
+      "titulo": "Mario E Luidi Boné",
+      "categoria": "—",
+      "descricao": "MUDAR O DETALHE QUE FALA QUE A LETRA É BORDADA\nMUDAR O DETHALE QUE FALA QUE A PEÇA É AJUSTAVEL",
+      "data": null,
+      "tipo": "tarefa",
+      "prioridade": "Média",
+      "feita": false,
+      "feita_em": null,
+      "criado_em": "2026-08-20T18:34:35.320466"
     }
   ],
   "avisos": [
