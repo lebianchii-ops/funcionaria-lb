@@ -275,15 +275,16 @@
     },
     {
       "id": "5cc3860c-aa3c-4fc3-99cd-1b7e1881ff7e",
-      "titulo": "Mario E Luidi Boné",
+      "titulo": "Anuncios para arrumar",
       "categoria": "—",
-      "descricao": "MUDAR O DETALHE QUE FALA QUE A LETRA É BORDADA\nMUDAR O DETHALE QUE FALA QUE A PEÇA É AJUSTAVEL",
+      "descricao": "BONÉ MARIO E LUIDI - (MUDAR O DETALHE QUE FALA QUE A LETRA É BORDADA\nMUDAR O DETHALE QUE FALA QUE A PEÇA É AJUSTAVEL)\n\nPINTO - (A IA SUBIU O RPODUTO SEM VARIAÇÃO DE TAMANHOS)",
       "data": null,
       "tipo": "tarefa",
       "prioridade": "Média",
       "feita": false,
       "feita_em": null,
-      "criado_em": "2026-08-20T18:34:35.320466"
+      "criado_em": "2026-08-20T18:34:35.320466",
+      "obs_conclusao": ""
     }
   ],
   "avisos": [
