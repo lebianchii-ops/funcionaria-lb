@@ -285,6 +285,18 @@
       "feita_em": null,
       "criado_em": "2026-08-20T18:34:35.320466",
       "obs_conclusao": ""
+    },
+    {
+      "id": "1b082680-dd92-4df8-b178-061662fafc05",
+      "titulo": "FBA AMAZOM",
+      "categoria": "LB Collection - AMZ",
+      "descricao": "",
+      "data": "2026-08-26",
+      "tipo": "evento",
+      "prioridade": "Alta",
+      "feita": false,
+      "feita_em": null,
+      "criado_em": "2026-08-21T13:12:25.472958"
     }
   ],
   "avisos": [
