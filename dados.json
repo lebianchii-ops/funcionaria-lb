@@ -296,7 +296,20 @@
       "prioridade": "Alta",
       "feita": false,
       "feita_em": null,
-      "criado_em": "2026-08-21T13:12:25.472958"
+      "criado_em": "2026-08-21T13:12:25.472958",
+      "obs_conclusao": ""
+    },
+    {
+      "id": "525e8793-bfd3-467d-8db3-a0838f321a4a",
+      "titulo": "ANÚNCIOS INATIVOS",
+      "categoria": "LB Collection - ML",
+      "descricao": "LB00559\nLB00542B",
+      "data": null,
+      "tipo": "tarefa",
+      "prioridade": "Alta",
+      "feita": false,
+      "feita_em": null,
+      "criado_em": "2026-08-21T16:39:09.558889"
     }
   ],
   "avisos": [
