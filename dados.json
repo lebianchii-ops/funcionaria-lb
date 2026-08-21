@@ -16493,7 +16493,7 @@
       "novo": false,
       "editado_funcionaria": false,
       "erro": "",
-      "titulo": "Kit Bonés Fantasia Vermelho E Verde Para Cosplay Festa Vermelho 100% Poliéster",
+      "titulo": "Kit Bonés Fantasia Vermelho E Verde Para Cosplay Festa 1 Verde E 1 Vermelho 100% Poliéster",
       "variacao": "",
       "tipo": "Pai",
       "estoque": 12,
@@ -19024,11 +19024,11 @@
       "altura": 10,
       "ncm": "",
       "origem": 2,
-      "ean": "7894808796875",
+      "ean": "",
       "mlb": "—",
       "status_ml": "🔴 Falta criar",
       "peso_fake": true,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -19048,11 +19048,11 @@
       "altura": 10,
       "ncm": "",
       "origem": 2,
-      "ean": "",
+      "ean": "7902361808192",
       "mlb": "",
       "status_ml": "",
       "peso_fake": false,
-      "ean_fake": false,
+      "ean_fake": true,
       "custo_fake": false
     },
     {
@@ -19072,11 +19072,11 @@
       "altura": 10,
       "ncm": "",
       "origem": 2,
-      "ean": "",
+      "ean": "7903778667228",
       "mlb": "",
       "status_ml": "",
       "peso_fake": false,
-      "ean_fake": false,
+      "ean_fake": true,
       "custo_fake": false
     },
     {
