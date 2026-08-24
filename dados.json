@@ -14911,7 +14911,7 @@
       "novo": false,
       "editado_funcionaria": false,
       "erro": "",
-      "titulo": "Chapéu Cowboy Bride",
+      "titulo": "Chapéu Cowboy Bride Pérolas Despedida de Solteira",
       "variacao": "",
       "tipo": "Pai",
       "estoque": null,
@@ -14923,10 +14923,10 @@
       "ncm": 65050090,
       "origem": 2,
       "ean": "7900293553661",
-      "mlb": "—",
-      "status_ml": "🔴 Falta criar",
+      "mlb": "MLB5126861655",
+      "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
