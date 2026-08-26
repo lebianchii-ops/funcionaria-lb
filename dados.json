@@ -294,8 +294,8 @@
       "data": "2026-08-26",
       "tipo": "evento",
       "prioridade": "Alta",
-      "feita": false,
-      "feita_em": null,
+      "feita": true,
+      "feita_em": "26/08/26 16:09",
       "criado_em": "2026-08-21T13:12:25.472958",
       "obs_conclusao": ""
     },
