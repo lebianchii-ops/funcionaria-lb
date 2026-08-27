@@ -311,6 +311,18 @@
       "feita_em": null,
       "criado_em": "2026-08-21T16:39:09.558889",
       "obs_conclusao": ""
+    },
+    {
+      "id": "3bda4c51-669e-4ffa-84fd-c1f9133757b5",
+      "titulo": "Mudar ANÚNCIO",
+      "categoria": "LB COLLECTION",
+      "descricao": "LB00273 > no anúncio do kit fala que vão filhas diversas, só que vai chegar uma hora que vão ter que repetir as folhas, então temos que arrumar muito bem o anúncio",
+      "data": null,
+      "tipo": "tarefa",
+      "prioridade": "Média",
+      "feita": false,
+      "feita_em": null,
+      "criado_em": "2026-08-27T17:11:36.092434"
     }
   ],
   "avisos": [
