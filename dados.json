@@ -322,7 +322,20 @@
       "prioridade": "Média",
       "feita": false,
       "feita_em": null,
-      "criado_em": "2026-08-27T17:11:36.092434"
+      "criado_em": "2026-08-27T17:11:36.092434",
+      "obs_conclusao": ""
+    },
+    {
+      "id": "85a494e9-1d40-44ab-b8de-75dfb88c8b17",
+      "titulo": "Fantasia KPOP Paetê",
+      "categoria": "—",
+      "descricao": "Confirmar se a que esta no anúncio é igual a que estamos vendendo",
+      "data": null,
+      "tipo": "tarefa",
+      "prioridade": "Alta",
+      "feita": false,
+      "feita_em": null,
+      "criado_em": "2026-08-28T14:25:10.909303"
     }
   ],
   "avisos": [
