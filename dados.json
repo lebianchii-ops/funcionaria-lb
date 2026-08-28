@@ -268,8 +268,8 @@
       "data": null,
       "tipo": "tarefa",
       "prioridade": "Alta",
-      "feita": false,
-      "feita_em": null,
+      "feita": true,
+      "feita_em": "28/08/26 18:21",
       "criado_em": "2026-08-19T16:09:39.150474",
       "obs_conclusao": ""
     },
@@ -348,7 +348,8 @@
       "prioridade": "Alta",
       "feita": false,
       "feita_em": null,
-      "criado_em": "2026-08-28T14:26:00.530786"
+      "criado_em": "2026-08-28T14:26:00.530786",
+      "obs_conclusao": ""
     }
   ],
   "avisos": [
