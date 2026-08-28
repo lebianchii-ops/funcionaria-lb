@@ -20371,11 +20371,11 @@
       "altura": 10,
       "ncm": "",
       "origem": 2,
-      "ean": "7896712152976",
+      "ean": "",
       "mlb": "—",
       "status_ml": "🔴 Falta criar",
       "peso_fake": true,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -20395,11 +20395,11 @@
       "altura": 10,
       "ncm": "",
       "origem": 2,
-      "ean": "",
+      "ean": "7901055893797",
       "mlb": "",
       "status_ml": "",
       "peso_fake": false,
-      "ean_fake": false,
+      "ean_fake": true,
       "custo_fake": false
     },
     {
@@ -20419,11 +20419,11 @@
       "altura": 10,
       "ncm": "",
       "origem": 2,
-      "ean": "",
+      "ean": "7904565954408",
       "mlb": "",
       "status_ml": "",
       "peso_fake": false,
-      "ean_fake": false,
+      "ean_fake": true,
       "custo_fake": false
     },
     {
@@ -20443,11 +20443,11 @@
       "altura": 10,
       "ncm": "",
       "origem": 2,
-      "ean": "",
+      "ean": "7903834801993",
       "mlb": "",
       "status_ml": "",
       "peso_fake": false,
-      "ean_fake": false,
+      "ean_fake": true,
       "custo_fake": false
     },
     {
@@ -20467,11 +20467,11 @@
       "altura": 10,
       "ncm": "",
       "origem": 2,
-      "ean": "",
+      "ean": "7897547628421",
       "mlb": "",
       "status_ml": "",
       "peso_fake": false,
-      "ean_fake": false,
+      "ean_fake": true,
       "custo_fake": false
     },
     {
