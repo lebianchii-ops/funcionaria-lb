@@ -17721,7 +17721,7 @@
       "novo": false,
       "editado_funcionaria": false,
       "erro": "",
-      "titulo": "Cavalinho Pelúcia Horse Rédeas",
+      "titulo": "Cavalinho de Pelúcia Infantil Macio com Rédea 30cm",
       "variacao": "",
       "tipo": "Pai",
       "estoque": 5,
@@ -17733,10 +17733,10 @@
       "ncm": "95030031",
       "origem": "0",
       "ean": "7893963331709",
-      "mlb": "—",
-      "status_ml": "🔴 Falta criar",
+      "mlb": "MLB5156614161",
+      "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
