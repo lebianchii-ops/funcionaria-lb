@@ -363,6 +363,18 @@
       "feita_em": null,
       "criado_em": "2026-08-31T12:29:10.667159",
       "obs_conclusao": ""
+    },
+    {
+      "id": "ee5ef6af-b505-4fec-ae1a-4752157b3a44",
+      "titulo": "CONFERIR MEDIDAS e PESO",
+      "categoria": "LB COLLECTION",
+      "descricao": "LB00450 — Colchão/Boia Inflável\nBASE: 29 × 24 × 4 cm | 655 g\nMLB: 24 × 18 × 3 cm | 772 g\n\nLB00451 — Boia Bote Infantil\nBASE: 27 × 21 × 8 cm | 407 g\nMLB6225123150: 38 × 25 × 8 cm | 425 g\n\nLB00467 — Peruca Roxa K-pop\nBASE: 31 × 22 × 8 cm | 400 g\nMLB: 28 × 26 × 9 cm | 350 g",
+      "data": null,
+      "tipo": "tarefa",
+      "prioridade": "Alta",
+      "feita": false,
+      "feita_em": null,
+      "criado_em": "2026-08-31T22:05:16.496513"
     }
   ],
   "avisos": [
