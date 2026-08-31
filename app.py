@@ -138,13 +138,36 @@ def salvar_dados(data, tentativas=4):
     salvar quase ao mesmo tempo que a Bruna/funcionária clica em salvar aqui.
     Antes, um 409 nessa hora mostrava um erro vermelho pedindo pra tentar de
     novo manualmente — fácil de não perceber e achar que salvou quando não
-    salvou. Agora o app mesmo tenta de novo sozinho antes de desistir."""
-    headers = {"Authorization": f"token {get_token()}"}
+    salvou. Agora o app mesmo tenta de novo sozinho antes de desistir.
+
+    31/08/2026: antes, erro de rede (sem internet, timeout, DNS caiu no meio do
+    clique) subia como exceção não tratada — a tela virava um traceback técnico
+    que não deixa claro que O QUE FOI DIGITADO NÃO SALVOU, e some sem ninguém
+    perceber se a aba for fechada logo depois. Agora todo erro de conexão vira
+    aviso vermelho explícito ("NÃO SALVOU") em vez de travar/sumir calado —
+    mesmo padrão de mensagem que já existia pros outros formulários desta aba
+    ("NÃO FOI CADASTRADO"). `timeout=20` pra nunca ficar pendurado pra sempre."""
+    try:
+        headers = {"Authorization": f"token {get_token()}"}
+    except Exception as e:
+        st.error(f"❌ **NÃO SALVOU!** Não consegui pegar a chave de acesso ({e}). "
+                 f"O que você digitou NÃO foi salvo. Recarregue a página (F5) e tente de "
+                 f"novo — se continuar assim, avise a Bruna.")
+        return False
     url = f"https://api.github.com/repos/{REPO}/contents/{DATA_FILE}"
 
     for tentativa in range(1, tentativas + 1):
         # busca SHA atual antes de salvar — evita conflito entre usuários simultâneos
-        r_get = requests.get(url, headers=headers)
+        try:
+            r_get = requests.get(url, headers=headers, timeout=20)
+        except requests.exceptions.RequestException:
+            if tentativa < tentativas:
+                time.sleep(1.5)
+                continue
+            st.error("❌ **NÃO SALVOU!** Sem conexão com o servidor. O que você digitou "
+                     "NÃO foi salvo — confira sua internet e clique em "
+                     "'💾 Salvar alterações' de novo.")
+            return False
         if r_get.status_code == 200:
             sha_atual = r_get.json()["sha"]
             st.session_state["sha"] = sha_atual
@@ -174,14 +197,24 @@ def salvar_dados(data, tentativas=4):
             "content": content,
             "sha": sha_atual,
         }
-        r = requests.put(url, headers=headers, json=payload)
+        try:
+            r = requests.put(url, headers=headers, json=payload, timeout=20)
+        except requests.exceptions.RequestException:
+            if tentativa < tentativas:
+                time.sleep(1.5)
+                continue
+            st.error("❌ **NÃO SALVOU!** Sem conexão com o servidor ao gravar. O que você "
+                     "digitou NÃO foi salvo — confira sua internet e clique em "
+                     "'💾 Salvar alterações' de novo.")
+            return False
         if r.status_code in [200, 201]:
             st.session_state["sha"] = r.json()["content"]["sha"]
             return True
         if r.status_code == 409 and tentativa < tentativas:
             time.sleep(1.5)
             continue
-        st.error(f"❌ Erro ao salvar (código {r.status_code}). Clique em 🔄 Atualizar dados e tente novamente.")
+        st.error(f"❌ **NÃO SALVOU!** Erro ao salvar (código {r.status_code}). O que você "
+                 f"digitou NÃO foi salvo. Clique em 🔄 Atualizar dados e tente novamente.")
         return False
     return False
 
