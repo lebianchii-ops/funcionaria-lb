@@ -350,6 +350,18 @@
       "feita_em": null,
       "criado_em": "2026-08-28T14:26:00.530786",
       "obs_conclusao": ""
+    },
+    {
+      "id": "1b7f4407-a7c9-4c0b-b4ef-09ad91f51a6f",
+      "titulo": "MUDAR MEDIDA",
+      "categoria": "LB Collection - ML",
+      "descricao": "Mudar as medidas das fantasias c/ manga e sem manga dos POLICIAIS em todos MKTPLACES",
+      "data": null,
+      "tipo": "tarefa",
+      "prioridade": "Alta",
+      "feita": false,
+      "feita_em": null,
+      "criado_em": "2026-08-31T12:29:10.667159"
     }
   ],
   "avisos": [
