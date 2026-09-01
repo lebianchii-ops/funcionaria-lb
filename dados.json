@@ -34,8 +34,8 @@
       "data": null,
       "tipo": "tarefa",
       "prioridade": "Média",
-      "feita": false,
-      "feita_em": null,
+      "feita": true,
+      "feita_em": "01/09/26 18:22",
       "criado_em": "2026-07-27T14:17:13.582194",
       "obs_conclusao": ""
     },
