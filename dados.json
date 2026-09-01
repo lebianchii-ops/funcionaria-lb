@@ -374,7 +374,20 @@
       "prioridade": "Alta",
       "feita": false,
       "feita_em": null,
-      "criado_em": "2026-08-31T22:05:16.496513"
+      "criado_em": "2026-08-31T22:05:16.496513",
+      "obs_conclusao": ""
+    },
+    {
+      "id": "cc1551e1-8bf6-409d-be67-cec57d11d84b",
+      "titulo": "LBOO226",
+      "categoria": "LB Collection - SH",
+      "descricao": "ele tem estoque? esta com 2 na SH",
+      "data": null,
+      "tipo": "tarefa",
+      "prioridade": "Alta",
+      "feita": false,
+      "feita_em": null,
+      "criado_em": "2026-09-01T09:08:28.422630"
     }
   ],
   "avisos": [
