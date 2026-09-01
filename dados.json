@@ -387,7 +387,20 @@
       "prioridade": "Alta",
       "feita": false,
       "feita_em": null,
-      "criado_em": "2026-09-01T09:08:28.422630"
+      "criado_em": "2026-09-01T09:08:28.422630",
+      "obs_conclusao": ""
+    },
+    {
+      "id": "9df46dd1-e626-4c84-955a-2e63f54702dc",
+      "titulo": "REFORMULAR ANÚNCIOS",
+      "categoria": "LB COLLECTION",
+      "descricao": "Seja só a capa ou todo ele:\nLB00408- ARANHA",
+      "data": null,
+      "tipo": "tarefa",
+      "prioridade": "Média",
+      "feita": false,
+      "feita_em": null,
+      "criado_em": "2026-09-01T13:19:33.420372"
     }
   ],
   "avisos": [
