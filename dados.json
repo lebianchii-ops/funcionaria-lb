@@ -402,6 +402,18 @@
       "feita_em": null,
       "criado_em": "2026-09-01T13:19:33.420372",
       "obs_conclusao": ""
+    },
+    {
+      "id": "0e80ffa1-e026-4b32-a8cd-6eab731a7487",
+      "titulo": "MINI K-POP",
+      "categoria": "LB COLLECTION",
+      "descricao": "Duplicar os anúncios sem as palavras que prejudicam, e tirar em todos os outros mktplaces",
+      "data": null,
+      "tipo": "tarefa",
+      "prioridade": "Alta",
+      "feita": false,
+      "feita_em": null,
+      "criado_em": "2026-09-02T12:56:24.237166"
     }
   ],
   "avisos": [
