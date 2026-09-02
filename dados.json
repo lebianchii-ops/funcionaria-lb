@@ -904,7 +904,7 @@
       "mlb": "MLB3448600215",
       "status_ml": "⏸ Pausado",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -924,11 +924,11 @@
       "altura": 7,
       "ncm": 95030098,
       "origem": 2,
-      "ean": "7890027071533",
+      "ean": "7900878659832",
       "mlb": "MLB3448600215",
       "status_ml": "⏸ Pausado",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -1000,7 +1000,7 @@
       "mlb": "MLB4226490978",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -1020,11 +1020,11 @@
       "altura": 6,
       "ncm": 42029200,
       "origem": 2,
-      "ean": "7905530062050",
+      "ean": "7907284951697",
       "mlb": "MLB4618973005",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -1044,11 +1044,11 @@
       "altura": 6,
       "ncm": 42029200,
       "origem": 2,
-      "ean": "7890909627001",
+      "ean": "7907284951697",
       "mlb": "MLB4226490978",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -1192,7 +1192,7 @@
       "mlb": "MLB4074615020",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -1528,7 +1528,7 @@
       "mlb": "MLB3473644469",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -1548,11 +1548,11 @@
       "altura": 2,
       "ncm": 95059000,
       "origem": 2,
-      "ean": "7901394485066",
+      "ean": "7907030173380",
       "mlb": "MLB3473644469",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -1768,7 +1768,7 @@
       "mlb": "MLB3533929571",
       "status_ml": "⏸ Pausado",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -1788,11 +1788,11 @@
       "altura": 12,
       "ncm": 95059000,
       "origem": 2,
-      "ean": "7895897711831",
+      "ean": "7904525119922",
       "mlb": "MLB3533929571",
       "status_ml": "⏸ Pausado",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -2128,7 +2128,7 @@
       "mlb": "MLB4378401286",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -2148,11 +2148,11 @@
       "altura": 6,
       "ncm": 39261000,
       "origem": 2,
-      "ean": "7896691338101",
+      "ean": "7899582793034",
       "mlb": "MLB4378401286",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -2200,7 +2200,7 @@
       "mlb": "MLB4378789334",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -2628,7 +2628,7 @@
       "altura": 6,
       "ncm": 95059000,
       "origem": 2,
-      "ean": "789000410162,7897873645444",
+      "ean": "7906501464552",
       "mlb": "MLB4408964600",
       "status_ml": "⏸ Pausado",
       "peso_fake": false,
@@ -2800,7 +2800,7 @@
       "mlb": "MLB3626036285",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -2820,11 +2820,11 @@
       "altura": 7,
       "ncm": 62171000,
       "origem": 2,
-      "ean": "7903708964366",
+      "ean": "7891352864159",
       "mlb": "MLB3626036285",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -2920,7 +2920,7 @@
       "mlb": "MLB4571604332",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -2968,7 +2968,7 @@
       "mlb": "MLB4575342048",
       "status_ml": "⏸ Pausado",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -2988,11 +2988,11 @@
       "altura": 15,
       "ncm": 96151900,
       "origem": 2,
-      "ean": "7899209001269",
+      "ean": "7900882740274",
       "mlb": "MLB4575342048",
       "status_ml": "⏸ Pausado",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -3012,11 +3012,11 @@
       "altura": 15,
       "ncm": 96151900,
       "origem": 2,
-      "ean": "7907843471277",
+      "ean": "7900882740274",
       "mlb": "MLB4575342048",
       "status_ml": "⏸ Pausado",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -3036,11 +3036,11 @@
       "altura": 15,
       "ncm": 96151900,
       "origem": 2,
-      "ean": "7902136103071",
+      "ean": "7900882740274",
       "mlb": "MLB4575342048",
       "status_ml": "⏸ Pausado",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -3060,11 +3060,11 @@
       "altura": 15,
       "ncm": 96151900,
       "origem": 2,
-      "ean": "7894458375444",
+      "ean": "7900882740274",
       "mlb": "MLB4575342048",
       "status_ml": "⏸ Pausado",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -3084,11 +3084,11 @@
       "altura": 15,
       "ncm": 96151900,
       "origem": 2,
-      "ean": "7891074349163",
+      "ean": "7900882740274",
       "mlb": "MLB4575342048",
       "status_ml": "⏸ Pausado",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -3352,7 +3352,7 @@
       "mlb": "MLB4644095624",
       "status_ml": "⏸ Pausado",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -3376,7 +3376,7 @@
       "mlb": "MLB3693756341",
       "status_ml": "⏸ Pausado",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -3396,11 +3396,11 @@
       "altura": 8,
       "ncm": 71179000,
       "origem": 2,
-      "ean": "7906497949484",
+      "ean": "7896925126672",
       "mlb": "MLB3693756341",
       "status_ml": "⏸ Pausado",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -3420,11 +3420,11 @@
       "altura": 8,
       "ncm": 71179000,
       "origem": 2,
-      "ean": "7907585693531",
+      "ean": "7896925126672",
       "mlb": "MLB3693756341",
       "status_ml": "⏸ Pausado",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -3444,11 +3444,11 @@
       "altura": 8,
       "ncm": 71179000,
       "origem": 2,
-      "ean": "7894731918733",
+      "ean": "7896925126672",
       "mlb": "MLB3693756341",
       "status_ml": "⏸ Pausado",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -3592,7 +3592,7 @@
       "mlb": "MLB4724513786",
       "status_ml": "⏸ Pausado",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -3660,11 +3660,11 @@
       "altura": 2,
       "ncm": 95059000,
       "origem": 2,
-      "ean": "7896640294564",
+      "ean": "7890635560962",
       "mlb": "MLB4749864398",
       "status_ml": "⏸ Pausado",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -3684,11 +3684,11 @@
       "altura": 2,
       "ncm": 95059000,
       "origem": 2,
-      "ean": "7898834497812",
+      "ean": "7890635560962",
       "mlb": "MLB4749864398",
       "status_ml": "⏸ Pausado",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -3880,7 +3880,7 @@
       "mlb": "MLB6924290878",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -4048,7 +4048,7 @@
       "mlb": "MLB3789926717",
       "status_ml": "⏸ Pausado",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -4068,11 +4068,11 @@
       "altura": 6,
       "ncm": 42021220,
       "origem": 2,
-      "ean": "7897317503279",
+      "ean": "7895181848069",
       "mlb": "MLB3789926717",
       "status_ml": "⏸ Pausado",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -4092,11 +4092,11 @@
       "altura": 6,
       "ncm": 42021220,
       "origem": 2,
-      "ean": "7909302607135",
+      "ean": "7895181848069",
       "mlb": "MLB3789926717",
       "status_ml": "⏸ Pausado",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -4116,11 +4116,11 @@
       "altura": 6,
       "ncm": 42021220,
       "origem": 2,
-      "ean": "7903168456029",
+      "ean": "7895181848069",
       "mlb": "MLB3789926717",
       "status_ml": "⏸ Pausado",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -4836,11 +4836,11 @@
       "altura": 1,
       "ncm": 95030080,
       "origem": 2,
-      "ean": "7908437146410",
+      "ean": "6974022954365",
       "mlb": "MLB3946559675",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -5220,11 +5220,11 @@
       "altura": 10,
       "ncm": 95059000,
       "origem": 2,
-      "ean": "7894502202801",
+      "ean": "7897665132244",
       "mlb": "MLB5251023208",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -5584,7 +5584,7 @@
       "mlb": "MLB3563202913",
       "status_ml": "🔍 Em revisão",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -5824,7 +5824,7 @@
       "mlb": "MLB3966537267",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -7096,7 +7096,7 @@
       "mlb": "MLB4009669853",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -7116,11 +7116,11 @@
       "altura": 5,
       "ncm": 95059000,
       "origem": 2,
-      "ean": "7904647406269",
+      "ean": "7907114940198",
       "mlb": "MLB4009669853",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -7140,11 +7140,11 @@
       "altura": 5,
       "ncm": 95059000,
       "origem": 2,
-      "ean": "7905883044208",
+      "ean": "7907114940198",
       "mlb": "MLB4009669853",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -9588,11 +9588,11 @@
       "altura": 23,
       "ncm": 63079010,
       "origem": 2,
-      "ean": "7892586278026",
+      "ean": "7901048338823",
       "mlb": "MLB5649143090",
       "status_ml": "⏸ Pausado",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -9784,7 +9784,7 @@
       "mlb": "MLB3990326105",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -9804,11 +9804,11 @@
       "altura": 6,
       "ncm": 95059000,
       "origem": 2,
-      "ean": "7908382326455",
+      "ean": "7897521361474",
       "mlb": "MLB3990326105",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -9828,11 +9828,11 @@
       "altura": 6,
       "ncm": 95059000,
       "origem": 2,
-      "ean": "7896942089240",
+      "ean": "7897521361474",
       "mlb": "MLB3990326105",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -10000,7 +10000,7 @@
       "mlb": "MLB5922299740",
       "status_ml": "⏸ Pausado",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -10020,11 +10020,11 @@
       "altura": 2,
       "ncm": 95051000,
       "origem": 2,
-      "ean": "7899324926829",
+      "ean": "7906948559361",
       "mlb": "MLB5922299740",
       "status_ml": "⏸ Pausado",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -10044,11 +10044,11 @@
       "altura": 2,
       "ncm": 95051000,
       "origem": 2,
-      "ean": "7900640407128",
+      "ean": "7906948559361",
       "mlb": "MLB5922299740",
       "status_ml": "⏸ Pausado",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -10620,11 +10620,11 @@
       "altura": 8,
       "ncm": 95051000,
       "origem": 2,
-      "ean": "7890747131142",
+      "ean": "7898652171819",
       "mlb": "MLB4309498319",
       "status_ml": "⏸ Pausado",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -10644,11 +10644,11 @@
       "altura": 8,
       "ncm": 95051000,
       "origem": 2,
-      "ean": "7909115466349",
+      "ean": "7898652171819",
       "mlb": "MLB4309498319",
       "status_ml": "⏸ Pausado",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -10696,7 +10696,7 @@
       "mlb": "MLB4309571759",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -10716,11 +10716,11 @@
       "altura": 5,
       "ncm": 95059000,
       "origem": 2,
-      "ean": "7908742237063",
+      "ean": "7898965898557",
       "mlb": "MLB4309571759",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -11028,11 +11028,11 @@
       "altura": 3,
       "ncm": 71179000,
       "origem": 2,
-      "ean": "7904048270445",
+      "ean": "7895198031201",
       "mlb": "MLB4334021865",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -11148,11 +11148,11 @@
       "altura": 3,
       "ncm": 71179000,
       "origem": 2,
-      "ean": "7897053574595",
+      "ean": "7895198031201",
       "mlb": "MLB5982712794",
       "status_ml": "⏸ Pausado",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -11704,7 +11704,7 @@
       "mlb": "MLB6045583388",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -11724,11 +11724,11 @@
       "altura": 5,
       "ncm": 95051000,
       "origem": 2,
-      "ean": "7896350549350",
+      "ean": "7900704229666",
       "mlb": "MLB6045583388",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -11748,11 +11748,11 @@
       "altura": 5,
       "ncm": 95051000,
       "origem": 2,
-      "ean": "7892995414329",
+      "ean": "7900704229666",
       "mlb": "MLB6045583388",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -11772,11 +11772,11 @@
       "altura": 5,
       "ncm": 95051000,
       "origem": 2,
-      "ean": "7906922749238",
+      "ean": "7900704229666",
       "mlb": "MLB6045583388",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -11796,11 +11796,11 @@
       "altura": 5,
       "ncm": 95051000,
       "origem": 2,
-      "ean": "7899747839799",
+      "ean": "7900704229666",
       "mlb": "MLB6045583388",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -11848,7 +11848,7 @@
       "mlb": "MLB6064176680",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -11868,11 +11868,11 @@
       "altura": 7,
       "ncm": 95062900,
       "origem": 2,
-      "ean": "7895959127112",
+      "ean": "7897599133799",
       "mlb": "MLB6064176680",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -12396,11 +12396,11 @@
       "altura": 5,
       "ncm": 90049090,
       "origem": 2,
-      "ean": "7891710631362",
+      "ean": "7905067623854",
       "mlb": "MLB4398399365",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -12420,11 +12420,11 @@
       "altura": 5,
       "ncm": 90049090,
       "origem": 2,
-      "ean": "7895276850373",
+      "ean": "7905067623854",
       "mlb": "MLB4398399365",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -12444,11 +12444,11 @@
       "altura": 5,
       "ncm": 90049090,
       "origem": 2,
-      "ean": "7906751366125",
+      "ean": "7905067623854",
       "mlb": "MLB4398399365",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -12468,11 +12468,11 @@
       "altura": 5,
       "ncm": 90049090,
       "origem": 2,
-      "ean": "7894814214301",
+      "ean": "7905067623854",
       "mlb": "MLB4398399365",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -13260,11 +13260,11 @@
       "altura": 8,
       "ncm": 95059000,
       "origem": 2,
-      "ean": "7895875226463",
+      "ean": "7891234712523",
       "mlb": "MLB6196863222",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -13408,7 +13408,7 @@
       "mlb": "MLB6198302722",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -13428,11 +13428,11 @@
       "altura": 9,
       "ncm": 95059000,
       "origem": 2,
-      "ean": "7891491670635",
+      "ean": "7896256384819",
       "mlb": "MLB6198302722",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -13452,11 +13452,11 @@
       "altura": 9,
       "ncm": 95059000,
       "origem": 2,
-      "ean": "7896322982505",
+      "ean": "7896256384819",
       "mlb": "MLB6198302722",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -14992,7 +14992,7 @@
       "mlb": "MLB6833665322",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -15372,11 +15372,11 @@
       "altura": 3,
       "ncm": 62171000,
       "origem": 2,
-      "ean": "7908864161376",
+      "ean": "7891234730343",
       "mlb": "MLB5400614582",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -15424,7 +15424,7 @@
       "mlb": "MLB4680894305",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -15444,11 +15444,11 @@
       "altura": 2,
       "ncm": 95059000,
       "origem": 2,
-      "ean": "7894812990351",
+      "ean": "7908548320129",
       "mlb": "MLB4680894305",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -16192,7 +16192,7 @@
       "mlb": "MLB7136836620",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -16452,11 +16452,11 @@
       "altura": 4,
       "ncm": 95059000,
       "origem": 2,
-      "ean": "7904492303300",
+      "ean": "7897118323205",
       "mlb": "MLB4741521041",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -16836,11 +16836,11 @@
       "altura": 4,
       "ncm": 95059000,
       "origem": 2,
-      "ean": "7896990987109",
+      "ean": "7905835814590",
       "mlb": "MLB4999853331",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -16860,11 +16860,11 @@
       "altura": 4,
       "ncm": 95059000,
       "origem": 2,
-      "ean": "7904915264768",
+      "ean": "7905835814590",
       "mlb": "MLB4999853489",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -16884,11 +16884,11 @@
       "altura": 4,
       "ncm": 95059000,
       "origem": 2,
-      "ean": "7906259553690",
+      "ean": "7905835814590",
       "mlb": "MLB7337930786",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -17748,11 +17748,11 @@
       "altura": 7,
       "ncm": 95059000,
       "origem": 2,
-      "ean": "7902977524509",
+      "ean": "7909297276279",
       "mlb": "MLB4999834541",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -17772,11 +17772,11 @@
       "altura": 7,
       "ncm": 95059000,
       "origem": 2,
-      "ean": "7901700780021",
+      "ean": "7909297276279",
       "mlb": "MLB4999846387",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -18016,7 +18016,7 @@
       "mlb": "MLB7366211420",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -18040,7 +18040,7 @@
       "mlb": "MLB7366200248",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -19096,7 +19096,7 @@
       "mlb": "MLB7478466556",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -19116,11 +19116,11 @@
       "altura": 6,
       "ncm": "95059000",
       "origem": "2",
-      "ean": "7896375406553",
+      "ean": "7890462903307",
       "mlb": "MLB7478466682",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -19140,11 +19140,11 @@
       "altura": 6,
       "ncm": "95059000",
       "origem": "2",
-      "ean": "7907880970580",
+      "ean": "7890462903307",
       "mlb": "MLB7478428092",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -19212,11 +19212,11 @@
       "altura": 6,
       "ncm": "95059000",
       "origem": "2",
-      "ean": "7909862087354",
+      "ean": "7905250654054",
       "mlb": "MLB5115044807",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -19236,11 +19236,11 @@
       "altura": 6,
       "ncm": "95059000",
       "origem": "2",
-      "ean": "7908796755209",
+      "ean": "7905250654054",
       "mlb": "MLB5115057411",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -19260,11 +19260,11 @@
       "altura": 6,
       "ncm": "95059000",
       "origem": "2",
-      "ean": "7908515445091",
+      "ean": "7905250654054",
       "mlb": "MLB7488353666",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -19312,7 +19312,7 @@
       "mlb": "MLB5107421437",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -19332,11 +19332,11 @@
       "altura": 6,
       "ncm": "95059000",
       "origem": "2",
-      "ean": "7903694016667",
+      "ean": "7908212460182",
       "mlb": "MLB5107395887",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -19356,11 +19356,11 @@
       "altura": 6,
       "ncm": "95059000",
       "origem": "2",
-      "ean": "7905951136712",
+      "ean": "7908212460182",
       "mlb": "MLB5107409025",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -19408,7 +19408,7 @@
       "mlb": "MLB5107422161",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -19428,11 +19428,11 @@
       "altura": 6,
       "ncm": "95059000",
       "origem": "2",
-      "ean": "7901656715160",
+      "ean": "7894118211990",
       "mlb": "MLB5107409625",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -19452,11 +19452,11 @@
       "altura": 6,
       "ncm": "95059000",
       "origem": "2",
-      "ean": "7900804016319",
+      "ean": "7894118211990",
       "mlb": "MLB5107422345",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -19476,11 +19476,11 @@
       "altura": 6,
       "ncm": "95059000",
       "origem": "2",
-      "ean": "7902398900616",
+      "ean": "7894118211990",
       "mlb": "MLB5107409791",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -19548,11 +19548,11 @@
       "altura": 5,
       "ncm": 95059000,
       "origem": 2,
-      "ean": "7901193145819",
+      "ean": "7902040648163",
       "mlb": "MLB5125182109",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -19572,11 +19572,11 @@
       "altura": 5,
       "ncm": 95059000,
       "origem": 2,
-      "ean": "7893999035237",
+      "ean": "7902040648163",
       "mlb": "MLB7500787650",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -19644,11 +19644,11 @@
       "altura": 10,
       "ncm": 95059000,
       "origem": 2,
-      "ean": "7895848157084",
+      "ean": "7893210043607",
       "mlb": "MLB7565968962",
       "status_ml": "🔴 Fechado",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -19668,11 +19668,11 @@
       "altura": 10,
       "ncm": 95059000,
       "origem": 2,
-      "ean": "7908339515192",
+      "ean": "7893210043607",
       "mlb": "MLB5167572459",
       "status_ml": "🔴 Fechado",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -19740,11 +19740,11 @@
       "altura": 10,
       "ncm": 95059000,
       "origem": 2,
-      "ean": "7900620080082",
+      "ean": "7897370092888",
       "mlb": "MLB7531754820",
       "status_ml": "⏸ Pausado",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -19764,11 +19764,11 @@
       "altura": 10,
       "ncm": 95059000,
       "origem": 2,
-      "ean": "7894376889405",
+      "ean": "7897370092888",
       "mlb": "MLB7531729904",
       "status_ml": "⏸ Pausado",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -19836,11 +19836,11 @@
       "altura": 10,
       "ncm": 95059000,
       "origem": 2,
-      "ean": "7890397409035",
+      "ean": "7909732407244",
       "mlb": "MLB7549462238",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -19860,11 +19860,11 @@
       "altura": 10,
       "ncm": 95059000,
       "origem": 2,
-      "ean": "7906762268647",
+      "ean": "7909732407244",
       "mlb": "MLB7549462318",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -19912,7 +19912,7 @@
       "mlb": "MLB5107855871",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -19932,11 +19932,11 @@
       "altura": 6,
       "ncm": "95059000",
       "origem": "2",
-      "ean": "7906577363292",
+      "ean": "7891675324453",
       "mlb": "MLB5107843485",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -19956,11 +19956,11 @@
       "altura": 6,
       "ncm": "95059000",
       "origem": "2",
-      "ean": "7898638114366",
+      "ean": "7891675324453",
       "mlb": "MLB5107856101",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -20028,11 +20028,11 @@
       "altura": 10,
       "ncm": 95059000,
       "origem": 2,
-      "ean": "7892659799045",
+      "ean": "7898403064995",
       "mlb": "MLB5151118543",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -20052,11 +20052,11 @@
       "altura": 10,
       "ncm": 95059000,
       "origem": 2,
-      "ean": "7899625633815",
+      "ean": "7898403064995",
       "mlb": "MLB5151118691",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -20124,11 +20124,11 @@
       "altura": 6,
       "ncm": "95059000",
       "origem": "2",
-      "ean": "7894267485167",
+      "ean": "7891574973660",
       "mlb": "MLB5114987347",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -20148,11 +20148,11 @@
       "altura": 6,
       "ncm": "95059000",
       "origem": "2",
-      "ean": "7903997804190",
+      "ean": "7891574973660",
       "mlb": "MLB5114987415",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -20244,11 +20244,11 @@
       "altura": 10,
       "ncm": "39221000",
       "origem": 2,
-      "ean": "7903778667228",
+      "ean": "7902361808192",
       "mlb": "MLB7575095158",
       "status_ml": "⏸ Pausado",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -20316,11 +20316,11 @@
       "altura": 10,
       "ncm": 95059000,
       "origem": 2,
-      "ean": "7908996035699",
+      "ean": "7905770375446",
       "mlb": "MLB7501140698",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -20340,11 +20340,11 @@
       "altura": 10,
       "ncm": 95059000,
       "origem": 2,
-      "ean": "7893529756229",
+      "ean": "7905770375446",
       "mlb": "MLB7501159458",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -20484,11 +20484,11 @@
       "altura": 10,
       "ncm": 95059000,
       "origem": 2,
-      "ean": "7904565954408",
+      "ean": "7901055893797",
       "mlb": "MLB7541642550",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -20508,11 +20508,11 @@
       "altura": 10,
       "ncm": 95059000,
       "origem": 2,
-      "ean": "7903834801993",
+      "ean": "7901055893797",
       "mlb": "MLB5151608823",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -20532,11 +20532,11 @@
       "altura": 10,
       "ncm": 95059000,
       "origem": 2,
-      "ean": "7897547628421",
+      "ean": "7901055893797",
       "mlb": "MLB5151608935",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -20700,11 +20700,11 @@
       "altura": 10,
       "ncm": 95059000,
       "origem": 2,
-      "ean": "7890725216953",
+      "ean": "7892286347985",
       "mlb": "MLB7559827712",
       "status_ml": "⏸ Pausado",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -20724,11 +20724,11 @@
       "altura": 10,
       "ncm": 95059000,
       "origem": 2,
-      "ean": "7904276966318",
+      "ean": "7892286347985",
       "mlb": "MLB7559804380",
       "status_ml": "⏸ Pausado",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -20748,11 +20748,11 @@
       "altura": 10,
       "ncm": 95059000,
       "origem": 2,
-      "ean": "7905819746398",
+      "ean": "7892286347985",
       "mlb": "MLB7559828040",
       "status_ml": "⏸ Pausado",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -21228,11 +21228,11 @@
       "altura": 10,
       "ncm": "42010090",
       "origem": "2",
-      "ean": "7898268183138",
+      "ean": "7902038770036",
       "mlb": "MLB5174938511",
       "status_ml": "⏸ Pausado",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -21252,11 +21252,11 @@
       "altura": 10,
       "ncm": "42010090",
       "origem": "2",
-      "ean": "7892918307776",
+      "ean": "7902038770036",
       "mlb": "MLB5174923777",
       "status_ml": "⏸ Pausado",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -21276,11 +21276,11 @@
       "altura": 10,
       "ncm": "42010090",
       "origem": "2",
-      "ean": "7906782016990",
+      "ean": "7902038770036",
       "mlb": "MLB5174923891",
       "status_ml": "⏸ Pausado",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -21300,11 +21300,11 @@
       "altura": 10,
       "ncm": "42010090",
       "origem": "2",
-      "ean": "7891676282110",
+      "ean": "7902038770036",
       "mlb": "MLB5174927139",
       "status_ml": "⏸ Pausado",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
