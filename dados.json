@@ -426,7 +426,20 @@
       "prioridade": "Alta",
       "feita": false,
       "feita_em": null,
-      "criado_em": "2026-09-04T12:27:42.173090"
+      "criado_em": "2026-09-04T12:27:42.173090",
+      "obs_conclusao": ""
+    },
+    {
+      "id": "dbea3b3b-0a88-45e2-8c8c-781e18b98fba",
+      "titulo": "MEDIDAS HALLOWEEN (antigas)",
+      "categoria": "LB COLLECTION",
+      "descricao": "Verificar se estão corretas para não ter penalização",
+      "data": null,
+      "tipo": "tarefa",
+      "prioridade": "Alta",
+      "feita": false,
+      "feita_em": null,
+      "criado_em": "2026-09-04T12:30:49.731742"
     }
   ],
   "avisos": [
