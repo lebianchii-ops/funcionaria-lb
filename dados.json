@@ -415,6 +415,18 @@
       "feita_em": null,
       "criado_em": "2026-09-02T12:56:24.237166",
       "obs_conclusao": ""
+    },
+    {
+      "id": "adb7db89-c6c6-484a-8b03-bc858b27aafc",
+      "titulo": "FULL LB",
+      "categoria": "LB Collection - ML",
+      "descricao": "",
+      "data": "2026-09-10",
+      "tipo": "evento",
+      "prioridade": "Alta",
+      "feita": false,
+      "feita_em": null,
+      "criado_em": "2026-09-04T12:27:42.173090"
     }
   ],
   "avisos": [
