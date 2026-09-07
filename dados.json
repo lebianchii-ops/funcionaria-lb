@@ -20907,7 +20907,7 @@
       "novo": false,
       "editado_funcionaria": false,
       "erro": "",
-      "titulo": "Acessório Cabelo Maluco Halloween - Presilha Mãozinha",
+      "titulo": "Presilha Mãozinha Halloween Cabelo Maluco Adulto Infantil",
       "variacao": "",
       "tipo": "",
       "estoque": 36,
@@ -20919,10 +20919,10 @@
       "ncm": "95059000",
       "origem": "2",
       "ean": "7908912120492",
-      "mlb": "—",
-      "status_ml": "🔴 Falta criar",
+      "mlb": "MLB5198491875",
+      "status_ml": "✅ No ML",
       "peso_fake": true,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
