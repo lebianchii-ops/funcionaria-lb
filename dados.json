@@ -20763,7 +20763,7 @@
       "novo": false,
       "editado_funcionaria": false,
       "erro": "",
-      "titulo": "Fantasia Esqueleto Brilha no Escuro",
+      "titulo": "Fantasia Esqueleto Halloween Infantil Brilha no Escuro",
       "variacao": "",
       "tipo": "",
       "estoque": 20,
@@ -20775,10 +20775,10 @@
       "ncm": "95059000",
       "origem": "2",
       "ean": "7901623043982",
-      "mlb": "—",
-      "status_ml": "🔴 Falta criar",
+      "mlb": "MLB7600679454",
+      "status_ml": "✅ No ML",
       "peso_fake": true,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
