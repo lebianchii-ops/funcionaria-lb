@@ -21326,11 +21326,11 @@
       "altura": 10.0,
       "ncm": "",
       "origem": "2",
-      "ean": "7903783593673",
+      "ean": "",
       "mlb": "—",
       "status_ml": "🔴 Falta criar",
       "peso_fake": true,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
