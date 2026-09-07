@@ -20763,7 +20763,7 @@
       "novo": false,
       "editado_funcionaria": false,
       "erro": "",
-      "titulo": "Fantasia Esqueleto Halloween Infantil Brilha no Escuro",
+      "titulo": "Fantasia Esqueleto Halloween Infantil Brilha No Escuro Infan Preto Único",
       "variacao": "",
       "tipo": "",
       "estoque": 20,
@@ -21354,7 +21354,7 @@
       "mlb": "MLB5197764979",
       "status_ml": "⏸ Pausado",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -21374,11 +21374,11 @@
       "altura": 10.0,
       "ncm": "",
       "origem": "",
-      "ean": "7892625735466",
+      "ean": "7904496532782",
       "mlb": "MLB5197765013",
       "status_ml": "⏸ Pausado",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -21398,11 +21398,11 @@
       "altura": 10.0,
       "ncm": "",
       "origem": "",
-      "ean": "7906487370403",
+      "ean": "7904496532782",
       "mlb": "MLB5197765045",
       "status_ml": "⏸ Pausado",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -21422,11 +21422,11 @@
       "altura": 10.0,
       "ncm": "",
       "origem": "",
-      "ean": "7907206050330",
+      "ean": "7904496532782",
       "mlb": "MLB5197878785",
       "status_ml": "⏸ Pausado",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
