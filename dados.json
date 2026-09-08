@@ -439,7 +439,20 @@
       "prioridade": "Alta",
       "feita": false,
       "feita_em": null,
-      "criado_em": "2026-09-04T12:30:49.731742"
+      "criado_em": "2026-09-04T12:30:49.731742",
+      "obs_conclusao": ""
+    },
+    {
+      "id": "bb26fca0-703f-4baf-b21f-a9cac08e8924",
+      "titulo": "FBA AMAZON",
+      "categoria": "LB Collection - AMZ",
+      "descricao": "",
+      "data": "2026-09-10",
+      "tipo": "evento",
+      "prioridade": "Alta",
+      "feita": false,
+      "feita_em": null,
+      "criado_em": "2026-09-08T11:42:47.673783"
     }
   ],
   "avisos": [
