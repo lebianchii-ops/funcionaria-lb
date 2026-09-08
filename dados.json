@@ -454,6 +454,18 @@
       "feita_em": null,
       "criado_em": "2026-09-08T11:42:47.673783",
       "obs_conclusao": ""
+    },
+    {
+      "id": "79d55d6c-c1ec-4fc7-827a-8b0c48e9aa74",
+      "titulo": "FANTASIA BRUXA",
+      "categoria": "LB COLLECTION",
+      "descricao": "Duplicar a fantasia, deixar a capa e titulo para infantil, já tem a capa pronta",
+      "data": null,
+      "tipo": "tarefa",
+      "prioridade": "Alta",
+      "feita": false,
+      "feita_em": null,
+      "criado_em": "2026-09-08T11:44:26.513320"
     }
   ],
   "avisos": [
