@@ -465,7 +465,20 @@
       "prioridade": "Alta",
       "feita": false,
       "feita_em": null,
-      "criado_em": "2026-09-08T11:44:26.513320"
+      "criado_em": "2026-09-08T11:44:26.513320",
+      "obs_conclusao": ""
+    },
+    {
+      "id": "88231689-8df1-409f-b2c6-3330998f499f",
+      "titulo": "FOTO TIARA STRASS",
+      "categoria": "LB COLLECTION",
+      "descricao": "Arrumar a imagem que diz que é de metal, confirmar descrição tbm",
+      "data": null,
+      "tipo": "tarefa",
+      "prioridade": "Alta",
+      "feita": false,
+      "feita_em": null,
+      "criado_em": "2026-09-10T11:12:18.907314"
     }
   ],
   "avisos": [
