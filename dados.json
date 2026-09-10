@@ -501,10 +501,11 @@
       "descricao": "",
       "data": "2026-09-15",
       "tipo": "evento",
-      "prioridade": "Baixa",
+      "prioridade": "Alta",
       "feita": false,
       "feita_em": null,
-      "criado_em": "2026-09-10T13:27:58.542061"
+      "criado_em": "2026-09-10T13:27:58.542061",
+      "obs_conclusao": ""
     }
   ],
   "avisos": [
