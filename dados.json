@@ -478,7 +478,20 @@
       "prioridade": "Alta",
       "feita": false,
       "feita_em": null,
-      "criado_em": "2026-09-10T11:12:18.907314"
+      "criado_em": "2026-09-10T11:12:18.907314",
+      "obs_conclusao": ""
+    },
+    {
+      "id": "e941ccaa-7cb5-42ac-b768-f755baff9802",
+      "titulo": "CRIAR ANÚNCIO GUARDA CHUVA VERMELHO",
+      "categoria": "AMBOS (K2 e LB)",
+      "descricao": "",
+      "data": null,
+      "tipo": "tarefa",
+      "prioridade": "Alta",
+      "feita": false,
+      "feita_em": null,
+      "criado_em": "2026-09-10T11:15:06.452262"
     }
   ],
   "avisos": [
