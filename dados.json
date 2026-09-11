@@ -1042,7 +1042,7 @@
       "origem": "2",
       "ean": "3326898789566",
       "mlb": "MLB4056291980",
-      "status_ml": "⏸ Pausado",
+      "status_ml": "✅ No ML",
       "peso_fake": false,
       "ean_fake": false,
       "custo_fake": false
