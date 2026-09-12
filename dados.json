@@ -21681,7 +21681,7 @@
       "novo": false,
       "editado_funcionaria": false,
       "erro": "",
-      "titulo": "Kit Varinha Óculos Gravata",
+      "titulo": "Kit Fantasia Bruxo Halloween Gravata Óculos Varinha",
       "variacao": "",
       "tipo": "Pai",
       "estoque": 10,
@@ -21693,10 +21693,10 @@
       "ncm": "95059000",
       "origem": "2",
       "ean": "7898464588393",
-      "mlb": "—",
-      "status_ml": "🔴 Falta criar",
+      "mlb": "MLB5225935623",
+      "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
