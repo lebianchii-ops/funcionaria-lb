@@ -506,6 +506,18 @@
       "feita_em": null,
       "criado_em": "2026-09-10T13:27:58.542061",
       "obs_conclusao": ""
+    },
+    {
+      "id": "159c7dc6-b5bb-47da-86e4-fd95b43737b7",
+      "titulo": "ESTOQUE",
+      "categoria": "LB COLLECTION",
+      "descricao": "criei o anúncio LB00688, ele vai ser uma parte do kit do LB00561 (tem que criar como kit e compartilhar o estoque)",
+      "data": null,
+      "tipo": "tarefa",
+      "prioridade": "Alta",
+      "feita": false,
+      "feita_em": null,
+      "criado_em": "2026-09-12T19:13:56.011659"
     }
   ],
   "avisos": [
