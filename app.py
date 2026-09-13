@@ -415,7 +415,29 @@ def popup_nova_tarefa(data_inicial, prioridade_inicial="Baixa", tipo="evento"):
         if salvar_dados(dados):
             st.rerun()
 
-# ── atalho de URL: ?nova=1 abre direto o popup de Nova Tarefa ─────────────
+# ── atalho de URL: ?add=texto digita, abre, salva E FECHA — sem clicar em nada ──
+_titulo_rapido = st.query_params.get("add")
+if _titulo_rapido and not st.session_state.get("_tarefa_rapida_disparada"):
+    st.session_state["_tarefa_rapida_disparada"] = True
+    st.query_params.pop("add", None)  # one-shot — não reabre nem duplica num F5 depois
+    if _titulo_rapido.strip():
+        dados["tarefas"].append({
+            "id":         str(uuid.uuid4()),
+            "titulo":     _titulo_rapido.strip(),
+            "categoria":  CATS[0],
+            "descricao":  "",
+            "data":       None,
+            "tipo":       "tarefa",
+            "prioridade": "Baixa",
+            "feita":      False,
+            "feita_em":   None,
+            "criado_em":  datetime.now().isoformat(),
+        })
+        if salvar_dados(dados):
+            st.toast(f"✅ Tarefa criada: {_titulo_rapido.strip()}")
+            st.rerun()
+
+# ── atalho de URL: ?nova=1 abre direto o popup de Nova Tarefa (pra revisar antes de salvar) ──
 if st.query_params.get("nova") == "1" and not st.session_state.get("_nova_tarefa_disparada"):
     st.session_state["_nova_tarefa_disparada"] = True
     st.query_params.pop("nova", None)  # one-shot — não reabre num F5 depois
