@@ -21177,7 +21177,7 @@
       "novo": false,
       "editado_funcionaria": false,
       "erro": "",
-      "titulo": "Caveira C/ Luz Som e Sensor",
+      "titulo": "Caveira Decorativa Halloween Com Luz Som E Sensor",
       "variacao": "",
       "tipo": "",
       "estoque": 30,
@@ -21189,10 +21189,10 @@
       "ncm": "95059000",
       "origem": "2",
       "ean": "7906534500494",
-      "mlb": "—",
-      "status_ml": "🔴 Falta criar",
+      "mlb": "MLB5226501485",
+      "status_ml": "✅ No ML",
       "peso_fake": true,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
