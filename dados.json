@@ -20937,7 +20937,7 @@
       "novo": false,
       "editado_funcionaria": false,
       "erro": "",
-      "titulo": "Acessório Cabelo Maluco Halloween - Tiara Morcego",
+      "titulo": "Tiara Morcego Halloween Infantil Tamanho Único",
       "variacao": "",
       "tipo": "",
       "estoque": 12,
@@ -20949,10 +20949,10 @@
       "ncm": "95059000",
       "origem": "2",
       "ean": "7903493132414",
-      "mlb": "—",
-      "status_ml": "🔴 Falta criar",
+      "mlb": "MLB7633071554",
+      "status_ml": "✅ No ML",
       "peso_fake": true,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
