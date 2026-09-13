@@ -21926,7 +21926,7 @@
       "novo": false,
       "editado_funcionaria": false,
       "erro": "",
-      "titulo": "Kit Maquiagem Halloween Sangue Cera Artistica",
+      "titulo": "Kit Maquiagem Halloween Cera Artística Com Acessórios",
       "variacao": "",
       "tipo": "Pai",
       "estoque": null,
@@ -21938,10 +21938,10 @@
       "ncm": "",
       "origem": "2",
       "ean": "7895719419785",
-      "mlb": "—",
-      "status_ml": "🔴 Falta criar",
+      "mlb": "MLB5229324405",
+      "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
