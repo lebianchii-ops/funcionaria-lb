@@ -569,7 +569,20 @@
       "prioridade": "Baixa",
       "feita": false,
       "feita_em": null,
-      "criado_em": "2026-09-13T14:23:34.305456"
+      "criado_em": "2026-09-13T14:23:34.305456",
+      "obs_conclusao": ""
+    },
+    {
+      "id": "387a26a9-119a-4101-a923-de615a43f2eb",
+      "titulo": "teste fechamento automatico",
+      "categoria": "—",
+      "descricao": "",
+      "data": null,
+      "tipo": "tarefa",
+      "prioridade": "Baixa",
+      "feita": false,
+      "feita_em": null,
+      "criado_em": "2026-09-13T14:46:37.946182"
     }
   ],
   "avisos": [
