@@ -413,6 +413,10 @@ def popup_nova_tarefa(data_inicial, prioridade_inicial="Baixa", tipo="evento"):
             "criado_em":  datetime.now().isoformat(),
         })
         if salvar_dados(dados):
+            if st.session_state.get("_fechar_aba_apos_salvar"):
+                st.success("✅ Tarefa salva! Pode fechar esta aba.")
+                st.html("<script>try{window.close();}catch(e){}</script>", unsafe_allow_javascript=True)
+                st.stop()
             st.rerun()
 
 # ── atalho de URL: ?add=texto digita, abre, salva E FECHA — sem clicar em nada ──
@@ -434,12 +438,14 @@ if _titulo_rapido and not st.session_state.get("_tarefa_rapida_disparada"):
             "criado_em":  datetime.now().isoformat(),
         })
         if salvar_dados(dados):
-            st.toast(f"✅ Tarefa criada: {_titulo_rapido.strip()}")
-            st.rerun()
+            st.success(f"✅ Tarefa criada: {_titulo_rapido.strip()} — pode fechar esta aba.")
+            st.html("<script>try{window.close();}catch(e){}</script>", unsafe_allow_javascript=True)
+            st.stop()
 
 # ── atalho de URL: ?nova=1 abre direto o popup de Nova Tarefa (pra revisar antes de salvar) ──
 if st.query_params.get("nova") == "1" and not st.session_state.get("_nova_tarefa_disparada"):
     st.session_state["_nova_tarefa_disparada"] = True
+    st.session_state["_fechar_aba_apos_salvar"] = True  # veio do atalho — fecha a aba sozinho ao salvar
     st.query_params.pop("nova", None)  # one-shot — não reabre num F5 depois
     popup_nova_tarefa(date.today(), tipo="tarefa")
 
