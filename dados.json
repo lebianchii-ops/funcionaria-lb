@@ -21225,7 +21225,7 @@
       "novo": false,
       "editado_funcionaria": false,
       "erro": "",
-      "titulo": "Bolsa de Abobora Docuras e Travessuras 15x29 cm",
+      "titulo": "Bolsa Abóbora Halloween Infantil Doces ou Travessuras",
       "variacao": "",
       "tipo": "",
       "estoque": 24,
@@ -21237,10 +21237,10 @@
       "ncm": "95059000",
       "origem": "2",
       "ean": "7894042804466",
-      "mlb": "—",
-      "status_ml": "🔴 Falta criar",
+      "mlb": "MLB7631556070",
+      "status_ml": "✅ No ML",
       "peso_fake": true,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
