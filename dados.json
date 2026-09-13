@@ -21206,7 +21206,7 @@
       "novo": false,
       "editado_funcionaria": false,
       "erro": "",
-      "titulo": "Enfeite Halloween 2 Dedos 1 Olho 1 Orelha",
+      "titulo": "Kit Enfeite Halloween Dedos Olho Orelha Silicone",
       "variacao": "",
       "tipo": "",
       "estoque": null,
@@ -21218,10 +21218,10 @@
       "ncm": "95059000",
       "origem": "2",
       "ean": "7898140965647",
-      "mlb": "—",
-      "status_ml": "🔴 Falta criar",
+      "mlb": "MLB5229105879",
+      "status_ml": "✅ No ML",
       "peso_fake": true,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
