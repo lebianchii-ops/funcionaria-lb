@@ -517,7 +517,20 @@
       "prioridade": "Alta",
       "feita": false,
       "feita_em": null,
-      "criado_em": "2026-09-12T19:13:56.011659"
+      "criado_em": "2026-09-12T19:13:56.011659",
+      "obs_conclusao": ""
+    },
+    {
+      "id": "9591cf4f-2ef4-4714-9d86-6201671069e5",
+      "titulo": "SH URGENTE - 5 PENALIDADES",
+      "categoria": "LB Collection - SH",
+      "descricao": "",
+      "data": null,
+      "tipo": "tarefa",
+      "prioridade": "Alta",
+      "feita": false,
+      "feita_em": null,
+      "criado_em": "2026-09-13T10:32:38.842620"
     }
   ],
   "avisos": [
