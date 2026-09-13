@@ -47,3 +47,18 @@ Ao rodar `streamlit run app.py` localmente (via `.claude/launch.json`) e testar 
 O formulário "➕ Cadastrar produto novo" tinha `clear_on_submit=True`: QUALQUER clique no botão apagava tudo digitado, **inclusive quando a validação recusava o cadastro** (campo obrigatório vazio/zero, ou par Variação+código principal pela metade). Combinado com o aviso pequeno (st.warning) e o st.success que sumia no `st.rerun()`, dava a impressão de que salvou quando não salvou — a fantasia de astronauta da Bruna se perdeu assim, sem deixar rastro nenhum no dados.json. **Regra: nunca usar `clear_on_submit=True` em formulário com validação que pode recusar.** Padrão atual: widgets com `key`, limpeza só após salvar de verdade (flag `limpar_form_produto` lida ANTES dos widgets instanciarem), recusa em `st.error` "❌ NÃO FOI CADASTRADO!" mantendo o digitado, sucesso via flash em `session_state` que sobrevive ao rerun. Testado de ponta a ponta em produção 11/08/2026 (item ZZZ TESTE APAGAR → SKU LB00570 gerado → limpo dos dois lados).
 
 **Bug irmão corrigido no mesmo dia (`sincronizar_editor_produtos.py`, Site ML):** item cuja linha era apagada da BASE.xlsx ficava preso pra sempre no dados.json ("fantasma", erro re-tentado a cada minuto — casos LB00566A/567A/568A e LB00328). Agora linha apagada da BASE = item some do app na rodada seguinte.
+
+## Atalhos de URL pra criar tarefa sem navegar (adicionado 13/09/2026)
+
+Dois parâmetros na URL, lidos no topo do `app.py` antes de `_COLECAO_POR_TIPO`:
+
+- **`?nova=1`** — abre direto o `popup_nova_tarefa()` (título, categoria, descrição, data, prioridade) pra revisar antes de salvar. Marca `st.session_state["_fechar_aba_apos_salvar"] = True`.
+- **`?add=texto`** — cria a tarefa direto (categoria `CATS[0]` = "—", prioridade Baixa, sem data), sem abrir dialog nenhum.
+
+Os dois são **one-shot**: o parâmetro é removido da URL (`st.query_params.pop(...)`) e guardado num flag de `session_state` (`_nova_tarefa_disparada` / `_tarefa_rapida_disparada`) pra não duplicar tarefa num F5.
+
+Depois de salvar (nos dois fluxos), tenta `window.close()` via `st.html(..., unsafe_allow_javascript=True)` e mostra `st.success("... Pode fechar esta aba.")` **antes** de tentar fechar — **o fechamento sozinho não funciona quando a aba foi aberta por atalho/Menu Iniciar** (só funciona pra aba que o próprio script abriu; ver `APRENDIZADOS_TECNICOS.md` 13/09/2026). A mensagem de sucesso é o que garante que a pessoa saiba que salvou, já que a aba não fecha.
+
+**Atalhos criados na máquina da Bruna** (não fazem parte do repo, são locais):
+- `Nova Tarefa.url` na Área de Trabalho (as duas: OneDrive e `Desktop\`) → clique duplo abre `?nova=1`.
+- `Nova Tarefa.lnk` no Menu Iniciar (`[Environment]::GetFolderPath('Programs')`), mirando `explorer.exe` com a URL como argumento — só assim o Windows indexa como "Aplicativo" e o Enter direto na busca abre sem precisar clicar (um `.url` puro cai pro Bing). Detalhe da causa em `APRENDIZADOS_TECNICOS.md`.
