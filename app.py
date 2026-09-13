@@ -415,6 +415,12 @@ def popup_nova_tarefa(data_inicial, prioridade_inicial="Baixa", tipo="evento"):
         if salvar_dados(dados):
             st.rerun()
 
+# ── atalho de URL: ?nova=1 abre direto o popup de Nova Tarefa ─────────────
+if st.query_params.get("nova") == "1" and not st.session_state.get("_nova_tarefa_disparada"):
+    st.session_state["_nova_tarefa_disparada"] = True
+    st.query_params.pop("nova", None)  # one-shot — não reabre num F5 depois
+    popup_nova_tarefa(date.today(), tipo="tarefa")
+
 _COLECAO_POR_TIPO = {"tarefa": "tarefas", "freela": "freelas"}
 
 @st.dialog("Confirmar conclusão")
