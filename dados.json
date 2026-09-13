@@ -3796,7 +3796,7 @@
       "mlb": "MLB4749864398",
       "status_ml": "⏸ Pausado",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -17620,7 +17620,7 @@
       "mlb": "MLB4941502709",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
