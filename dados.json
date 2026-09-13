@@ -556,7 +556,20 @@
       "prioridade": "Baixa",
       "feita": false,
       "feita_em": null,
-      "criado_em": "2026-09-13T12:54:37.412917"
+      "criado_em": "2026-09-13T12:54:37.412917",
+      "obs_conclusao": ""
+    },
+    {
+      "id": "5cb6a4ce-2df3-4ace-8916-5926c947acd2",
+      "titulo": "teste",
+      "categoria": "—",
+      "descricao": "",
+      "data": null,
+      "tipo": "tarefa",
+      "prioridade": "Baixa",
+      "feita": false,
+      "feita_em": null,
+      "criado_em": "2026-09-13T14:23:34.305456"
     }
   ],
   "avisos": [
