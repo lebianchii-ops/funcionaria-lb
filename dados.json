@@ -20918,7 +20918,7 @@
       "novo": false,
       "editado_funcionaria": false,
       "erro": "",
-      "titulo": "Fantasia Morcego Infantil - 3 itens",
+      "titulo": "Fantasia Morcego Halloween Infantil Kit 3 Peças",
       "variacao": "",
       "tipo": "",
       "estoque": 75,
@@ -20930,10 +20930,10 @@
       "ncm": "95059000",
       "origem": "2",
       "ean": "7899301079166",
-      "mlb": "—",
-      "status_ml": "🔴 Falta criar",
+      "mlb": "MLB7640408460",
+      "status_ml": "✅ No ML",
       "peso_fake": true,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
