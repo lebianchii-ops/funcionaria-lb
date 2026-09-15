@@ -582,7 +582,8 @@
       "prioridade": "Baixa",
       "feita": false,
       "feita_em": null,
-      "criado_em": "2026-09-15T10:36:46.969067"
+      "criado_em": "2026-09-15T10:36:46.969067",
+      "obs_conclusao": ""
     },
     {
       "id": "4e65c552-691f-4de8-94b0-e9a90c1b03d7",
@@ -594,7 +595,20 @@
       "prioridade": "Alta",
       "feita": false,
       "feita_em": null,
-      "criado_em": "2026-09-15T10:36:58.210353"
+      "criado_em": "2026-09-15T10:36:58.210353",
+      "obs_conclusao": ""
+    },
+    {
+      "id": "3adb4f5e-5789-4108-8606-a12050182cf4",
+      "titulo": "FULL LB",
+      "categoria": "LB COLLECTION",
+      "descricao": "",
+      "data": "2026-09-24",
+      "tipo": "evento",
+      "prioridade": "Alta",
+      "feita": false,
+      "feita_em": null,
+      "criado_em": "2026-09-15T19:24:24.067244"
     }
   ],
   "avisos": [
