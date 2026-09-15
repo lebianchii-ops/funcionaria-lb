@@ -583,6 +583,18 @@
       "feita": false,
       "feita_em": null,
       "criado_em": "2026-09-15T10:36:46.969067"
+    },
+    {
+      "id": "4e65c552-691f-4de8-94b0-e9a90c1b03d7",
+      "titulo": "Arrumar a Roupinha Pet Flor na UP",
+      "categoria": "LB COLLECTION",
+      "descricao": "",
+      "data": null,
+      "tipo": "tarefa",
+      "prioridade": "Alta",
+      "feita": false,
+      "feita_em": null,
+      "criado_em": "2026-09-15T10:36:58.210353"
     }
   ],
   "avisos": [
