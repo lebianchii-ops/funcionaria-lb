@@ -534,19 +534,6 @@
       "obs_conclusao": ""
     },
     {
-      "id": "06616d02-06fb-4734-84c3-69255f2ddbdd",
-      "titulo": "teste 123",
-      "categoria": "—",
-      "descricao": "",
-      "data": null,
-      "tipo": "tarefa",
-      "prioridade": "Baixa",
-      "feita": false,
-      "feita_em": null,
-      "criado_em": "2026-09-13T12:54:11.310140",
-      "obs_conclusao": ""
-    },
-    {
       "id": "76ef4a17-e984-4a1c-b4e9-c6f726778b5b",
       "titulo": "teste",
       "categoria": "—",
