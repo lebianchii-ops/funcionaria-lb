@@ -499,7 +499,7 @@
       "titulo": "FULL LB",
       "categoria": "LB COLLECTION",
       "descricao": "",
-      "data": "2026-09-15",
+      "data": "2026-09-19",
       "tipo": "evento",
       "prioridade": "Alta",
       "feita": false,
@@ -608,7 +608,8 @@
       "prioridade": "Alta",
       "feita": false,
       "feita_em": null,
-      "criado_em": "2026-09-15T19:24:24.067244"
+      "criado_em": "2026-09-15T19:24:24.067244",
+      "obs_conclusao": ""
     }
   ],
   "avisos": [
