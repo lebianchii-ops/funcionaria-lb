@@ -1328,24 +1328,45 @@ with tab_prod:
 
     LIMITE_GRADE = 12
     if existentes:
-        if len(existentes) > LIMITE_GRADE:
-            st.warning(f"São {len(existentes)} produtos — mostrando só os primeiros {LIMITE_GRADE} "
-                       f"(mostrar muitos de uma vez pode fazer a edição não salvar direito). "
-                       f"Use a busca acima pra achar um específico, ou vá completando aos poucos.")
-        visiveis = existentes[:LIMITE_GRADE]
+        total_pend = len(existentes)
+        n_paginas = -(-total_pend // LIMITE_GRADE)  # ceil sem importar math
+
+        # Página reseta pra 0 sempre que o CONJUNTO de SKUs muda (troca de filtro,
+        # de busca, ou item que saiu da lista por ter sido corrigido) — senão a
+        # Bruna podia ficar "presa" numa página 3 que não existe mais depois de
+        # destravar produtos, ou ver uma página com itens de outro filtro.
+        chave_conjunto = hash(tuple(p.get("sku") for p in existentes))
+        if st.session_state.get("grade_conjunto") != chave_conjunto:
+            st.session_state["grade_pagina"] = 0
+            st.session_state["grade_conjunto"] = chave_conjunto
+        pagina = min(st.session_state.get("grade_pagina", 0), n_paginas - 1)
+
+        inicio = pagina * LIMITE_GRADE
+        visiveis = existentes[inicio:inicio + LIMITE_GRADE]
+
+        if total_pend > LIMITE_GRADE:
+            # Continua mostrando só 12 POR VEZ de propósito (achado real 03/08/2026:
+            # muitos campos numéricos na tela ao mesmo tempo perdem edição em
+            # silêncio) — mas agora com Anterior/Próximo dá pra passar por TODOS
+            # os pendentes, não só os primeiros 12 alfabéticos.
+            cprev, cinfo, cnext = st.columns([1, 3, 1])
+            if cprev.button("⬅️ Anterior", disabled=(pagina == 0), use_container_width=True, key="grade_prev"):
+                st.session_state["grade_pagina"] = pagina - 1
+                st.rerun()
+            cinfo.markdown(f"<div style='text-align:center;padding-top:0.4rem'>"
+                            f"Página {pagina + 1} de {n_paginas} — {total_pend} produto(s) no total</div>",
+                            unsafe_allow_html=True)
+            if cnext.button("Próximo ➡️", disabled=(pagina >= n_paginas - 1), use_container_width=True, key="grade_next"):
+                st.session_state["grade_pagina"] = pagina + 1
+                st.rerun()
+            st.caption("Editando 12 por vez de propósito (mostrar muitos ao mesmo tempo pode fazer a edição "
+                       "não salvar direito) — use as setas acima pra passar por todos, ou a busca pra ir "
+                       "direto num específico.")
 
         st.caption("Edite os campos e clique em **💾 Salvar alterações** no final — "
                    "o código (SKU, em cinza) não pode ser mudado por aqui.")
 
-        LARGURAS = [0.8, 2.2, 1.1, 1, 0.9, 0.9, 0.9, 0.9, 0.9, 0.7, 1.3, 0.8]
-        ROTULOS  = ["SKU", "Título", "Variação", "Custo (R$)", "Peso (g)",
-                    "Compr. (cm)", "Larg. (cm)", "Alt. (cm)", "NCM", "Origem", "EAN", "Estoque"]
-
         with st.form("form_grade_produtos"):
-            cab = st.columns(LARGURAS)
-            for col, rotulo in zip(cab, ROTULOS):
-                col.markdown(f"**{rotulo}**")
-
             widgets_por_sku = {}
             for p in visiveis:
                 sku = p.get("sku")
@@ -1359,42 +1380,41 @@ with tab_prod:
                 elif p.get("custo_fake"):
                     avisos_p.append("custo provisório (0,1)")
 
-                c = st.columns(LARGURAS)
-                c[0].caption(sku)
-                w = {}
-                # text_input pra TUDO, inclusive número — achado real 03/08/2026:
-                # st.number_input nesta grade perdia o valor digitado (testado
-                # de várias formas — evento sintético com delay, campo com 0
-                # skeleton pendente — nada resolveu; parece um problema de
-                # quando/como o BaseWeb NumberInput confirma o valor). text_input
-                # nunca falhou no mesmo teste. num_seguro() já trata string
-                # numérica (com vírgula ou ponto) na hora de salvar.
-                w["titulo"] = c[1].text_input("Título", value=p.get("titulo", ""),
-                                               key=f"pt_{sku}", label_visibility="collapsed")
-                if avisos_p:
-                    c[1].caption("⚠️ " + " · ".join(avisos_p))
-                w["variacao"] = c[2].text_input("Variação", value=p.get("variacao", ""),
-                                                 key=f"pv_{sku}", label_visibility="collapsed")
-                w["custo"] = c[3].text_input("Custo", value=f"{num_seguro(p.get('custo')):.2f}",
-                                              key=f"pc_{sku}", label_visibility="collapsed")
-                w["peso"] = c[4].text_input("Peso", value=str(num_seguro(p.get("peso"), int)),
-                                             key=f"pp_{sku}", label_visibility="collapsed")
-                w["comprimento"] = c[5].text_input("Compr.", value=str(num_seguro(p.get("comprimento"), int)),
-                                                    key=f"pcp_{sku}", label_visibility="collapsed")
-                w["largura"] = c[6].text_input("Larg.", value=str(num_seguro(p.get("largura"), int)),
-                                                key=f"pl_{sku}", label_visibility="collapsed")
-                w["altura"] = c[7].text_input("Alt.", value=str(num_seguro(p.get("altura"), int)),
-                                               key=f"pa_{sku}", label_visibility="collapsed")
-                w["ncm"] = c[8].text_input("NCM", value=str(p.get("ncm") or ""),
-                                            key=f"pncm_{sku}", label_visibility="collapsed")
-                w["origem"] = c[9].text_input("Origem", value=str(p.get("origem") or ""),
-                                               key=f"por_{sku}", label_visibility="collapsed",
-                                               help="Normalmente '2' — só mude se souber que é diferente")
-                w["ean"] = c[10].text_input("EAN", value=p.get("ean") or "",
-                                             key=f"pe_{sku}", label_visibility="collapsed")
-                w["estoque"] = c[11].text_input("Estoque", value=str(num_seguro(p.get("estoque"), int)),
-                                                 key=f"pes_{sku}", label_visibility="collapsed")
-                widgets_por_sku[sku] = w
+                # Card por produto (em vez de 1 linha com 12 colunas espremidas) —
+                # a Bruna reportou a grade antiga "não legal": título cortado e
+                # aviso quebrando dentro de uma coluna estreita demais pra ler.
+                with st.container(border=True):
+                    w = {}
+                    c_sku, c_titulo = st.columns([1, 6])
+                    c_sku.caption(f"**{sku}**")
+                    w["titulo"] = c_titulo.text_input("Título", value=p.get("titulo", ""),
+                                                       key=f"pt_{sku}", label_visibility="collapsed")
+                    if avisos_p:
+                        c_titulo.caption("⚠️ " + " · ".join(avisos_p))
+
+                    # text_input pra TUDO, inclusive número — achado real 03/08/2026:
+                    # st.number_input nesta grade perdia o valor digitado (testado
+                    # de várias formas — evento sintético com delay, campo com 0
+                    # skeleton pendente — nada resolveu; parece um problema de
+                    # quando/como o BaseWeb NumberInput confirma o valor). text_input
+                    # nunca falhou no mesmo teste. num_seguro() já trata string
+                    # numérica (com vírgula ou ponto) na hora de salvar.
+                    c1, c2, c3, c4, c5, c6 = st.columns(6)
+                    w["variacao"] = c1.text_input("Variação", value=p.get("variacao", ""), key=f"pv_{sku}")
+                    w["custo"] = c2.text_input("Custo (R$)", value=f"{num_seguro(p.get('custo')):.2f}", key=f"pc_{sku}")
+                    w["peso"] = c3.text_input("Peso (g)", value=str(num_seguro(p.get("peso"), int)), key=f"pp_{sku}")
+                    w["comprimento"] = c4.text_input("Compr. (cm)", value=str(num_seguro(p.get("comprimento"), int)),
+                                                      key=f"pcp_{sku}")
+                    w["largura"] = c5.text_input("Larg. (cm)", value=str(num_seguro(p.get("largura"), int)), key=f"pl_{sku}")
+                    w["altura"] = c6.text_input("Alt. (cm)", value=str(num_seguro(p.get("altura"), int)), key=f"pa_{sku}")
+
+                    c7, c8, c9, c10 = st.columns(4)
+                    w["ncm"] = c7.text_input("NCM", value=str(p.get("ncm") or ""), key=f"pncm_{sku}")
+                    w["origem"] = c8.text_input("Origem", value=str(p.get("origem") or ""), key=f"por_{sku}",
+                                                 help="Normalmente '2' — só mude se souber que é diferente")
+                    w["ean"] = c9.text_input("EAN", value=p.get("ean") or "", key=f"pe_{sku}")
+                    w["estoque"] = c10.text_input("Estoque", value=str(num_seguro(p.get("estoque"), int)), key=f"pes_{sku}")
+                    widgets_por_sku[sku] = w
 
             enviado = st.form_submit_button("💾 Salvar alterações", type="primary", use_container_width=True)
 
