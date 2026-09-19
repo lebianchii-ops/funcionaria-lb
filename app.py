@@ -1260,13 +1260,15 @@ with tab_prod:
 
     st.divider()
 
-    col_busca, col_toggle, col_toggle2 = st.columns([3, 2, 2])
+    col_busca, col_toggle, col_toggle2, col_toggle3 = st.columns([3, 2, 2, 2])
     with col_busca:
         busca_prod = st.text_input("🔍 Buscar por código (SKU) ou nome do produto", key="busca_produto")
     with col_toggle:
         so_faltando = st.toggle("Mostrar só o que está faltando/incompleto", value=True, key="toggle_faltando")
     with col_toggle2:
         so_pendente_anuncio = st.toggle("Mostrar só sem anúncio no ML", value=False, key="toggle_pendente_anuncio")
+    with col_toggle3:
+        so_medida_fake = st.toggle("Mostrar só medidas fake", value=False, key="toggle_medida_fake")
 
     # linhas-modelo sem produto ainda (SKU reservado, sem título) nao aparecem
     # aqui - nao sao produtos reais pra ela completar, sao slots vazios da BASE
@@ -1280,6 +1282,9 @@ with tab_prod:
     if so_pendente_anuncio and not busca_prod:
         existentes = [p for p in existentes if eh_pendente_anuncio(p)]
 
+    if so_medida_fake and not busca_prod:
+        existentes = [p for p in existentes if p.get("peso_fake")]
+
     if busca_prod:
         alvo = chave_alfabetica(busca_prod)
         existentes = [p for p in existentes
@@ -1292,10 +1297,12 @@ with tab_prod:
         _rotulo_filtro.append("incompletos")
     if so_pendente_anuncio and not busca_prod:
         _rotulo_filtro.append("sem anúncio no ML")
+    if so_medida_fake and not busca_prod:
+        _rotulo_filtro.append("medidas fake")
     st.caption(f"**{len(existentes)} produto(s)**"
                + (" — mostrando só " + " + ".join(_rotulo_filtro) if _rotulo_filtro else ""))
 
-    if not existentes and not busca_prod and (so_faltando or so_pendente_anuncio):
+    if not existentes and not busca_prod and (so_faltando or so_pendente_anuncio or so_medida_fake):
         st.success("Nenhum produto com pendência agora! 🎉")
 
     # 03/08/2026: aqui era st.data_editor (grade estilo Excel). Trocado por
