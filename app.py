@@ -1368,7 +1368,8 @@ with tab_prod:
 
         with st.form("form_grade_produtos"):
             widgets_por_sku = {}
-            for p in visiveis:
+            _cards_pares = []  # keys dos cards em posição par, pra pintar via CSS depois
+            for _idx, p in enumerate(visiveis):
                 sku = p.get("sku")
                 avisos_p = []
                 if p.get("peso_fake"):
@@ -1383,7 +1384,14 @@ with tab_prod:
                 # Card por produto (em vez de 1 linha com 12 colunas espremidas) —
                 # a Bruna reportou a grade antiga "não legal": título cortado e
                 # aviso quebrando dentro de uma coluna estreita demais pra ler.
-                with st.container(border=True):
+                # `key` (além de identificar o container pro Streamlit) vira a classe
+                # CSS "st-key-<key>" no HTML — é o gancho usado logo abaixo do form
+                # pra pintar os cards em cores alternadas (zebra), pra separar
+                # visualmente um produto do próximo.
+                _card_key = f"pcard_{sku}"
+                if _idx % 2 == 0:
+                    _cards_pares.append(_card_key)
+                with st.container(border=True, key=_card_key):
                     w = {}
                     c_sku, c_titulo = st.columns([1, 6])
                     c_sku.caption(f"**{sku}**")
@@ -1417,6 +1425,14 @@ with tab_prod:
                     widgets_por_sku[sku] = w
 
             enviado = st.form_submit_button("💾 Salvar alterações", type="primary", use_container_width=True)
+
+        if _cards_pares:
+            # rgba (não hex fixo) pra funcionar tanto no tema claro quanto no escuro
+            # do Streamlit — escurece um pouco o que já está por baixo, em vez de
+            # impor uma cor que ficaria errada num dos dois temas.
+            _regra = ", ".join(f".st-key-{k}" for k in _cards_pares)
+            st.markdown(f"<style>{_regra} {{ background-color: rgba(127,127,127,0.08); }}</style>",
+                        unsafe_allow_html=True)
 
         if enviado:
             mudou = 0
