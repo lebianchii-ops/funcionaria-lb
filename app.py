@@ -1344,23 +1344,29 @@ with tab_prod:
         inicio = pagina * LIMITE_GRADE
         visiveis = existentes[inicio:inicio + LIMITE_GRADE]
 
-        if total_pend > LIMITE_GRADE:
-            # Continua mostrando só 12 POR VEZ de propósito (achado real 03/08/2026:
-            # muitos campos numéricos na tela ao mesmo tempo perdem edição em
-            # silêncio) — mas agora com Anterior/Próximo dá pra passar por TODOS
-            # os pendentes, não só os primeiros 12 alfabéticos.
+        # Continua mostrando só 12 POR VEZ de propósito (achado real 03/08/2026:
+        # muitos campos numéricos na tela ao mesmo tempo perdem edição em
+        # silêncio) — mas agora com Anterior/Próximo dá pra passar por TODOS
+        # os pendentes, não só os primeiros 12 alfabéticos. Os controles aparecem
+        # EM CIMA e EMBAIXO da lista — só em cima obrigava a rolar a tela toda de
+        # volta pro topo pra passar de página depois de revisar os 12 (pedido da
+        # Bruna, 19/09/2026).
+        def _controles_pagina(sufixo):
             cprev, cinfo, cnext = st.columns([1, 3, 1])
-            if cprev.button("⬅️ Anterior", disabled=(pagina == 0), use_container_width=True, key="grade_prev"):
+            if cprev.button("⬅️ Anterior", disabled=(pagina == 0), use_container_width=True, key=f"grade_prev_{sufixo}"):
                 st.session_state["grade_pagina"] = pagina - 1
                 st.rerun()
             cinfo.markdown(f"<div style='text-align:center;padding-top:0.4rem'>"
                             f"Página {pagina + 1} de {n_paginas} — {total_pend} produto(s) no total</div>",
                             unsafe_allow_html=True)
-            if cnext.button("Próximo ➡️", disabled=(pagina >= n_paginas - 1), use_container_width=True, key="grade_next"):
+            if cnext.button("Próximo ➡️", disabled=(pagina >= n_paginas - 1), use_container_width=True, key=f"grade_next_{sufixo}"):
                 st.session_state["grade_pagina"] = pagina + 1
                 st.rerun()
+
+        if total_pend > LIMITE_GRADE:
+            _controles_pagina("topo")
             st.caption("Editando 12 por vez de propósito (mostrar muitos ao mesmo tempo pode fazer a edição "
-                       "não salvar direito) — use as setas acima pra passar por todos, ou a busca pra ir "
+                       "não salvar direito) — use as setas pra passar por todos, ou a busca pra ir "
                        "direto num específico.")
 
         st.caption("Edite os campos e clique em **💾 Salvar alterações** no final — "
@@ -1437,6 +1443,9 @@ with tab_prod:
             _regra = ", ".join(f".st-key-{k}" for k in _cards_pares)
             st.markdown(f"<style>{_regra} {{ background-color: rgba(127,127,127,0.08); }}</style>",
                         unsafe_allow_html=True)
+
+        if total_pend > LIMITE_GRADE:
+            _controles_pagina("fim")
 
         if enviado:
             mudou = 0
