@@ -1394,7 +1394,11 @@ with tab_prod:
                 with st.container(border=True, key=_card_key):
                     w = {}
                     c_sku, c_titulo = st.columns([1, 6])
-                    c_sku.caption(f"**{sku}**")
+                    c_sku.markdown(
+                        f"<span style='background:#000;color:#fff;padding:3px 9px;"
+                        f"border-radius:4px;font-size:0.82rem;font-weight:600;"
+                        f"display:inline-block'>{sku}</span>",
+                        unsafe_allow_html=True)
                     w["titulo"] = c_titulo.text_input("Título", value=p.get("titulo", ""),
                                                        key=f"pt_{sku}", label_visibility="collapsed")
                     if avisos_p:
