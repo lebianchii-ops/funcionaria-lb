@@ -558,6 +558,18 @@
       "feita_em": null,
       "criado_em": "2026-09-15T19:24:24.067244",
       "obs_conclusao": ""
+    },
+    {
+      "id": "8b4c976f-ba11-446d-936e-2d8b609e2cf3",
+      "titulo": "ESTOQUE",
+      "categoria": "LB COLLECTION",
+      "descricao": "Faixa Noiva do Ano",
+      "data": null,
+      "tipo": "tarefa",
+      "prioridade": "Alta",
+      "feita": false,
+      "feita_em": null,
+      "criado_em": "2026-09-20T12:15:25.010136"
     }
   ],
   "avisos": [
