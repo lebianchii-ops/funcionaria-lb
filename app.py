@@ -1270,6 +1270,16 @@ with tab_prod:
     with col_toggle3:
         so_medida_fake = st.toggle("Mostrar só medidas fake", value=False, key="toggle_medida_fake")
 
+    # Só aparece com "medidas fake" ligado — sem ele não tem o que restringir.
+    # Pedido da Bruna 21/09/2026: separar o chip VERMELHO (medida fake e já
+    # publicado no ML — o que realmente aparece pro comprador errado) do PRETO
+    # (medida fake mas nem tem anúncio ainda — não urgente, ninguém vê).
+    so_ja_publicado = False
+    if so_medida_fake:
+        so_ja_publicado = st.toggle(
+            "🔴 Só os já publicados no ML (esconder os pretos, sem anúncio ainda)",
+            value=False, key="toggle_medida_fake_publicado")
+
     # linhas-modelo sem produto ainda (SKU reservado, sem título) nao aparecem
     # aqui - nao sao produtos reais pra ela completar, sao slots vazios da BASE
     existentes = [p for p in dados["produtos"] if p.get("sku") and (p.get("titulo") or "").strip()]
@@ -1289,6 +1299,9 @@ with tab_prod:
     if so_medida_fake:
         existentes = [p for p in existentes if p.get("peso_fake")]
 
+    if so_medida_fake and so_ja_publicado:
+        existentes = [p for p in existentes if not eh_pendente_anuncio(p)]
+
     if busca_prod:
         alvo = chave_alfabetica(busca_prod)
         existentes = [p for p in existentes
@@ -1302,7 +1315,7 @@ with tab_prod:
     if so_pendente_anuncio:
         _rotulo_filtro.append("sem anúncio no ML")
     if so_medida_fake:
-        _rotulo_filtro.append("medidas fake")
+        _rotulo_filtro.append("medidas fake (só 🔴 já publicados)" if so_ja_publicado else "medidas fake")
     if busca_prod:
         _rotulo_filtro.append(f'contendo "{busca_prod}"')
     st.caption(f"**{len(existentes)} produto(s)**"
