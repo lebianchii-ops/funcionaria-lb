@@ -1274,15 +1274,19 @@ with tab_prod:
     # aqui - nao sao produtos reais pra ela completar, sao slots vazios da BASE
     existentes = [p for p in dados["produtos"] if p.get("sku") and (p.get("titulo") or "").strip()]
 
-    if so_faltando and not busca_prod:
+    # Os 3 toggles E a busca por palavra-chave se somam (AND) — antes, qualquer
+    # texto digitado na busca desligava os toggles em silêncio, e a Bruna via
+    # resultado errado (ex: "medidas fake" + busca "led" devolvia TODOS os "led",
+    # não só os com medida fake). Achado 21/09/2026.
+    if so_faltando:
         existentes = [p for p in existentes
                       if p.get("peso_fake") or p.get("ean_fake") or p.get("custo_fake")
                       or num_seguro(p.get("custo")) <= 0]
 
-    if so_pendente_anuncio and not busca_prod:
+    if so_pendente_anuncio:
         existentes = [p for p in existentes if eh_pendente_anuncio(p)]
 
-    if so_medida_fake and not busca_prod:
+    if so_medida_fake:
         existentes = [p for p in existentes if p.get("peso_fake")]
 
     if busca_prod:
@@ -1293,16 +1297,18 @@ with tab_prod:
     existentes = sorted(existentes, key=lambda x: chave_alfabetica(x.get("titulo", "")))
 
     _rotulo_filtro = []
-    if so_faltando and not busca_prod:
+    if so_faltando:
         _rotulo_filtro.append("incompletos")
-    if so_pendente_anuncio and not busca_prod:
+    if so_pendente_anuncio:
         _rotulo_filtro.append("sem anúncio no ML")
-    if so_medida_fake and not busca_prod:
+    if so_medida_fake:
         _rotulo_filtro.append("medidas fake")
+    if busca_prod:
+        _rotulo_filtro.append(f'contendo "{busca_prod}"')
     st.caption(f"**{len(existentes)} produto(s)**"
                + (" — mostrando só " + " + ".join(_rotulo_filtro) if _rotulo_filtro else ""))
 
-    if not existentes and not busca_prod and (so_faltando or so_pendente_anuncio or so_medida_fake):
+    if not existentes and (so_faltando or so_pendente_anuncio or so_medida_fake):
         st.success("Nenhum produto com pendência agora! 🎉")
 
     # 03/08/2026: aqui era st.data_editor (grade estilo Excel). Trocado por
@@ -1400,8 +1406,18 @@ with tab_prod:
                 with st.container(border=True, key=_card_key):
                     w = {}
                     c_sku, c_titulo = st.columns([1, 6])
+                    # Cor do chip do SKU (pedido 21/09/2026): preto = falta criar
+                    # anúncio no ML (prioridade sobre os outros dois, é a pendência
+                    # maior) · vermelho = medida/peso provisório · verde = sem
+                    # nenhuma das duas pendências.
+                    if eh_pendente_anuncio(p):
+                        _cor_sku = "#000"
+                    elif p.get("peso_fake"):
+                        _cor_sku = "#c0392b"
+                    else:
+                        _cor_sku = "#1e7d34"
                     c_sku.markdown(
-                        f"<span style='background:#000;color:#fff;padding:3px 9px;"
+                        f"<span style='background:{_cor_sku};color:#fff;padding:3px 9px;"
                         f"border-radius:4px;font-size:0.82rem;font-weight:600;"
                         f"display:inline-block'>{sku}</span>",
                         unsafe_allow_html=True)
