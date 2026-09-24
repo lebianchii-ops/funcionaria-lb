@@ -20966,7 +20966,7 @@
       "novo": false,
       "editado_funcionaria": false,
       "erro": "",
-      "titulo": "Acessório Cabelo Maluco Halloween - Tiara Aranha",
+      "titulo": "Tiara Aranha Halloween Cabelo Maluco Fantasia Festa Infantil",
       "variacao": "",
       "tipo": "",
       "estoque": 12,
@@ -20978,10 +20978,10 @@
       "ncm": "95059000",
       "origem": "2",
       "ean": "7891589871395",
-      "mlb": "—",
-      "status_ml": "🔴 Falta criar",
+      "mlb": "MLB5287063869",
+      "status_ml": "✅ No ML",
       "peso_fake": true,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
