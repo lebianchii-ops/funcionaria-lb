@@ -571,6 +571,18 @@
       "feita_em": null,
       "criado_em": "2026-09-20T12:15:25.010136",
       "obs_conclusao": ""
+    },
+    {
+      "id": "5530106b-7ff9-4685-871a-e3802152fefc",
+      "titulo": "ESTOQUE URGENTE",
+      "categoria": "LB COLLECTION",
+      "descricao": "> LB00248 Pinto Argola",
+      "data": null,
+      "tipo": "tarefa",
+      "prioridade": "Alta",
+      "feita": false,
+      "feita_em": null,
+      "criado_em": "2026-09-24T16:47:31.599265"
     }
   ],
   "avisos": [
