@@ -369,7 +369,7 @@ if precisa_migrar_anuncios:
             "custo": 0.1, "custo_fake": True,
             "peso": 100, "peso_fake": True,
             "comprimento": 10, "largura": 10, "altura": 10,
-            "ean": "", "estoque": 0, "ncm": "", "origem": "2",
+            "ean": "", "estoque": 0, "ncm": "", "cst": "", "origem": "2",
             "erro": "", "criado_em": datetime.now().isoformat(),
         })
     dados["anuncios_pendentes"] = [n for n in dados["anuncios_pendentes"] if n.get("feita")]
@@ -1076,7 +1076,7 @@ with tab_prod:
     # antes dos widgets instanciarem (mexer no state depois dá exceção).
     _PN_KEYS = ["pn_titulo", "pn_sku_pai", "pn_variacao", "pn_vars_novas",
                 "pn_custo", "pn_peso", "pn_comp", "pn_larg", "pn_alt",
-                "pn_ean", "pn_estoque", "pn_ncm", "pn_origem"]
+                "pn_ean", "pn_estoque", "pn_ncm", "pn_cst", "pn_origem"]
     if st.session_state.pop("limpar_form_produto", False):
         for _k in _PN_KEYS:
             st.session_state.pop(_k, None)
@@ -1132,10 +1132,14 @@ with tab_prod:
                                         help="Deixe em branco se não tiver — a Bruna gera um provisório")
             with pne2:
                 pn_estoque_txt = st.text_input("Estoque (unidades que chegaram)", key="pn_estoque", placeholder="ex: 10")
-            pnf1, pnf2 = st.columns(2)
+            pnf1, pnf1b, pnf2 = st.columns(3)
             with pnf1:
                 pn_ncm = st.text_input("NCM (opcional)", key="pn_ncm",
                                         help="Código fiscal — deixe em branco se não souber, a Bruna preenche depois")
+            with pnf1b:
+                pn_cst = st.text_input("CST (opcional)", key="pn_cst", max_chars=3,
+                                        help="Código de situação tributária (2 ou 3 números) — "
+                                             "deixe em branco se não souber, a Bruna preenche depois")
             with pnf2:
                 pn_origem = st.text_input("Origem fiscal (opcional)", value="2", key="pn_origem",
                                            help="Normalmente é '2' — só mude se souber que é diferente "
@@ -1181,6 +1185,7 @@ with tab_prod:
                         "ean":         pn_ean.strip(),
                         "estoque":     pn_estoque,
                         "ncm":         pn_ncm.strip(),
+                        "cst":         pn_cst.strip(),
                         "origem":      pn_origem.strip(),
                         "erro":        "",
                         "criado_em":   datetime.now().isoformat(),
@@ -1455,8 +1460,10 @@ with tab_prod:
                     w["largura"] = c5.text_input("Larg. (cm)", value=str(num_seguro(p.get("largura"), int)), key=f"pl_{sku}")
                     w["altura"] = c6.text_input("Alt. (cm)", value=str(num_seguro(p.get("altura"), int)), key=f"pa_{sku}")
 
-                    c7, c8, c9, c10 = st.columns(4)
+                    c7, c7b, c8, c9, c10 = st.columns(5)
                     w["ncm"] = c7.text_input("NCM", value=str(p.get("ncm") or ""), key=f"pncm_{sku}")
+                    w["cst"] = c7b.text_input("CST", value=str(p.get("cst") or ""), key=f"pcst_{sku}", max_chars=3,
+                                              help="2 ou 3 números — deixe em branco se não souber")
                     w["origem"] = c8.text_input("Origem", value=str(p.get("origem") or ""), key=f"por_{sku}",
                                                  help="Normalmente '2' — só mude se souber que é diferente")
                     w["ean"] = c9.text_input("EAN", value=p.get("ean") or "", key=f"pe_{sku}")
@@ -1496,6 +1503,7 @@ with tab_prod:
                     or novo_largura != num_seguro(p.get("largura"), int)
                     or novo_altura != num_seguro(p.get("altura"), int)
                     or novo["ncm"].strip() != str(p.get("ncm") or "").strip()
+                    or novo["cst"].strip() != str(p.get("cst") or "").strip()
                     or novo["origem"].strip() != str(p.get("origem") or "").strip()
                     or novo["ean"].strip() != (p.get("ean") or "").strip()
                     or novo_estoque != num_seguro(p.get("estoque"), int)
@@ -1511,6 +1519,7 @@ with tab_prod:
                     "largura":             novo_largura,
                     "altura":              novo_altura,
                     "ncm":                 novo["ncm"].strip(),
+                    "cst":                 novo["cst"].strip(),
                     "origem":              novo["origem"].strip(),
                     "ean":                 novo["ean"].strip(),
                     "estoque":             novo_estoque,
@@ -1745,11 +1754,11 @@ Clique em **➕ Registrar entrada**. Os registros ficam listados abaixo, do mais
 
     with st.expander("🧾 Aba Base", expanded=True):
         st.markdown("""
-Use para **cadastrar produto novo** ou **completar/corrigir** título, custo, peso, medidas, NCM, origem fiscal, código de barras (EAN) e estoque de produtos que já existem.
+Use para **cadastrar produto novo** ou **completar/corrigir** título, custo, peso, medidas, NCM, CST, origem fiscal, código de barras (EAN) e estoque de produtos que já existem.
 
 **Cadastrar produto novo:** abra "➕ Cadastrar produto novo", preencha pelo menos título, custo, peso e as 3 medidas, e clique em cadastrar. **O código do produto (SKU) é gerado sozinho** — nunca invente um número, nem pergunte pra Bruna qual é o próximo. Se quiser conferir, tem uma linha em cima do formulário mostrando qual vai ser usado.
 
-**Completar produtos existentes:** use a busca (por nome ou código) ou deixe marcado "Mostrar só o que está faltando/incompleto". Os produtos aparecem numa **tabela, igual planilha do Excel** — edite as células direto (título, variação, custo, peso, medidas, NCM, origem fiscal, EAN, estoque) e clique em **💾 Salvar alterações da tabela** no final pra confirmar tudo de uma vez. O código (SKU) não pode ser editado ali — se estiver errado, fale com a Bruna.
+**Completar produtos existentes:** use a busca (por nome ou código) ou deixe marcado "Mostrar só o que está faltando/incompleto". Os produtos aparecem numa **tabela, igual planilha do Excel** — edite as células direto (título, variação, custo, peso, medidas, NCM, CST, origem fiscal, EAN, estoque) e clique em **💾 Salvar alterações da tabela** no final pra confirmar tudo de uma vez. O código (SKU) não pode ser editado ali — se estiver errado, fale com a Bruna.
 
 **Origem fiscal:** a maioria dos produtos usa **"2"** — só mude se souber que aquele produto é diferente (ex: importado).
 
