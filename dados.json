@@ -22082,7 +22082,7 @@
       "novo": false,
       "editado_funcionaria": false,
       "erro": "",
-      "titulo": "Kit Acessório Colar + Luva Gótica Fantasia",
+      "titulo": "Kit Acessório Gótico Colar Choker e Luvas de Renda",
       "variacao": "",
       "tipo": "Pai",
       "estoque": 24244,
@@ -22094,10 +22094,10 @@
       "ncm": "95059000",
       "origem": "2",
       "ean": "7897733228046",
-      "mlb": "—",
-      "status_ml": "🔴 Falta criar",
+      "mlb": "MLB5291353745",
+      "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
