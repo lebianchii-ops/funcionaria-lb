@@ -528,8 +528,8 @@
       "data": null,
       "tipo": "tarefa",
       "prioridade": "Baixa",
-      "feita": false,
-      "feita_em": null,
+      "feita": true,
+      "feita_em": "30/09/26 18:50",
       "criado_em": "2026-09-15T10:36:46.969067",
       "obs_conclusao": ""
     },
