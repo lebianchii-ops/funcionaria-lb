@@ -23090,7 +23090,7 @@
       "novo": false,
       "editado_funcionaria": false,
       "erro": "",
-      "titulo": "Balão 3D Decorativo Halloweem Bruxa Rodinha",
+      "titulo": "Balão 3D Bruxa Halloween Com Rodinhas Decorativo",
       "variacao": "",
       "tipo": "Pai",
       "estoque": 10,
@@ -23103,10 +23103,10 @@
       "cst": "",
       "origem": "2",
       "ean": "7898906133884",
-      "mlb": "—",
-      "status_ml": "🔴 Falta criar",
+      "mlb": "MLB7729583894",
+      "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
