@@ -595,7 +595,20 @@
       "prioridade": "Alta",
       "feita": false,
       "feita_em": null,
-      "criado_em": "2026-10-01T12:43:00.447674"
+      "criado_em": "2026-10-01T12:43:00.447674",
+      "obs_conclusao": ""
+    },
+    {
+      "id": "be5c81da-ff00-4d4f-b3ee-e2d3839f83c5",
+      "titulo": "FULL LB",
+      "categoria": "—",
+      "descricao": "",
+      "data": "2026-10-03",
+      "tipo": "evento",
+      "prioridade": "Alta",
+      "feita": false,
+      "feita_em": null,
+      "criado_em": "2026-10-01T15:50:44.370697"
     }
   ],
   "avisos": [
