@@ -7168,7 +7168,7 @@
       "ean": "",
       "mlb": "MLB3996405559",
       "status_ml": "⏸ Pausado",
-      "peso_fake": false,
+      "peso_fake": true,
       "ean_fake": false,
       "custo_fake": false
     },
@@ -7193,7 +7193,7 @@
       "ean": "7891230615699",
       "mlb": "MLB3996405559",
       "status_ml": "⏸ Pausado",
-      "peso_fake": false,
+      "peso_fake": true,
       "ean_fake": false,
       "custo_fake": false
     },
@@ -7218,7 +7218,7 @@
       "ean": "7891230615699",
       "mlb": "MLB3996405559",
       "status_ml": "⏸ Pausado",
-      "peso_fake": false,
+      "peso_fake": true,
       "ean_fake": false,
       "custo_fake": false
     },
@@ -7243,7 +7243,7 @@
       "ean": "7891230615699",
       "mlb": "MLB3996405559",
       "status_ml": "⏸ Pausado",
-      "peso_fake": false,
+      "peso_fake": true,
       "ean_fake": false,
       "custo_fake": false
     },
@@ -7268,7 +7268,7 @@
       "ean": "7891230615699",
       "mlb": "MLB3996405559",
       "status_ml": "⏸ Pausado",
-      "peso_fake": false,
+      "peso_fake": true,
       "ean_fake": false,
       "custo_fake": false
     },
@@ -10168,7 +10168,7 @@
       "ean": "7907036074803",
       "mlb": "—",
       "status_ml": "🔴 Falta criar",
-      "peso_fake": false,
+      "peso_fake": true,
       "ean_fake": false,
       "custo_fake": false
     },
@@ -22593,7 +22593,7 @@
       "ean": "7898464588393",
       "mlb": "MLB5225935623",
       "status_ml": "🔍 Em revisão",
-      "peso_fake": false,
+      "peso_fake": true,
       "ean_fake": false,
       "custo_fake": false
     },
@@ -23093,7 +23093,7 @@
       "ean": "7893130114418",
       "mlb": "—",
       "status_ml": "🔴 Falta criar",
-      "peso_fake": false,
+      "peso_fake": true,
       "ean_fake": true,
       "custo_fake": false
     },
@@ -23218,7 +23218,7 @@
       "ean": "",
       "mlb": "—",
       "status_ml": "🔴 Falta criar",
-      "peso_fake": false,
+      "peso_fake": true,
       "ean_fake": false,
       "custo_fake": false
     },
@@ -23243,7 +23243,7 @@
       "ean": "7893463398189",
       "mlb": "",
       "status_ml": "",
-      "peso_fake": false,
+      "peso_fake": true,
       "ean_fake": true,
       "custo_fake": false
     },
@@ -23268,7 +23268,7 @@
       "ean": "7891462294723",
       "mlb": "",
       "status_ml": "",
-      "peso_fake": false,
+      "peso_fake": true,
       "ean_fake": true,
       "custo_fake": false
     },
@@ -23293,7 +23293,7 @@
       "ean": "7900917774359",
       "mlb": "",
       "status_ml": "",
-      "peso_fake": false,
+      "peso_fake": true,
       "ean_fake": true,
       "custo_fake": false
     },
@@ -23318,7 +23318,7 @@
       "ean": "7893167595839",
       "mlb": "",
       "status_ml": "",
-      "peso_fake": false,
+      "peso_fake": true,
       "ean_fake": true,
       "custo_fake": false
     },
@@ -23343,7 +23343,7 @@
       "ean": "",
       "mlb": "—",
       "status_ml": "🔴 Falta criar",
-      "peso_fake": false,
+      "peso_fake": true,
       "ean_fake": false,
       "custo_fake": false
     },
@@ -23368,7 +23368,7 @@
       "ean": "7908225163575",
       "mlb": "",
       "status_ml": "",
-      "peso_fake": false,
+      "peso_fake": true,
       "ean_fake": true,
       "custo_fake": false
     },
@@ -23393,7 +23393,7 @@
       "ean": "7893760932833",
       "mlb": "",
       "status_ml": "",
-      "peso_fake": false,
+      "peso_fake": true,
       "ean_fake": true,
       "custo_fake": false
     },
@@ -23418,7 +23418,7 @@
       "ean": "7906537301227",
       "mlb": "",
       "status_ml": "",
-      "peso_fake": false,
+      "peso_fake": true,
       "ean_fake": true,
       "custo_fake": false
     },
@@ -23443,7 +23443,7 @@
       "ean": "7894998818593",
       "mlb": "",
       "status_ml": "",
-      "peso_fake": false,
+      "peso_fake": true,
       "ean_fake": true,
       "custo_fake": false
     },
@@ -23468,7 +23468,7 @@
       "ean": "7900747662161",
       "mlb": "",
       "status_ml": "",
-      "peso_fake": false,
+      "peso_fake": true,
       "ean_fake": true,
       "custo_fake": false
     },
@@ -23493,7 +23493,7 @@
       "ean": "7890821472314",
       "mlb": "",
       "status_ml": "",
-      "peso_fake": false,
+      "peso_fake": true,
       "ean_fake": true,
       "custo_fake": false
     },
@@ -23518,7 +23518,7 @@
       "ean": "7902053533159",
       "mlb": "",
       "status_ml": "",
-      "peso_fake": false,
+      "peso_fake": true,
       "ean_fake": true,
       "custo_fake": false
     },
@@ -23543,7 +23543,7 @@
       "ean": "7901996049482",
       "mlb": "",
       "status_ml": "",
-      "peso_fake": false,
+      "peso_fake": true,
       "ean_fake": true,
       "custo_fake": false
     },
