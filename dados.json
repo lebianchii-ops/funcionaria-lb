@@ -584,6 +584,18 @@
       "feita_em": null,
       "criado_em": "2026-09-24T16:47:31.599265",
       "obs_conclusao": ""
+    },
+    {
+      "id": "ee1deab5-5591-4eea-b03b-de8e7068eafc",
+      "titulo": "Anúncio PET VESTIDO FLORAL",
+      "categoria": "LB COLLECTION",
+      "descricao": "Esta todo errado, em relação a medidas em fotos e no anúncio, REFAZER",
+      "data": null,
+      "tipo": "tarefa",
+      "prioridade": "Alta",
+      "feita": false,
+      "feita_em": null,
+      "criado_em": "2026-10-01T12:43:00.447674"
     }
   ],
   "avisos": [
