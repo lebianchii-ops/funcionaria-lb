@@ -662,6 +662,18 @@
       "feita_em": null,
       "criado_em": "2026-10-03T20:13:45.221518",
       "obs_conclusao": ""
+    },
+    {
+      "id": "80faf3bf-1e1f-495e-8cc4-19437ddf641e",
+      "titulo": "LB00091 acabou?",
+      "categoria": "LB COLLECTION",
+      "descricao": "",
+      "data": null,
+      "tipo": "tarefa",
+      "prioridade": "Alta",
+      "feita": false,
+      "feita_em": null,
+      "criado_em": "2026-10-03T20:16:08.014442"
     }
   ],
   "avisos": [
