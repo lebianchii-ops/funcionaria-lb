@@ -634,7 +634,20 @@
       "prioridade": "Alta",
       "feita": false,
       "feita_em": null,
-      "criado_em": "2026-10-01T15:51:40.615712"
+      "criado_em": "2026-10-01T15:51:40.615712",
+      "obs_conclusao": ""
+    },
+    {
+      "id": "0f49e60b-fca3-48b0-971a-0d68f238add2",
+      "titulo": "LB00314 acabou?",
+      "categoria": "LB COLLECTION",
+      "descricao": "",
+      "data": null,
+      "tipo": "tarefa",
+      "prioridade": "Alta",
+      "feita": false,
+      "feita_em": null,
+      "criado_em": "2026-10-03T20:12:15.423120"
     }
   ],
   "avisos": [
