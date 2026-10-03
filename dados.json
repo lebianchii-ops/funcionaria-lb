@@ -661,6 +661,18 @@
       "feita": false,
       "feita_em": null,
       "criado_em": "2026-10-03T20:13:45.221518"
+    },
+    {
+      "id": "8ecee35e-445c-4f2b-9ad4-f9a28b1aaecd",
+      "titulo": "LB00325 acabou?",
+      "categoria": "LB COLLECTION",
+      "descricao": "",
+      "data": null,
+      "tipo": "tarefa",
+      "prioridade": "Alta",
+      "feita": false,
+      "feita_em": null,
+      "criado_em": "2026-10-03T20:13:48.552424"
     }
   ],
   "avisos": [
