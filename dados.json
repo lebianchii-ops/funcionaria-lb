@@ -450,8 +450,8 @@
       "data": null,
       "tipo": "tarefa",
       "prioridade": "Alta",
-      "feita": false,
-      "feita_em": null,
+      "feita": true,
+      "feita_em": "03/10/26 20:12",
       "criado_em": "2026-09-08T11:44:26.513320",
       "obs_conclusao": ""
     },
@@ -647,7 +647,8 @@
       "prioridade": "Alta",
       "feita": false,
       "feita_em": null,
-      "criado_em": "2026-10-03T20:12:15.423120"
+      "criado_em": "2026-10-03T20:12:15.423120",
+      "obs_conclusao": ""
     }
   ],
   "avisos": [
