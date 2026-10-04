@@ -687,6 +687,18 @@
       "feita": false,
       "feita_em": null,
       "criado_em": "2026-10-04T17:19:10.430816"
+    },
+    {
+      "id": "50a4a50b-fdf1-4c66-a340-aad2fa968eba",
+      "titulo": "FULL VD",
+      "categoria": "LB Collection - VD",
+      "descricao": "",
+      "data": "2026-10-07",
+      "tipo": "evento",
+      "prioridade": "Alta",
+      "feita": false,
+      "feita_em": null,
+      "criado_em": "2026-10-04T17:19:13.049797"
     }
   ],
   "avisos": [
