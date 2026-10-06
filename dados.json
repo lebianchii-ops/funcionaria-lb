@@ -11984,7 +11984,7 @@
       "origem": "2",
       "ean": "",
       "mlb": "MLB6033056988",
-      "status_ml": "⏸ Pausado",
+      "status_ml": "✅ No ML",
       "peso_fake": false,
       "ean_fake": false,
       "custo_fake": false
@@ -12009,7 +12009,7 @@
       "origem": "2",
       "ean": "7891234711960",
       "mlb": "MLB6033056988",
-      "status_ml": "⏸ Pausado",
+      "status_ml": "✅ No ML",
       "peso_fake": false,
       "ean_fake": false,
       "custo_fake": false
@@ -12034,7 +12034,7 @@
       "origem": "2",
       "ean": "7891234711960",
       "mlb": "MLB6033056988",
-      "status_ml": "⏸ Pausado",
+      "status_ml": "✅ No ML",
       "peso_fake": false,
       "ean_fake": false,
       "custo_fake": false
@@ -12059,7 +12059,7 @@
       "origem": "2",
       "ean": "7891234711960",
       "mlb": "MLB6033056988",
-      "status_ml": "⏸ Pausado",
+      "status_ml": "✅ No ML",
       "peso_fake": false,
       "ean_fake": false,
       "custo_fake": false
@@ -17534,7 +17534,7 @@
       "origem": "2",
       "ean": "7891234712165",
       "mlb": "MLB4725896525",
-      "status_ml": "✅ No ML",
+      "status_ml": "⏸ Pausado",
       "peso_fake": false,
       "ean_fake": false,
       "custo_fake": false
@@ -18859,7 +18859,7 @@
       "origem": "2",
       "ean": "7899449004822",
       "mlb": "MLB5125400153",
-      "status_ml": "✅ No ML",
+      "status_ml": "⏸ Pausado",
       "peso_fake": false,
       "ean_fake": false,
       "custo_fake": false
@@ -20734,7 +20734,7 @@
       "origem": "2",
       "ean": "7893210043607",
       "mlb": "MLB5184524625",
-      "status_ml": "✅ No ML",
+      "status_ml": "⏸ Pausado",
       "peso_fake": false,
       "ean_fake": false,
       "custo_fake": false
@@ -21009,7 +21009,7 @@
       "origem": "2",
       "ean": "7891675324453",
       "mlb": "MLB5107843485",
-      "status_ml": "✅ No ML",
+      "status_ml": "⏸ Pausado",
       "peso_fake": false,
       "ean_fake": false,
       "custo_fake": false
@@ -22484,7 +22484,7 @@
       "origem": "2",
       "ean": "7904496532782",
       "mlb": "MLB5197764979",
-      "status_ml": "✅ No ML",
+      "status_ml": "⏸ Pausado",
       "peso_fake": false,
       "ean_fake": false,
       "custo_fake": false
