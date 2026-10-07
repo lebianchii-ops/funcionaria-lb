@@ -23670,7 +23670,7 @@
       "novo": false,
       "editado_funcionaria": false,
       "erro": "",
-      "titulo": "Mini Cozinha 26 Peças Brinquedo Infantil",
+      "titulo": "Mini Cozinha Infantil Brinquedo 26 Peças Acessórios Água",
       "variacao": "",
       "tipo": "Pai",
       "estoque": 48,
@@ -23683,10 +23683,10 @@
       "cst": "",
       "origem": "2",
       "ean": "7902467503304",
-      "mlb": "—",
-      "status_ml": "🔴 Falta criar",
+      "mlb": "MLB7759649994",
+      "status_ml": "✅ No ML",
       "peso_fake": true,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
