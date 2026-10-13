@@ -121,13 +121,25 @@ def get_token():
     except Exception:
         return t
 
+def _conteudo_dados(headers, url, meta):
+    """Corpo do dados.json. 🚨 13/10/2026: acima de 1 MB a Contents API devolve
+    content="" (encoding "none") e o json.loads quebrava o app inteiro. Nesse caso
+    pede o corpo pelo media type raw (vale ate 100 MB). O sha vem sempre no meta."""
+    if meta.get("content"):
+        return json.loads(base64.b64decode(meta["content"]).decode())
+    h = dict(headers)
+    h["Accept"] = "application/vnd.github.raw+json"
+    r_raw = requests.get(url, headers=h, timeout=60)
+    r_raw.raise_for_status()
+    return json.loads(r_raw.content.decode("utf-8"))
+
 def carregar_dados():
     headers = {"Authorization": f"token {get_token()}"}
     url = f"https://api.github.com/repos/{REPO}/contents/{DATA_FILE}"
     r = requests.get(url, headers=headers)
     if r.status_code == 200:
         content = r.json()
-        data = json.loads(base64.b64decode(content["content"]).decode())
+        data = _conteudo_dados(headers, url, content)
         st.session_state["sha"] = content["sha"]
         return data
     return {"tarefas": [], "avisos": []}
@@ -182,7 +194,7 @@ def salvar_dados(data, tentativas=4):
             # uma Entrada de Mercadoria sem relação nenhuma com produtos.
             if not st.session_state.get("_produtos_tocado"):
                 try:
-                    remoto = json.loads(base64.b64decode(r_get.json()["content"]).decode())
+                    remoto = _conteudo_dados(headers, url, r_get.json())
                     data["produtos"] = remoto.get("produtos", data.get("produtos", []))
                 except Exception:
                     pass
