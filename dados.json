@@ -606,8 +606,8 @@
       "data": "2026-10-03",
       "tipo": "evento",
       "prioridade": "Alta",
-      "feita": false,
-      "feita_em": null,
+      "feita": true,
+      "feita_em": "14/10/26 13:13",
       "criado_em": "2026-10-01T15:50:44.370697",
       "obs_conclusao": ""
     },
