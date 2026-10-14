@@ -13334,7 +13334,7 @@
       "origem": "2",
       "ean": "7898473693835",
       "mlb": "MLB6187235606",
-      "status_ml": "✅ No ML",
+      "status_ml": "⏸ Pausado",
       "peso_fake": false,
       "ean_fake": false,
       "custo_fake": false
@@ -16834,7 +16834,7 @@
       "origem": "2",
       "ean": "7896898771787",
       "mlb": "MLB6635349810",
-      "status_ml": "✅ No ML",
+      "status_ml": "⏸ Pausado",
       "peso_fake": false,
       "ean_fake": false,
       "custo_fake": false
@@ -17659,7 +17659,7 @@
       "origem": "2",
       "ean": "7891234712783",
       "mlb": "MLB7159604710",
-      "status_ml": "⏸ Pausado",
+      "status_ml": "✅ No ML",
       "peso_fake": false,
       "ean_fake": false,
       "custo_fake": false
@@ -20384,7 +20384,7 @@
       "origem": "2",
       "ean": "7908212460182",
       "mlb": "MLB5107395887",
-      "status_ml": "✅ No ML",
+      "status_ml": "⏸ Pausado",
       "peso_fake": false,
       "ean_fake": false,
       "custo_fake": false
@@ -21034,7 +21034,7 @@
       "origem": "2",
       "ean": "7891675324453",
       "mlb": "MLB5107856101",
-      "status_ml": "✅ No ML",
+      "status_ml": "⏸ Pausado",
       "peso_fake": false,
       "ean_fake": false,
       "custo_fake": false
@@ -21409,7 +21409,7 @@
       "origem": "2",
       "ean": "7905770375446",
       "mlb": "MLB7501140698",
-      "status_ml": "✅ No ML",
+      "status_ml": "⏸ Pausado",
       "peso_fake": false,
       "ean_fake": false,
       "custo_fake": false
@@ -21909,7 +21909,7 @@
       "origem": "2",
       "ean": "7899301079166",
       "mlb": "MLB7640408460",
-      "status_ml": "✅ No ML",
+      "status_ml": "⏸ Pausado",
       "peso_fake": false,
       "ean_fake": false,
       "custo_fake": false
@@ -22609,7 +22609,7 @@
       "origem": "2",
       "ean": "7904496532782",
       "mlb": "MLB5197765013",
-      "status_ml": "✅ No ML",
+      "status_ml": "⏸ Pausado",
       "peso_fake": false,
       "ean_fake": false,
       "custo_fake": false
@@ -23970,7 +23970,7 @@
       "novo": false,
       "editado_funcionaria": false,
       "erro": "",
-      "titulo": "Kit Fantasia Freira Halloween Luva Arrastão Véu Meia Cruz",
+      "titulo": "Kit Fantasia Freira Halloween Luva Arrastão Véu Meia Cruz Preto Único",
       "variacao": "",
       "tipo": "Pai",
       "estoque": null,
@@ -23984,7 +23984,7 @@
       "origem": "2",
       "ean": "7898463373426",
       "mlb": "MLB7803346154",
-      "status_ml": "✅ No ML",
+      "status_ml": "⏸ Pausado",
       "peso_fake": true,
       "ean_fake": false,
       "custo_fake": false
