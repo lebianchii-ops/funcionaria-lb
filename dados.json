@@ -24385,7 +24385,7 @@
       "ean": "",
       "mlb": "—",
       "status_ml": "🔴 Falta criar",
-      "peso_fake": false,
+      "peso_fake": true,
       "ean_fake": false,
       "custo_fake": false
     },
@@ -24410,7 +24410,7 @@
       "ean": "7909694486325",
       "mlb": "",
       "status_ml": "",
-      "peso_fake": false,
+      "peso_fake": true,
       "ean_fake": true,
       "custo_fake": false
     },
@@ -24435,7 +24435,7 @@
       "ean": "7894035377786",
       "mlb": "",
       "status_ml": "",
-      "peso_fake": false,
+      "peso_fake": true,
       "ean_fake": true,
       "custo_fake": false
     },
