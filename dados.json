@@ -22319,11 +22319,11 @@
       "ncm": "39241000",
       "cst": "",
       "origem": "2",
-      "ean": "7896314356826",
+      "ean": "7898263263569",
       "mlb": "MLB7826971600",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -22344,11 +22344,11 @@
       "ncm": "39241000",
       "cst": "",
       "origem": "2",
-      "ean": "7905964870917",
+      "ean": "7898263263569",
       "mlb": "MLB7826971674",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -22369,11 +22369,11 @@
       "ncm": "39241000",
       "cst": "",
       "origem": "2",
-      "ean": "7893625655082",
+      "ean": "7898263263569",
       "mlb": "MLB5406387909",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
