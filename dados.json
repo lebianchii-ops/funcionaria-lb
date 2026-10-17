@@ -24444,11 +24444,11 @@
       "ncm": "",
       "cst": "",
       "origem": "2",
-      "ean": "7894035377786",
+      "ean": "7909694486325",
       "mlb": "MLB5412686743",
       "status_ml": "⏸ Pausado",
       "peso_fake": true,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
