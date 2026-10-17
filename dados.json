@@ -23807,7 +23807,7 @@
       "novo": false,
       "editado_funcionaria": false,
       "erro": "",
-      "titulo": "Kit Balão 5 Pçs Decoração Festa Despedida de Solteiro Bride",
+      "titulo": "Kit Decoração Balões Despedida Solteira Bride Festa Noiva",
       "variacao": "",
       "tipo": "Pai",
       "estoque": 10,
@@ -23820,10 +23820,10 @@
       "cst": "",
       "origem": "2",
       "ean": "7891563060487",
-      "mlb": "—",
-      "status_ml": "🔴 Falta criar",
+      "mlb": "MLB7832451088",
+      "status_ml": "✅ No ML",
       "peso_fake": true,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
