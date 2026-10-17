@@ -22082,7 +22082,7 @@
       "novo": false,
       "editado_funcionaria": false,
       "erro": "",
-      "titulo": "Acessório Cabelo Maluco Halloween - Tiara Flor Caveira Mexicana",
+      "titulo": "Tiara Cabelo Maluco Halloween Caveira Mexicana Flores Véu",
       "variacao": "",
       "tipo": "Pai",
       "estoque": 12,
@@ -22095,10 +22095,10 @@
       "cst": "",
       "origem": "2",
       "ean": "7903253216668",
-      "mlb": "—",
-      "status_ml": "🔴 Falta criar",
+      "mlb": "MLB5411419681",
+      "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
