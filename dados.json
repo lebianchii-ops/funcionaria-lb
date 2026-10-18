@@ -24707,7 +24707,7 @@
       "novo": false,
       "editado_funcionaria": false,
       "erro": "",
-      "titulo": "Balão Castelo Mal Assombrado Inflável Decoração Festa Halloween",
+      "titulo": "Balão Halloween Inflável Castelo Assombrado Decoração Festa",
       "variacao": "",
       "tipo": "Pai",
       "estoque": 145,
@@ -24720,10 +24720,10 @@
       "cst": "",
       "origem": "2",
       "ean": "7899343345656",
-      "mlb": "—",
-      "status_ml": "🔴 Falta criar",
+      "mlb": "MLB7840623874",
+      "status_ml": "✅ No ML",
       "peso_fake": true,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
