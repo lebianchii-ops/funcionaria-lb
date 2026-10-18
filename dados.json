@@ -24711,7 +24711,7 @@
       "variacao": "",
       "tipo": "Pai",
       "estoque": 145,
-      "custo": null,
+      "custo": 8.0,
       "peso": 100.0,
       "comprimento": 10.0,
       "largura": 10.0,
