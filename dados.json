@@ -699,7 +699,20 @@
       "prioridade": "Alta",
       "feita": false,
       "feita_em": null,
-      "criado_em": "2026-10-16T13:01:07.468544"
+      "criado_em": "2026-10-16T13:01:07.468544",
+      "obs_conclusao": ""
+    },
+    {
+      "id": "491b9e9c-a982-47da-9cda-8692936b8a4d",
+      "titulo": "FULL LB",
+      "categoria": "LB COLLECTION",
+      "descricao": "",
+      "data": "2026-10-27",
+      "tipo": "evento",
+      "prioridade": "Alta",
+      "feita": false,
+      "feita_em": null,
+      "criado_em": "2026-10-19T13:15:58.341832"
     }
   ],
   "avisos": [
