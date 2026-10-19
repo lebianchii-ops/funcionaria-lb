@@ -712,7 +712,20 @@
       "prioridade": "Alta",
       "feita": false,
       "feita_em": null,
-      "criado_em": "2026-10-19T13:15:58.341832"
+      "criado_em": "2026-10-19T13:15:58.341832",
+      "obs_conclusao": ""
+    },
+    {
+      "id": "2da71e8a-dec0-45fe-959f-25b6f27cbd33",
+      "titulo": "ULTIMO DIA FULL LB",
+      "categoria": "LB COLLECTION",
+      "descricao": "",
+      "data": "2026-10-25",
+      "tipo": "evento",
+      "prioridade": "Alta",
+      "feita": false,
+      "feita_em": null,
+      "criado_em": "2026-10-19T13:16:23.301474"
     }
   ],
   "avisos": [
