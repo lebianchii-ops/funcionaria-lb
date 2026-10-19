@@ -24733,7 +24733,7 @@
       "novo": false,
       "editado_funcionaria": false,
       "erro": "",
-      "titulo": "Boia  Unicórnio Inflavel Infantil Cobertura De Proteção Solar Piscina Rosa",
+      "titulo": "Boia Inflável Infantil Piscina Unicórnio Cobertura Solar",
       "variacao": "",
       "tipo": "Pai",
       "estoque": 5,
@@ -24746,10 +24746,10 @@
       "cst": "",
       "origem": "2",
       "ean": "7902735092585",
-      "mlb": "—",
-      "status_ml": "🔴 Falta criar",
+      "mlb": "MLB7847008856",
+      "status_ml": "✅ No ML",
       "peso_fake": true,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
