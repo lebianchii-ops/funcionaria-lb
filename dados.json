@@ -11095,11 +11095,11 @@
       "ncm": "94054200",
       "cst": "",
       "origem": "2",
-      "ean": "7897403127280",
+      "ean": "7899499597671",
       "mlb": "MLB5461210549",
       "status_ml": "",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -11120,11 +11120,11 @@
       "ncm": "94054200",
       "cst": "",
       "origem": "2",
-      "ean": "7903146503271",
+      "ean": "7899499597671",
       "mlb": "MLB5461210805",
       "status_ml": "",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
