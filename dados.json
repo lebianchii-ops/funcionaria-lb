@@ -24658,7 +24658,7 @@
       "novo": false,
       "editado_funcionaria": false,
       "erro": "",
-      "titulo": "Papai Noel Escada Sobe e Desce Com Movimento Musical Natal Vermelho",
+      "titulo": "Papai Noel Escada Sobe e Desce Musical Natal Decoração",
       "variacao": "",
       "tipo": "Pai",
       "estoque": 25,
@@ -24671,10 +24671,10 @@
       "cst": "",
       "origem": "2",
       "ean": "7909426464027",
-      "mlb": "—",
-      "status_ml": "🔴 Falta criar",
+      "mlb": "MLB7884485756",
+      "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
