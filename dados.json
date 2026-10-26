@@ -697,8 +697,8 @@
       "data": "2026-10-21",
       "tipo": "evento",
       "prioridade": "Alta",
-      "feita": false,
-      "feita_em": null,
+      "feita": true,
+      "feita_em": "26/10/26 15:52",
       "criado_em": "2026-10-16T13:01:07.468544",
       "obs_conclusao": ""
     },
@@ -725,7 +725,8 @@
       "prioridade": "Alta",
       "feita": false,
       "feita_em": null,
-      "criado_em": "2026-10-19T13:16:23.301474"
+      "criado_em": "2026-10-19T13:16:23.301474",
+      "obs_conclusao": ""
     }
   ],
   "avisos": [
