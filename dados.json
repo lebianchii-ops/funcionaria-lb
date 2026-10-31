@@ -25609,7 +25609,7 @@
       "novo": false,
       "editado_funcionaria": false,
       "erro": "",
-      "titulo": "Papai Noel Musical Dança Tira e Pões Gorro",
+      "titulo": "Boneco Papai Noel Musical Dança Tira Gorro Decoração Natal",
       "variacao": "",
       "tipo": "Pai",
       "estoque": 4,
@@ -25622,10 +25622,10 @@
       "cst": "",
       "origem": "2",
       "ean": "7890289434435",
-      "mlb": "—",
-      "status_ml": "🔴 Falta criar",
+      "mlb": "MLB5491958447",
+      "status_ml": "✅ No ML",
       "peso_fake": true,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
