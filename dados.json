@@ -24459,7 +24459,7 @@
       "novo": false,
       "editado_funcionaria": false,
       "erro": "",
-      "titulo": "Arco Inflável Papai Noel Chaminé Árvore de Natal  270 cm",
+      "titulo": "Arco Inflável Natal Papai Noel Chaminé Árvore LED 270cm",
       "variacao": "",
       "tipo": "Pai",
       "estoque": 4,
@@ -24472,10 +24472,10 @@
       "cst": "",
       "origem": "2",
       "ean": "7893410593162",
-      "mlb": "—",
-      "status_ml": "🔴 Falta criar",
+      "mlb": "MLB7916436996",
+      "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
