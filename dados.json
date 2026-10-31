@@ -23096,11 +23096,11 @@
       "ncm": "95059000",
       "cst": "",
       "origem": "2",
-      "ean": "7898355630248",
+      "ean": "7900076630763",
       "mlb": "MLB7916189856",
       "status_ml": "⏸ Pausado",
       "peso_fake": true,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -23121,11 +23121,11 @@
       "ncm": "95059000",
       "cst": "",
       "origem": "2",
-      "ean": "7894190155892",
+      "ean": "7900076630763",
       "mlb": "MLB7916118320",
       "status_ml": "⏸ Pausado",
       "peso_fake": true,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
