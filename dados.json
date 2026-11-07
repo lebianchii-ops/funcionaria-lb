@@ -25434,7 +25434,7 @@
       "novo": false,
       "editado_funcionaria": false,
       "erro": "",
-      "titulo": "Luminária Natal Caixa de Presente",
+      "titulo": "Caixa De Presente Natal Luminária Led Com Música E Neve",
       "variacao": "",
       "tipo": "Pai",
       "estoque": 6,
@@ -25447,10 +25447,10 @@
       "cst": "",
       "origem": "2",
       "ean": "7895793321974",
-      "mlb": "—",
-      "status_ml": "🔴 Falta criar",
+      "mlb": "MLB7953377814",
+      "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
