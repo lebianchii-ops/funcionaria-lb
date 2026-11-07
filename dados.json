@@ -25459,7 +25459,7 @@
       "novo": false,
       "editado_funcionaria": false,
       "erro": "",
-      "titulo": "Luminária Retangular Natal",
+      "titulo": "Enfeite Luminária Natal Retangular Led Musical Efeito Neve",
       "variacao": "",
       "tipo": "Pai",
       "estoque": 10,
@@ -25472,10 +25472,10 @@
       "cst": "",
       "origem": "2",
       "ean": "7895230676162",
-      "mlb": "—",
-      "status_ml": "🔴 Falta criar",
+      "mlb": "MLB5523000517",
+      "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
