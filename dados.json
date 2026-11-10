@@ -25484,7 +25484,7 @@
       "novo": false,
       "editado_funcionaria": false,
       "erro": "",
-      "titulo": "Árvore De Natal Fibra Ótica Cachoeira Festa Decoração 60cm Colorida",
+      "titulo": "Árvore De Natal Fibra Ótica Cachoeira 60cm Colorida Festa",
       "variacao": "",
       "tipo": "Pai",
       "estoque": 16,
@@ -25497,10 +25497,10 @@
       "cst": "",
       "origem": "2",
       "ean": "7904227313949",
-      "mlb": "—",
-      "status_ml": "🔴 Falta criar",
+      "mlb": "MLB7973504874",
+      "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
