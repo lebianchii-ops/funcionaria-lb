@@ -25509,7 +25509,7 @@
       "novo": false,
       "editado_funcionaria": false,
       "erro": "",
-      "titulo": "Arvore De Natal Fibra Ótica Led Estrela 60cm Bivolt",
+      "titulo": "Árvore De Natal Fibra Ótica LED Colorida Estrela 60cm Bivolt",
       "variacao": "",
       "tipo": "Pai",
       "estoque": 16,
@@ -25522,10 +25522,10 @@
       "cst": "",
       "origem": "2",
       "ean": "7891289257956",
-      "mlb": "—",
-      "status_ml": "🔴 Falta criar",
+      "mlb": "MLB7973530016",
+      "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
