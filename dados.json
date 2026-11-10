@@ -23484,7 +23484,7 @@
       "novo": false,
       "editado_funcionaria": false,
       "erro": "",
-      "titulo": "Kit Mini Árvore Prata Dourada Led Decoração Natal",
+      "titulo": "Kit 2 Mini Árvores Natal Led Decoração Mesa Prata Dourada",
       "variacao": "",
       "tipo": "Pai",
       "estoque": 20,
@@ -23497,10 +23497,10 @@
       "cst": "",
       "origem": "2",
       "ean": "7904641683222",
-      "mlb": "—",
-      "status_ml": "🔴 Falta criar",
+      "mlb": "MLB7970630856",
+      "status_ml": "✅ No ML",
       "peso_fake": true,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
