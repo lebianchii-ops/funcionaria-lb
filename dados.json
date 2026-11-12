@@ -25625,7 +25625,7 @@
       "mlb": "MLB7984937324",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -25650,7 +25650,7 @@
       "mlb": "MLB7984979998",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -25675,7 +25675,7 @@
       "mlb": "MLB7984967738",
       "status_ml": "✅ No ML",
       "peso_fake": false,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
