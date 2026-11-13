@@ -11573,7 +11573,7 @@
       "origem": "2",
       "ean": "",
       "mlb": "MLB4341283549",
-      "status_ml": "⏸ Pausado",
+      "status_ml": "✅ No ML",
       "peso_fake": false,
       "ean_fake": false,
       "custo_fake": false
@@ -11598,7 +11598,7 @@
       "origem": "2",
       "ean": "7903212050562",
       "mlb": "MLB4341283549",
-      "status_ml": "⏸ Pausado",
+      "status_ml": "✅ No ML",
       "peso_fake": false,
       "ean_fake": false,
       "custo_fake": false
@@ -11623,7 +11623,7 @@
       "origem": "2",
       "ean": "7903212050562",
       "mlb": "MLB4341283549",
-      "status_ml": "⏸ Pausado",
+      "status_ml": "✅ No ML",
       "peso_fake": false,
       "ean_fake": false,
       "custo_fake": false
@@ -11648,7 +11648,7 @@
       "origem": "2",
       "ean": "7903212050562",
       "mlb": "MLB4341283549",
-      "status_ml": "⏸ Pausado",
+      "status_ml": "✅ No ML",
       "peso_fake": false,
       "ean_fake": false,
       "custo_fake": false
@@ -14273,7 +14273,7 @@
       "origem": "2",
       "ean": "",
       "mlb": "MLB6311788168",
-      "status_ml": "⏸ Pausado",
+      "status_ml": "✅ No ML",
       "peso_fake": false,
       "ean_fake": false,
       "custo_fake": false
@@ -14323,7 +14323,7 @@
       "origem": "2",
       "ean": "7891234712189",
       "mlb": "MLB6311788168",
-      "status_ml": "⏸ Pausado",
+      "status_ml": "✅ No ML",
       "peso_fake": false,
       "ean_fake": false,
       "custo_fake": false
@@ -17198,7 +17198,7 @@
       "origem": "2",
       "ean": "7891234712165",
       "mlb": "MLB4738205945",
-      "status_ml": "⏸ Pausado",
+      "status_ml": "✅ No ML",
       "peso_fake": false,
       "ean_fake": false,
       "custo_fake": false
@@ -17223,7 +17223,7 @@
       "origem": "2",
       "ean": "7891234712165",
       "mlb": "MLB4725896525",
-      "status_ml": "⏸ Pausado",
+      "status_ml": "✅ No ML",
       "peso_fake": false,
       "ean_fake": false,
       "custo_fake": false
@@ -18448,7 +18448,7 @@
       "origem": "2",
       "ean": "7909297276279",
       "mlb": "MLB4999846387",
-      "status_ml": "⏸ Pausado",
+      "status_ml": "✅ No ML",
       "peso_fake": false,
       "ean_fake": false,
       "custo_fake": false
@@ -19823,7 +19823,7 @@
       "origem": "2",
       "ean": "7890462903307",
       "mlb": "MLB7478466556",
-      "status_ml": "⏸ Pausado",
+      "status_ml": "✅ No ML",
       "peso_fake": false,
       "ean_fake": false,
       "custo_fake": false
@@ -20048,7 +20048,7 @@
       "origem": "2",
       "ean": "7908212460182",
       "mlb": "MLB5107421437",
-      "status_ml": "⏸ Pausado",
+      "status_ml": "✅ No ML",
       "peso_fake": false,
       "ean_fake": false,
       "custo_fake": false
@@ -20198,7 +20198,7 @@
       "origem": "2",
       "ean": "7894118211990",
       "mlb": "MLB5107422345",
-      "status_ml": "⏸ Pausado",
+      "status_ml": "✅ No ML",
       "peso_fake": false,
       "ean_fake": false,
       "custo_fake": false
@@ -20398,7 +20398,7 @@
       "origem": "2",
       "ean": "7893210043607",
       "mlb": "MLB5184513159",
-      "status_ml": "⏸ Pausado",
+      "status_ml": "✅ No ML",
       "peso_fake": false,
       "ean_fake": false,
       "custo_fake": false
@@ -21123,7 +21123,7 @@
       "origem": "2",
       "ean": "7905770375446",
       "mlb": "MLB7501159458",
-      "status_ml": "⏸ Pausado",
+      "status_ml": "✅ No ML",
       "peso_fake": false,
       "ean_fake": false,
       "custo_fake": false
@@ -22373,7 +22373,7 @@
       "origem": "2",
       "ean": "7908563734772",
       "mlb": "MLB7646955174",
-      "status_ml": "✅ No ML",
+      "status_ml": "⏸ Pausado",
       "peso_fake": false,
       "ean_fake": false,
       "custo_fake": false
@@ -23498,7 +23498,7 @@
       "origem": "2",
       "ean": "7904641683222",
       "mlb": "MLB7970630856",
-      "status_ml": "⏸ Pausado",
+      "status_ml": "✅ No ML",
       "peso_fake": true,
       "ean_fake": false,
       "custo_fake": false
@@ -24173,7 +24173,7 @@
       "origem": "2",
       "ean": "7909694486325",
       "mlb": "MLB7978038858",
-      "status_ml": "🔍 Em revisão",
+      "status_ml": "✅ No ML",
       "peso_fake": false,
       "ean_fake": false,
       "custo_fake": false
@@ -24198,7 +24198,7 @@
       "origem": "2",
       "ean": "7909469749945",
       "mlb": "MLB5411736729",
-      "status_ml": "✅ No ML",
+      "status_ml": "⏸ Pausado",
       "peso_fake": false,
       "ean_fake": false,
       "custo_fake": false
@@ -24223,7 +24223,7 @@
       "origem": "2",
       "ean": "7907792364347",
       "mlb": "MLB7916424210",
-      "status_ml": "✅ No ML",
+      "status_ml": "⏸ Pausado",
       "peso_fake": false,
       "ean_fake": false,
       "custo_fake": false
@@ -24248,7 +24248,7 @@
       "origem": "2",
       "ean": "7893410593162",
       "mlb": "MLB7916436996",
-      "status_ml": "✅ No ML",
+      "status_ml": "⏸ Pausado",
       "peso_fake": false,
       "ean_fake": false,
       "custo_fake": false
@@ -25523,7 +25523,7 @@
       "origem": "2",
       "ean": "7904227313949",
       "mlb": "MLB7973504874",
-      "status_ml": "⏸ Pausado",
+      "status_ml": "✅ No ML",
       "peso_fake": false,
       "ean_fake": false,
       "custo_fake": false
@@ -25548,7 +25548,7 @@
       "origem": "2",
       "ean": "7891289257956",
       "mlb": "MLB7973530016",
-      "status_ml": "⏸ Pausado",
+      "status_ml": "✅ No ML",
       "peso_fake": false,
       "ean_fake": false,
       "custo_fake": false
@@ -25584,7 +25584,7 @@
       "novo": false,
       "editado_funcionaria": false,
       "erro": "",
-      "titulo": "Fantasia Infantil Cantor Pop Show Escola Kit Completo Dança",
+      "titulo": "Fantasia Infantil Cantor Pop Show Escola Kit Completo Dança Preto P",
       "variacao": "P",
       "tipo": "Filho",
       "estoque": 2,
@@ -25609,7 +25609,7 @@
       "novo": false,
       "editado_funcionaria": false,
       "erro": "",
-      "titulo": "Fantasia Infantil Cantor Pop Show Escola Kit Completo Dança",
+      "titulo": "Fantasia Infantil Cantor Pop Show Escola Kit Completo Dança Preto M",
       "variacao": "M",
       "tipo": "Filho",
       "estoque": 2,
@@ -25634,7 +25634,7 @@
       "novo": false,
       "editado_funcionaria": false,
       "erro": "",
-      "titulo": "Fantasia Infantil Cantor Pop Show Escola Kit Completo Dança",
+      "titulo": "Fantasia Infantil Cantor Pop Show Escola Kit Completo Dança Preto G",
       "variacao": "G",
       "tipo": "Filho",
       "estoque": 2,
@@ -25659,7 +25659,7 @@
       "novo": false,
       "editado_funcionaria": false,
       "erro": "",
-      "titulo": "Fantasia Infantil Cantor Pop Show Escola Kit Completo Dança",
+      "titulo": "Fantasia Infantil Cantor Pop Show Escola Kit Completo Dança Preto Gg",
       "variacao": "GG",
       "tipo": "Filho",
       "estoque": 2,
