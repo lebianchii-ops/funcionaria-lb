@@ -4098,7 +4098,7 @@
       "origem": "0",
       "ean": "",
       "mlb": "MLB3770871713",
-      "status_ml": "⏸ Pausado",
+      "status_ml": "✅ No ML",
       "peso_fake": false,
       "ean_fake": false,
       "custo_fake": false
@@ -4123,7 +4123,7 @@
       "origem": "0",
       "ean": "7897888884388",
       "mlb": "MLB3770871713",
-      "status_ml": "⏸ Pausado",
+      "status_ml": "✅ No ML",
       "peso_fake": false,
       "ean_fake": false,
       "custo_fake": false
@@ -10935,7 +10935,7 @@
       "editado_funcionaria": false,
       "erro": "",
       "titulo": "Kit 12 Flores Natalinas Luxo Árvore Natal Decoração Enfeite",
-      "variacao": "Vermelha / Flor",
+      "variacao": "vermelha / Flor",
       "tipo": "Filho",
       "estoque": 0,
       "custo": 16.2,
@@ -20048,7 +20048,7 @@
       "origem": "2",
       "ean": "7905250654054",
       "mlb": "MLB7488353666",
-      "status_ml": "⏸ Pausado",
+      "status_ml": "✅ No ML",
       "peso_fake": false,
       "ean_fake": false,
       "custo_fake": false
@@ -20848,7 +20848,7 @@
       "origem": "2",
       "ean": "7898403064995",
       "mlb": "MLB5151118543",
-      "status_ml": "⏸ Pausado",
+      "status_ml": "✅ No ML",
       "peso_fake": false,
       "ean_fake": false,
       "custo_fake": false
@@ -21148,7 +21148,7 @@
       "origem": "2",
       "ean": "7905770375446",
       "mlb": "MLB7501140698",
-      "status_ml": "⏸ Pausado",
+      "status_ml": "✅ No ML",
       "peso_fake": false,
       "ean_fake": false,
       "custo_fake": false
@@ -22898,7 +22898,7 @@
       "origem": "2",
       "ean": "7897733228046",
       "mlb": "MLB5291353745",
-      "status_ml": "✅ No ML",
+      "status_ml": "⏸ Pausado",
       "peso_fake": false,
       "ean_fake": false,
       "custo_fake": false
@@ -24598,7 +24598,7 @@
       "origem": "2",
       "ean": "7904848735021",
       "mlb": "MLB7869796632",
-      "status_ml": "⏸ Pausado",
+      "status_ml": "✅ No ML",
       "peso_fake": false,
       "ean_fake": false,
       "custo_fake": false
@@ -25448,7 +25448,7 @@
       "origem": "2",
       "ean": "7890289434435",
       "mlb": "MLB5491958447",
-      "status_ml": "✅ No ML",
+      "status_ml": "⏸ Pausado",
       "peso_fake": false,
       "ean_fake": false,
       "custo_fake": false
