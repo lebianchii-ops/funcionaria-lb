@@ -25925,7 +25925,7 @@
       "mlb": "MLB8059861892",
       "status_ml": "⏸ Pausado",
       "peso_fake": true,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -25950,7 +25950,7 @@
       "mlb": "MLB8059862094",
       "status_ml": "⏸ Pausado",
       "peso_fake": true,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -25975,7 +25975,7 @@
       "mlb": "MLB5616747041",
       "status_ml": "⏸ Pausado",
       "peso_fake": true,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -26050,7 +26050,7 @@
       "mlb": "MLB5616770787",
       "status_ml": "⏸ Pausado",
       "peso_fake": true,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -26075,7 +26075,7 @@
       "mlb": "MLB5616748501",
       "status_ml": "⏸ Pausado",
       "peso_fake": true,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
@@ -26100,7 +26100,7 @@
       "mlb": "MLB8059863850",
       "status_ml": "⏸ Pausado",
       "peso_fake": true,
-      "ean_fake": true,
+      "ean_fake": false,
       "custo_fake": false
     },
     {
